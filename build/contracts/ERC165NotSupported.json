@@ -1,0 +1,106 @@
+{
+  "contractName": "ERC165NotSupported",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.2+commit.bacdbe57\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/C/Users/Lauri/Documents/projects/DPriceBranding/contracts/mocks/ERC165/ERC165NotSupported.sol\":\"ERC165NotSupported\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/C/Users/Lauri/Documents/projects/DPriceBranding/contracts/mocks/ERC165/ERC165NotSupported.sol\":{\"keccak256\":\"0xd26fec8ea9435d8d6c6d754058a14c9e7f256221f5ef1b2ee7e5a72b0c9143fc\",\"urls\":[\"bzz-raw://c21dac13646eecf0242a34ee2aa618b8b5fb61de61b1a34f28cda35205719ee3\",\"dweb:/ipfs/QmdGUFM4feJZbwBR9rokc1Lfb74yVb75x8sGe6yHrGZ3mC\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220b2135c9011bf32f00b0cd4fd7c382f7ea4de9b398d10c1e94f9cf83da6f1dcbd64736f6c63430006020033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220b2135c9011bf32f00b0cd4fd7c382f7ea4de9b398d10c1e94f9cf83da6f1dcbd64736f6c63430006020033",
+  "sourceMap": "58:31:14:-:0;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;58:31:14;;;;;;;",
+  "deployedSourceMap": "58:31:14:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.6.0;\n\ncontract ERC165NotSupported { }\n",
+  "sourcePath": "C:/Users/Lauri/Documents/projects/DPriceBranding/contracts/mocks/ERC165/ERC165NotSupported.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Lauri/Documents/projects/DPriceBranding/contracts/mocks/ERC165/ERC165NotSupported.sol",
+    "exportedSymbols": {
+      "ERC165NotSupported": [
+        1528
+      ]
+    },
+    "id": 1529,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1527,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:14"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1528,
+        "linearizedBaseContracts": [
+          1528
+        ],
+        "name": "ERC165NotSupported",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1529,
+        "src": "58:31:14"
+      }
+    ],
+    "src": "33:57:14"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/Lauri/Documents/projects/DPriceBranding/contracts/mocks/ERC165/ERC165NotSupported.sol",
+    "exportedSymbols": {
+      "ERC165NotSupported": [
+        1528
+      ]
+    },
+    "id": 1529,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1527,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:14"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 1528,
+        "linearizedBaseContracts": [
+          1528
+        ],
+        "name": "ERC165NotSupported",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 1529,
+        "src": "58:31:14"
+      }
+    ],
+    "src": "33:57:14"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.2+commit.bacdbe57.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-10-10T12:38:23.682Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
