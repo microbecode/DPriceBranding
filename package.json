@@ -1,0 +1,26 @@
+{
+  "name": "dpricebranding",
+  "version": "1.0.0",
+  "description": "Smart contracts for DpriceBranding project (Ethereum NFTs)",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microbecode/DPriceBranding.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/microbecode/DPriceBranding/issues"
+  },
+  "homepage": "https://github.com/microbecode/DPriceBranding#readme",
+  "dependencies": {
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0"
+  }
+}
