@@ -1,4 +1,4 @@
-pragma solidity >=0.5.16;
+/* pragma solidity =0.5.16;
 
 import '@uniswap/v2-core/contracts/UniswapV2Factory.sol';
 
@@ -7,4 +7,4 @@ contract UniswapV2FactoryMock is UniswapV2Factory {
     constructor(address feeToSetter) public {
         super(feeToSetter);
     }
-}
+} */
