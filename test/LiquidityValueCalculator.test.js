@@ -4,10 +4,12 @@ const { BN, constants, expectEvent, expectRevert } = require('@openzeppelin/test
 const { expect } = require('chai');
 const { ZERO_ADDRESS } = constants;
 
-const factory = contract.fromArtifact('UniswapV2FactoryMock');
-const liq = contract.fromArtifact('LiquidityValueCalculator');
-const token1Artifact = contract.fromArtifact('MyToken1Mock');
-const token2Artifact = contract.fromArtifact('MyToken2Mock');
+const factory = contract.fromArtifact('UniswapV2Factory');
+//const liq = contract.fromArtifact('LiquidityValueCalculator');
+const token1 = contract.fromArtifact('MyToken1Mock');
+const token2 = contract.fromArtifact('MyToken2Mock');
+
+const routerArtifact = artifacts.require("UniswapV2Router02");
 //const factory = IUniswapV2Factory (liq.factory);
 
 describe('aaa', function () {
@@ -19,32 +21,20 @@ describe('aaa', function () {
   const initialSupply = new BN(100);
 
   beforeEach(async function () {
-    this.token1 = await token1Artifact.new(initialSupply, name, symbol);
-    this.token2 = await token2Artifact.new(initialSupply, name, symbol);
-    //console.log(this.token1.address);
-    this.factory = await factory.new(accounts[0]);
-    this.pairAddress = await this.factory.createPair(this.token1.address, this.token2.address, { from: accounts[0] });
-     const pairAddress = await this.factory.allPairs(0);
-
+    //this.token = await ERC20Mock.new(name, symbol, initialHolder, initialSupply);
+/*      this.factory = await factory.new(accounts[0]);
+     console.log('faq', this.factory);
+    this.li = await liq.new(this.factory);  */
   });
 
+ // console.log('aaa', liq);
+  //console.log('yyyy', factory);
+
    it('a', async function () {
-
-   /*  console.log('a', await this.pairAddress); */
-
-
-    //const hmm = await liq.deployed();
-    //console.log('bbbb', hmm);
+    const hmm = await routerArtifact.deployed();
+    console.log('router', hmm.address);
     //expect(await this.token.name()).to.equal(name);
     
   }); 
-/*   it('b', async function () {
-    console.log('b', await this.pairAddress());
-  }); 
-  it('c', async function () {
-    console.log('c', this.pairAddress());
-  });
-  it('d', async function () {
-    console.log('d', this.pairAddress);
-  });  */ 
+
 });
