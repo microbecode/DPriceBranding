@@ -22,16 +22,19 @@
   "0000000000000000000000000000000000000000000000000000000000000002",
 ];
  //const HDWalletProvider = require('@truffle/hdwallet-provider');
+ 
 // const infuraKey = "fj4jll3k.....";
 //
-// const fs = require('fs');
+const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 /*
 var provider = new HDWalletProvider(privateKeys, "http://127.0.0.1:8545", 0, 2); */
 
-const HDWalletProvider = require("truffle-hdwallet-provider-privkey");
-const provider = new HDWalletProvider(privateKeys, "http://localhost:8545");
+const FsWalletProvider = require("@truffle/hdwallet-provider");
+const PrivkeyWalletProvider = require("truffle-hdwallet-provider-privkey");
+const mnemonic = fs.readFileSync('..\\mnemonic.env', 'utf-8');
+const projectId = fs.readFileSync('..\\ropsten_infura_dpricebranding_projectid.env', 'utf-8');
 
 module.exports = {
   /**
@@ -51,13 +54,19 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    development: {
+/*     development: {
     host: "127.0.0.1",     // Localhost (default: none)
     port: 8545,            // Standard Ethereum port (default: none)
     network_id: "*",       // Any network (default: none)
     gasPrice:   0,
-    provider: provider
-   }, 
+    provider: new PrivkeyWalletProvider(privateKeys, "http://localhost:8545")
+   },  */
+   ropsten: {
+    network_id: 3,
+    gasPrice: 1000000000,
+    gas: 8000000,
+    provider: new FsWalletProvider(mnemonic, "https://ropsten.infura.io/v3/" + projectId)
+  },
    /* testrpc:{
     host: "localhost",
     port: 8545,
