@@ -6,7 +6,7 @@ import FACTORY_ABI from './factory.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
-const FACTORY_ADDRESS = '0xc0a47dFe034B400B47bDaD5FecDa2621de6c4d95'
+const FACTORY_ADDRESS = process.env.REACT_APP_FACTORY_ADDRESS;
 
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
