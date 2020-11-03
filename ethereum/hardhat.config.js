@@ -18,6 +18,16 @@ module.exports = {
 
     },
     ropsten: {
+      url: "https://ropsten.infura.io/v3/" + ropstenId,
+      chainId: 3,
+      gas: 8000000,
+      gasPrice: 5000000000, // 5gwei
+      accounts: {
+        mnemonic: mnemonic
+      }
+    }
+    /*
+    ropsten: {
       network_id: 3,
       gasPrice: 5000000000, // 5gwei
       gas: 8000000,
@@ -33,5 +43,6 @@ module.exports = {
         return new FsWalletProvider(mnemonic, "https://goerli.infura.io/v3/" + goerliId);
       }
     }
+    */
   }
 };
