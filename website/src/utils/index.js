@@ -6,11 +6,11 @@ import FACTORY_ABI from './factory.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
-const FACTORY_ADDRESS = process.env.REACT_APP_FACTORY_ADDRESS;
+const FACTORY_ADDRESS = '0x9c83dCE8CA20E9aAF9D3efc003b2ea62aBC08351';//;process.env.REACT_APP_FACTORY_ADDRESS;
 
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
-  SOCKS: '0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
+  SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
 }
 
 export const TOKEN_SYMBOLS = Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {
