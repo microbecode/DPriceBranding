@@ -168,6 +168,7 @@ export default function Main({ stats, status }) {
 
   // totalsupply
   const totalSupply = useTotalSupply(tokenContractSOCKS)
+  console.log('total', totalSupply)
 
   // get allowances
   const allowanceSOCKS = useAddressAllowance(

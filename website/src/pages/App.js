@@ -7,6 +7,7 @@ import GlobalStyle, { ThemeProvider } from '../theme'
 import Web3ReactManager from '../components/Web3ReactManager'
 import AppProvider from '../context'
 import Main from './Main'
+import { USED_CHAIN_ID } from '../utils'
 
 const PROVIDER_URL = process.env.REACT_APP_PROVIDER_URL
 
@@ -14,14 +15,14 @@ const { NetworkOnlyConnector, InjectedConnector, WalletConnectConnector } = Conn
 const Network = new NetworkOnlyConnector({
   providerURL: PROVIDER_URL
 })
-const Injected = new InjectedConnector({ supportedNetworks: [3] })
+const Injected = new InjectedConnector({ supportedNetworks: [USED_CHAIN_ID] })
  const WalletConnect = new WalletConnectConnector({
   api: WalletConnectApi,
   bridge: 'https://bridge.walletconnect.org',
   supportedNetworkURLs: {
-    3: PROVIDER_URL
+    USED_CHAIN_ID: PROVIDER_URL
   },
-  defaultNetwork: 3
+  defaultNetwork: USED_CHAIN_ID
 })
 const connectors = { Network, Injected, WalletConnect  }
 

@@ -202,12 +202,6 @@ export default function Body({
           </SubInfo> */}
         </Info>
         <BuyButtons balanceSOCKS={balanceSOCKS} />
-        <RedeemButton balanceSOCKS={balanceSOCKS} />
-        {!!account && (
-          <Link style={{ textDecoration: 'none' }} to="/status">
-            <OrderStatusLink>Check order status?</OrderStatusLink>
-          </Link>
-        )}
       </Content>
       <Checkout
         selectedTokenSymbol={selectedTokenSymbol}

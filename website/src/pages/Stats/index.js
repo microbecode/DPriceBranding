@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useAppContext } from '../../context'
 import { Header } from '../Body'
-import { amountFormatter } from '../../utils'
+import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
 
 export default function Body({ totalSupply, reserveSOCKSToken, ready, balanceSOCKS }) {
   const [state] = useAppContext()
@@ -19,7 +19,7 @@ export default function Body({ totalSupply, reserveSOCKSToken, ready, balanceSOC
             </span>
             Initial SOCKS
           </p>
-          <p>500</p>
+          <p>{TOTAL_NUM_OF_TOKENS}</p>
         </Description>
         <Description>
           <p>
@@ -28,7 +28,7 @@ export default function Body({ totalSupply, reserveSOCKSToken, ready, balanceSOC
             </span>
             Redeemed SOCKS
           </p>
-          <p>{500 - totalSupply}</p>
+          <p>{TOTAL_NUM_OF_TOKENS - totalSupply}</p>
         </Description>
         <Description>
           <p>
