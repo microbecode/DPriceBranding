@@ -2,7 +2,8 @@
  * @type import('hardhat/config').HardhatUserConfig
  */
 
-require("@nomiclabs/hardhat-truffle5");
+//require("@nomiclabs/hardhat-truffle5");
+require("@nomiclabs/hardhat-ethers");
 
 const fs = require('fs');
 const FsWalletProvider = require("@truffle/hdwallet-provider");

@@ -7,14 +7,17 @@ const tokenAmount = 10000000;
 const ethAmount = 1000; */
 
 module.exports = async () => {
-/*   let routerAddr;
+  const token = await token1Artifact.new(50 * 1e18, 'name', 'symbol', {from: accounts[0] });
+  const routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+  
+/*   
   if (network == 'ropsten') {
-    routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+    routerAddr
   }
   if (network == 'goerli') {
     routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
   }
-  const token = await token1Artifact.new(tokenAmount, 'name', 'symbol', {from: accounts[0] });
+  
   token1Artifact.setAsDeployed(token);
 
   const router = await routerArtifact.at(routerAddr);
