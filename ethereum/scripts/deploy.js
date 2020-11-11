@@ -1,7 +1,11 @@
 const tokenAmount = 10000000;
-const ethAmount = 1000;
+const ethAmount = 1000000;
+
+console.log('THIS DEPLOYMENT IS USELESS, the router\'s pair creation doesn\'t work properly');
 
 async function main() {
+  const accounts = await ethers.getSigners();
+  const deployer = accounts[0];
 
   const token = await ethers.getContractFactory('MyToken');
   var exp = ethers.BigNumber.from("10").pow(18);
@@ -11,7 +15,7 @@ async function main() {
   const wethInst = await weth.deploy();
 
   const factory = await ethers.getContractFactory('UniswapV2Factory');
-  const factoryInst = await factory.deploy(wethInst.address);
+  const factoryInst = await factory.deploy(deployer.address);
 
   const router = await ethers.getContractFactory('UniswapV2Router02');
   const routerInst = await router.deploy(factoryInst.address, wethInst.address);
@@ -23,7 +27,12 @@ async function main() {
 
   await tokenInst.approve(routerInst.address, tokenAmount);
 
-  await routerInst.addLiquidityETH(tokenInst.address, tokenAmount, 1, 1, tokenInst.address, 9999999999, { value: ethAmount } );  
+   await factoryInst.createPair(tokenInst.address, wethInst.address);
+  const pairAddress = await factoryInst.allPairs(0);
+    console.log('pair address', pairAddress); 
+
+    // Fails due to library differences
+  await routerInst.addLiquidityETH(tokenInst.address, tokenAmount, 1, 1, deployer.address, 9999999999, { value: ethAmount } );  
 }
   
 main()

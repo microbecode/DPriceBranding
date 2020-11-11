@@ -16,19 +16,32 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.6.6"
+        version: "0.6.6",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        } 
       },
       {
         version: "0.5.16",
-        settings: { } 
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        } 
       }
     ]
   },
   networks: {
     hardhat: {
-      gas: 12000000,
-      blockGasLimit: 15000000,
-      allowUnlimitedContractSize: true
+      gas: 9007199254740990,
+      blockGasLimit: 9007199254740990,
+      gasPrice: 0,
+      allowUnlimitedContractSize: true,
+      loggingEnabled: true
     },
     ropsten: {
       url: "https://ropsten.infura.io/v3/" + ropstenId,
@@ -37,7 +50,8 @@ module.exports = {
       gasPrice: 5000000000, // 5gwei
       accounts: {
         mnemonic: mnemonic
-      }
+      },
+      loggingEnabled: true
     }
     /*
     ropsten: {
