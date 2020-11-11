@@ -13,10 +13,21 @@ const ropstenId = fs.readFileSync('..\\..\\ropsten_infura_dpricebranding_project
 const goerliId = fs.readFileSync('..\\..\\goerli_infura_dpricebranding_projectid.env', 'utf-8');
 
 module.exports = {
-  solidity: "0.6.6",
+  solidity: {
+    compilers: [
+      {
+        version: "0.6.6"
+      },
+      {
+        version: "0.5.16",
+        settings: { } 
+      }
+    ]
+  },
   networks: {
     hardhat: {
-
+gas: 80000000,
+allowUnlimitedContractSize: true
     },
     ropsten: {
       url: "https://ropsten.infura.io/v3/" + ropstenId,
