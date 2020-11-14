@@ -4,13 +4,7 @@
 
 //require("@nomiclabs/hardhat-truffle5");
 require("@nomiclabs/hardhat-ethers");
-
-const fs = require('fs');
-const FsWalletProvider = require("@truffle/hdwallet-provider");
-//const PrivkeyWalletProvider = require("truffle-hdwallet-provider-privkey");
-const mnemonic = fs.readFileSync('..\\..\\mnemonic.env', 'utf-8');
-const ropstenId = fs.readFileSync('..\\..\\ropsten_infura_dpricebranding_projectid.env', 'utf-8');
-const goerliId = fs.readFileSync('..\\..\\goerli_infura_dpricebranding_projectid.env', 'utf-8');
+require('dotenv').config();
 
 module.exports = {
   solidity: {
@@ -44,24 +38,16 @@ module.exports = {
       loggingEnabled: true
     },
     ropsten: {
-      url: "https://ropsten.infura.io/v3/" + ropstenId,
+      url: process.env.PROVIDER_URL,
       chainId: 3,
       gas: 8000000,
       gasPrice: 5000000000, // 5gwei
       accounts: {
-        mnemonic: mnemonic
+        mnemonic: process.env.MNEMONIC
       },
       loggingEnabled: true
     }
     /*
-    ropsten: {
-      network_id: 3,
-      gasPrice: 5000000000, // 5gwei
-      gas: 8000000,
-      provider: function() {
-        return new FsWalletProvider(mnemonic, "https://ropsten.infura.io/v3/" + ropstenId);
-      }
-    },
     goerli: {
       network_id: 5,
       gasPrice: 5000000000, // 5gwei
