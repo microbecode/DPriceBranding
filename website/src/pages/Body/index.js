@@ -8,7 +8,7 @@ import Card from '../../components/Card'
 import BuyButtons from '../../components/Buttons'
 import RedeemButton from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
-import { amountFormatter } from '../../utils'
+import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
 
 export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
   const { account, setConnector } = useWeb3Context()
@@ -36,7 +36,7 @@ export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
               <span role="img" aria-label="fire">
                 🔥
               </span>{' '}
-              {500 - totalSupply} <HideMobile>redeemed</HideMobile>
+              {TOTAL_NUM_OF_TOKENS - totalSupply} <HideMobile>redeemed</HideMobile>
             </Burned>
           </Link>
         )}

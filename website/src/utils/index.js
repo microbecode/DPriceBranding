@@ -11,8 +11,10 @@ const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropst
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  SOCKS: '0x0306bAc141b07ab9DD8CBAbFc0d8AAA995821Ae2' // My own token in ropsten, 50 * 1e18 totalsupply
+  SOCKS: '0x0306bac141b07ab9dd8cbabfc0d8aaa995821ae2' // My own token in ropsten, 50 * 1e18 totalsupply
 }
+
+export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
 
 export const TOTAL_NUM_OF_TOKENS = 50;
 export const USED_CHAIN_ID = 3;

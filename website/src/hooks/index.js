@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useWeb3Context } from 'web3-react'
+import { PAIR_ADDRESS } from '../utils'
 
 import {
   isAddress,
