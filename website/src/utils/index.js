@@ -11,7 +11,7 @@ const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropst
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  SOCKS: '0x0306bac141b07ab9dd8cbabfc0d8aaa995821ae2' // My own token in ropsten, 50 * 1e18 totalsupply
+  OWN: '0x0306bac141b07ab9dd8cbabfc0d8aaa995821ae2' // My own token in ropsten, 50 * 1e18 totalsupply
 }
 
 export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
@@ -19,7 +19,7 @@ export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
 export const TOTAL_NUM_OF_TOKENS = 50;
 export const USED_CHAIN_ID = 3;
 
-export const TOKEN_SYMBOLS = Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {
+export const TOKEN_SYMBOLS = Object.keys(TOKEN_ADDRESSES).reduce<Record<string, string>>((o, k) => {
   o[k] = k
   return o
 }, {})
@@ -30,7 +30,7 @@ export const ERROR_CODES = [
   'INSUFFICIENT_ETH_GAS',
   'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
   'INSUFFICIENT_ALLOWANCE'
-].reduce((o, k, i) => {
+].reduce<Record<string, number>>((o, k, i) => {
   o[k] = i
   return o
 }, {})
@@ -90,7 +90,7 @@ export async function getTokenBalance(tokenAddress, address, library) {
     throw Error(`Invalid 'tokenAddress' or 'address' parameter '${tokenAddress}' or '${address}'.`)
   }
 
-  return getContract(tokenAddress, ERC20_ABI, library).balanceOf(address)
+  return getContract(tokenAddress, ERC20_ABI, library, null).balanceOf(address)
 }
 
 export async function getTokenAllowance(address, tokenAddress, spenderAddress, library) {
@@ -101,7 +101,7 @@ export async function getTokenAllowance(address, tokenAddress, spenderAddress, l
     )
   }
 
-  return getContract(tokenAddress, ERC20_ABI, library).allowance(address, spenderAddress)
+  return getContract(tokenAddress, ERC20_ABI, library, null).allowance(address, spenderAddress)
 }
 
 export function amountFormatter(amount, baseDecimals = 18, displayDecimals = 3, useLessThan = true) {

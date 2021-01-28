@@ -18,10 +18,10 @@ export function useBlockEffect(functionToRun) {
   const { library } = useWeb3Context()
 
   useEffect(() => {
-    if (library) {
-      function wrappedEffect(blockNumber) {
-        functionToRun(blockNumber)
-      }
+    function wrappedEffect(blockNumber) {
+      functionToRun(blockNumber)
+    }
+    if (library) {      
       library.on('block', wrappedEffect)
       return () => {
         library.removeListener('block', wrappedEffect)
@@ -56,7 +56,7 @@ export function useExchangeContract(tokenAddress, withSignerIfPossible = true) {
       })
       return () => {
         stale = true
-        setExchangeAddress()
+        setExchangeAddress(null)
       }
     }
   }, [library, tokenAddress])
@@ -92,7 +92,7 @@ export function useAddressBalance(address, tokenAddress) {
         })
       return () => {
         stale = true
-        setBalance()
+        setBalance(null)
       }
     }
   }, [address, library, tokenAddress])
@@ -127,7 +127,7 @@ export function useTotalSupply(contract) {
         })
       return () => {
         stale = true
-        setTotalSupply()
+        setTotalSupply(null)
       }
     }
   }, [contract])
@@ -173,7 +173,7 @@ export function useAddressAllowance(address, tokenAddress, spenderAddress) {
 
       return () => {
         stale = true
-        setAllowance()
+        setAllowance(null)
       }
     }
   }, [address, library, spenderAddress, tokenAddress])
