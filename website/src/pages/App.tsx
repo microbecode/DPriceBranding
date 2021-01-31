@@ -29,7 +29,6 @@ const connectors = { Network, Injected, WalletConnect  }
 export default function App() {
   return (
     <ThemeProvider>
-      <>
         <GlobalStyle />
         <Web3Provider connectors={connectors} libraryName={'ethers.js'}>
           <Web3ReactManager>
@@ -37,15 +36,12 @@ export default function App() {
               <BrowserRouter>
                 <Switch>
                   <Route exact strict path="/" render={() => <Main />} />
-                  <Route exact strict path="/status" render={() => <Main status />} />
-                  <Route exact strict path="/stats" render={() => <Main stats />} />
                   <Redirect to="/" />
                 </Switch>
               </BrowserRouter>
             </AppProvider>
           </Web3ReactManager>
         </Web3Provider>
-      </>
     </ThemeProvider>
   )
 }

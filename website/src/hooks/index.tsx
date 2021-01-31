@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useWeb3Context } from 'web3-react'
-import { PAIR_ADDRESS } from '../utils'
+import { FACTORY_ADDRESS } from '../utils'
 
 import {
   isAddress,
@@ -45,15 +45,16 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
 export function useExchangeContract(tokenAddress, withSignerIfPossible = true) {
   const { library, account } = useWeb3Context()
 
-  const [exchangeAddress, setExchangeAddress] = useState()
+  const [exchangeAddress, setExchangeAddress] = useState<string>()
   useEffect(() => {
     if (isAddress(tokenAddress)) {
       let stale = false
-      getTokenExchangeAddressFromFactory(tokenAddress, library).then(exchangeAddress => {
+      setExchangeAddress(FACTORY_ADDRESS);
+      /* getTokenExchangeAddressFromFactory(tokenAddress, library).then(exchangeAddress => {
         if (!stale) {
           setExchangeAddress(exchangeAddress)
         }
-      })
+      }) */
       return () => {
         stale = true
         setExchangeAddress(null)

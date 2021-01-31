@@ -6,7 +6,7 @@ import FACTORY_ABI from './factory02.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
-const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropsten //;process.env.REACT_APP_FACTORY_ADDRESS;
+export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropsten //;process.env.REACT_APP_FACTORY_ADDRESS;
 
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
@@ -19,26 +19,40 @@ export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
 export const TOTAL_NUM_OF_TOKENS = 50;
 export const USED_CHAIN_ID = 3;
 
-export const TOKEN_SYMBOLS = Object.keys(TOKEN_ADDRESSES).reduce<Record<string, string>>((o, k) => {
+export const TOKEN_SYMBOLS = { ETH: 'ETH', OWN: 'OWN'};/* Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {
   o[k] = k
   return o
-}, {})
+}, {}); */
 
-export const ERROR_CODES = [
+
+export const ERROR_CODES =
+{
+  INVALID_AMOUNT: 'INVALID_AMOUNT',
+  INVALID_TRADE: 'INVALID_TRADE',
+  INSUFFICIENT_ETH_GAS: 'INSUFFICIENT_ETH_GAS',
+  INSUFFICIENT_SELECTED_TOKEN_BALANCE: 'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
+  INSUFFICIENT_ALLOWANCE: 'INSUFFICIENT_ALLOWANCE'
+};
+/* [
   'INVALID_AMOUNT',
   'INVALID_TRADE',
   'INSUFFICIENT_ETH_GAS',
   'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
   'INSUFFICIENT_ALLOWANCE'
-].reduce<Record<string, number>>((o, k, i) => {
+].reduce((o, k, i) => {
   o[k] = i
   return o
-}, {})
+}, {}) */
 
-export const TRADE_TYPES = ['BUY', 'SELL', 'UNLOCK'].reduce((o, k, i) => {
+export const TRADE_TYPES = {
+  BUY: 'BUY',
+  SELL: 'SELL',
+  UNLOCK: 'UNLOCK'
+};
+  /* ['BUY', 'SELL', 'UNLOCK'].reduce((o, k, i) => {
   o[k] = i
   return o
-}, {})
+}, {}) */
 
 export function isAddress(value) {
   try {
@@ -51,6 +65,7 @@ export function isAddress(value) {
 
 // account is optional
 export function getProviderOrSigner(library, account) {
+  console.log('get provider', account, library);
   return account ? new UncheckedJsonRpcSigner(library.getSigner(account)) : library
 }
 
@@ -59,8 +74,10 @@ export function getContract(address, ABI, library, account) {
   if (!isAddress(address) || address === ethers.constants.AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-
-  return new ethers.Contract(address, ABI, getProviderOrSigner(library, account))
+console.log('getting contract ', address, ABI, getProviderOrSigner(library, account));
+  const c = new ethers.Contract(address, ABI, getProviderOrSigner(library, account))
+  console.log('found contract ', c);
+  return c;
 }
 
 export function getTokenContract(tokenAddress, library, account) {
@@ -72,6 +89,9 @@ export function getExchangeContract(exchangeAddress, library, account) {
 }
 
 export async function getTokenExchangeAddressFromFactory(tokenAddress, library, account) {
+  if (!FACTORY_ABI) {
+    console.log('nope');
+  }
   return getContract(FACTORY_ADDRESS, FACTORY_ABI, library, account).getExchange(tokenAddress)
 }
 

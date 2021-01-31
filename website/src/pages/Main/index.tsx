@@ -144,7 +144,7 @@ function calculateAmount(
   }
 }
 
-export default function Main({ stats, status }) {
+export default function Main() {
   const { library, account } = useWeb3Context()
 
   // selected token
@@ -495,7 +495,7 @@ export default function Main({ stats, status }) {
     })
   }
 
-  return stats ? (
+  return (
     <Body
       selectedTokenSymbol={selectedTokenSymbol}
       setSelectedTokenSymbol={setSelectedTokenSymbol}

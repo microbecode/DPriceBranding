@@ -157,7 +157,7 @@ export default function Body({
   const clearCurrentTransaction = useCallback(() => {
     _setCurrentTransaction({})
   }, [])
-  const [state, setState] = useAppContext()
+  const [state, setState] = useAppContext<{visible:boolean}>()
   const [showConnect, setShowConnect] = useState(false)
   const [showWorks, setShowWorks] = useState(false)
 
