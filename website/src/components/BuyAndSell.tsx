@@ -8,10 +8,11 @@ import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
 import { ERROR_CODES, amountFormatter, TRADE_TYPES } from '../utils'
 import test from './Gallery/test.png'
+import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 // import { ethers } from 'ethers'
 
 export function useCount() {
-  const [state, setState] = useAppContext()
+  const { state, setState } = useAppContext()
 
   function increment() {
     setState(state => ({ ...state, count: state.count + 1 }))
@@ -57,6 +58,24 @@ function getValidationErrorMessage(validationError) {
   }
 }
 
+interface Props {
+  selectedTokenSymbol,
+  setSelectedTokenSymbol,
+  ready,
+  unlock,
+  validateBuy : IValidateTrade,
+  buy,
+  validateSell : IValidateTrade,
+  dollarPrice,
+  pending,
+  reserveSOCKSToken,
+  sell,
+  dollarize,
+  setCurrentTransaction,
+  currentTransactionHash,
+  setShowConnect
+}
+
 export default function BuyAndSell({
   selectedTokenSymbol,
   setSelectedTokenSymbol,
@@ -73,8 +92,8 @@ export default function BuyAndSell({
   setCurrentTransaction,
   currentTransactionHash,
   setShowConnect
-}) {
-  const [state] = useAppContext()
+} : Props) {
+  const { state } = useAppContext()
   const { account, setConnector } = useWeb3Context()
 
   // function fake() {
@@ -90,9 +109,11 @@ export default function BuyAndSell({
   const buying = state.tradeType === TRADE_TYPES.BUY
   const selling = !buying
 
-  const [buyValidationState, setBuyValidationState] = useState({}) // { maximumInputValue, inputValue, outputValue }
-  const [sellValidationState, setSellValidationState] = useState({}) // { inputValue, outputValue, minimumOutputValue }
-  const [validationError, setValidationError] = useState()
+  const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>() // { maximumInputValue, inputValue, outputValue }
+  const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>() // { inputValue, outputValue, minimumOutputValue }
+  const [validationError, setValidationError] = useState<IValidationError>()
+
+
 
   function link(hash) {
     return `https://etherscan.io/tx/${hash}`
@@ -129,11 +150,11 @@ export default function BuyAndSell({
         setValidationError(validationError || null)
 
         return () => {
-          setBuyValidationState({})
-          setValidationError()
+          setBuyValidationState(null)
+          setValidationError(null)
         }
       } catch (error) {
-        setBuyValidationState({})
+        setBuyValidationState(null)
         setValidationError(error)
       }
     }
@@ -148,11 +169,11 @@ export default function BuyAndSell({
         setValidationError(validationError || null)
 
         return () => {
-          setSellValidationState({})
-          setValidationError()
+          setSellValidationState(null)
+          setValidationError(null)
         }
       } catch (error) {
-        setSellValidationState({})
+        setSellValidationState(null)
         setValidationError(error)
       }
     }

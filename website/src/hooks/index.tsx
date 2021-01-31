@@ -74,7 +74,7 @@ export function useExchangeContract(tokenAddress, withSignerIfPossible = true) {
 export function useAddressBalance(address, tokenAddress) {
   const { library } = useWeb3Context()
 
-  const [balance, setBalance] = useState()
+  const [balance, setBalance] = useState<utils.BigNumber>()
 
   const updateBalance = useCallback(() => {
     if (isAddress(address) && (tokenAddress === 'ETH' || isAddress(tokenAddress))) {
@@ -154,7 +154,7 @@ export function useExchangeReserves(tokenAddress) {
 export function useAddressAllowance(address, tokenAddress, spenderAddress) {
   const { library } = useWeb3Context()
 
-  const [allowance, setAllowance] = useState()
+  const [allowance, setAllowance] = useState<utils.BigNumber>()
 
   const updateAllowance = useCallback(() => {
     if (isAddress(address) && isAddress(tokenAddress) && isAddress(spenderAddress)) {

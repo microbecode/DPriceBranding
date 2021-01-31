@@ -7,7 +7,7 @@ import { amountFormatter } from '../utils'
 
 import Gallery from './Gallery'
 
-export default function Card({ totalSupply, dollarPrice, reserveSOCKSToken }) {
+export default function Card({ totalSupply, reserveSOCKSToken }) {
   return (
     <Tilt
       style={{ background: '#000', borderRadius: '8px' }}
@@ -19,7 +19,7 @@ export default function Card({ totalSupply, dollarPrice, reserveSOCKSToken }) {
         <Gallery />
         <MarketData>
           <span>
-            <CurrentPrice>{dollarPrice ? `$${amountFormatter(dollarPrice, 18, 2)} USD` : '$0.00'}</CurrentPrice>
+            {/* <CurrentPrice>{dollarPrice ? `$${amountFormatter(dollarPrice, 18, 2)} USD` : '$0.00'}</CurrentPrice> */}
             <SockCount>
               {reserveSOCKSToken && totalSupply
                 ? `${amountFormatter(reserveSOCKSToken, 18, 0)}/${totalSupply} available`

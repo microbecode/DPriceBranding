@@ -110,7 +110,7 @@ export async function getTokenBalance(tokenAddress, address, library) {
     throw Error(`Invalid 'tokenAddress' or 'address' parameter '${tokenAddress}' or '${address}'.`)
   }
 
-  return getContract(tokenAddress, ERC20_ABI, library, null).balanceOf(address)
+  return getContract(tokenAddress, ERC20_ABI, library, null).balanceOf(address) as ethers.utils.BigNumber
 }
 
 export async function getTokenAllowance(address, tokenAddress, spenderAddress, library) {
@@ -121,7 +121,7 @@ export async function getTokenAllowance(address, tokenAddress, spenderAddress, l
     )
   }
 
-  return getContract(tokenAddress, ERC20_ABI, library, null).allowance(address, spenderAddress)
+  return getContract(tokenAddress, ERC20_ABI, library, null).allowance(address, spenderAddress) as ethers.utils.BigNumber
 }
 
 export function amountFormatter(amount, baseDecimals = 18, displayDecimals = 3, useLessThan = true) {

@@ -9,6 +9,7 @@ import BuyButtons from '../../components/Buttons'
 import RedeemButton from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
 import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
+import { IValidateTrade, } from 'types'
 
 export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
   const { account, setConnector } = useWeb3Context()
@@ -133,6 +134,29 @@ const Status = styled.div`
   // props.account === null ? props.theme.orange : props.theme.green};
 `
 
+export interface TransactionI {
+hash: string,
+type: string,
+amount: number
+}
+
+interface Props {
+  selectedTokenSymbol,
+  setSelectedTokenSymbol,
+  ready,
+  unlock,
+  validateBuy : IValidateTrade,
+  buy,
+  validateSell : IValidateTrade,
+  sell,
+  burn,
+  dollarize,
+  dollarPrice,
+  balanceSOCKS,
+  reserveSOCKSToken,
+  totalSupply
+};
+
 export default function Body({
   selectedTokenSymbol,
   setSelectedTokenSymbol,
@@ -148,14 +172,15 @@ export default function Body({
   balanceSOCKS,
   reserveSOCKSToken,
   totalSupply
-}) {
+} : Props) {
   const { account } = useWeb3Context()
-  const [currentTransaction, _setCurrentTransaction] = useState({})
+
+  const [currentTransaction, _setCurrentTransaction] = useState<TransactionI>(null)
   const setCurrentTransaction = useCallback((hash, type, amount) => {
     _setCurrentTransaction({ hash, type, amount })
   }, [])
   const clearCurrentTransaction = useCallback(() => {
-    _setCurrentTransaction({})
+    _setCurrentTransaction(null)
   }, [])
   const { state, setState } = useAppContext()
   const [showConnect, setShowConnect] = useState(false)
@@ -166,12 +191,11 @@ export default function Body({
       <Header
         totalSupply={totalSupply}
         ready={ready}
-        dollarPrice={dollarPrice}
         balanceSOCKS={balanceSOCKS}
         setShowConnect={setShowConnect}
       />
       <Content>
-        <Card totalSupply={totalSupply} dollarPrice={dollarPrice} reserveSOCKSToken={reserveSOCKSToken} />{' '}
+        <Card totalSupply={totalSupply} reserveSOCKSToken={reserveSOCKSToken} />{' '}
         <Info>
           <div style={{ marginBottom: '4px' }}>Buy and sell real socks with digital currency.</div>
           <div style={{ marginBottom: '4px' }}>

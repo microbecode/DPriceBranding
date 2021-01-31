@@ -11,6 +11,7 @@ import { useAppContext } from '../context'
 import { TRADE_TYPES } from '../utils'
 
 import Confetti from 'react-dom-confetti'
+import { IValidateTrade } from 'types'
 
 const config = {
   angle: 90,
@@ -59,6 +60,31 @@ export function useCount(initialValue, max) {
   return [state.count, increment, decrement, setCount]
 }
 
+interface Props {
+  selectedTokenSymbol,
+  setSelectedTokenSymbol,
+  ready,
+  unlock,
+  validateBuy : IValidateTrade,
+  buy,
+  validateSell : IValidateTrade,
+  sell,
+  burn,
+  balanceSOCKS,
+  dollarPrice,
+  reserveSOCKSToken,
+  dollarize,
+  currentTransactionHash,
+  currentTransactionType,
+  currentTransactionAmount,
+  setCurrentTransaction,
+  clearCurrentTransaction,
+  setShowConnect,
+  showConnect,
+  showWorks,
+  setShowWorks
+}
+
 export default function Checkout({
   selectedTokenSymbol,
   setSelectedTokenSymbol,
@@ -82,11 +108,9 @@ export default function Checkout({
   showConnect,
   showWorks,
   setShowWorks
-}) {
+} : Props) {
   const { library } = useWeb3Context()
   const [state, setState] = useAppContext()
-
-  const redeeming = state.tradeType === TRADE_TYPES.REDEEM
 
   const [lastTransactionHash, setLastTransactionHash] = useState('')
   const [lastTransactionType, setLastTransactionType] = useState('')
@@ -145,40 +169,27 @@ export default function Checkout({
         />
       )
     } else {
-      if (!redeeming) {
-        return (
-          <BuyAndSell
-            selectedTokenSymbol={selectedTokenSymbol}
-            setSelectedTokenSymbol={setSelectedTokenSymbol}
-            ready={ready}
-            unlock={unlock}
-            validateBuy={validateBuy}
-            buy={buy}
-            validateSell={validateSell}
-            sell={sell}
-            dollarize={dollarize}
-            setCurrentTransaction={setCurrentTransaction}
-            currentTransactionHash={currentTransactionHash}
-            setShowConnect={setShowConnect}
-            dollarPrice={dollarPrice}
-            reserveSOCKSToken={reserveSOCKSToken}
-            pending={pending}
-          />
-        )
-      } else {
-        return (
-          <Redeem
-            ready={ready}
-            burn={burn}
-            balanceSOCKS={balanceSOCKS}
-            dollarize={dollarize}
-            setCurrentTransaction={setCurrentTransaction}
-            setShowConnect={setShowConnect}
-            closeCheckout={closeCheckout}
-            pending={pending}
-          />
-        )
-      }
+      return (
+        <BuyAndSell
+          selectedTokenSymbol={selectedTokenSymbol}
+          setSelectedTokenSymbol={setSelectedTokenSymbol}
+          ready={ready}
+          unlock={unlock}
+          validateBuy={validateBuy}
+          buy={buy}
+          validateSell={validateSell}
+          sell={sell}
+          dollarize={dollarize}
+          setCurrentTransaction={setCurrentTransaction}
+          currentTransactionHash={currentTransactionHash}
+          setShowConnect={setShowConnect}
+          dollarPrice={dollarPrice}
+          reserveSOCKSToken={reserveSOCKSToken}
+          pending={pending}
+        />
+      )
+    
+      
     }
   }
 
