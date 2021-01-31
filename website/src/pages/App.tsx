@@ -6,8 +6,10 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import GlobalStyle, { ThemeProvider } from '../theme'
 import Web3ReactManager from '../components/Web3ReactManager'
 import Main from './Main'
-import { USED_CHAIN_ID } from '../utils'
-import { AppContext, AppI } from 'context'
+import { TRADE_TYPES, USED_CHAIN_ID } from '../utils'
+import { AppContext, initialContextState } from 'context'
+import { IAppContextState } from 'types'
+import { ethers } from 'ethers'
 
 const PROVIDER_URL = process.env.REACT_APP_PROVIDER_URL
 
@@ -26,11 +28,9 @@ const Injected = new InjectedConnector({ supportedNetworks: [USED_CHAIN_ID] })
 })
 const connectors = { Network, Injected, WalletConnect  }
 
-
-
 export default function App() {
 
-  const [state, setState] = useState<AppI>();
+  const [state, setState] = useState<IAppContextState>(initialContextState);
   const value = { state, setState };
 
   return (

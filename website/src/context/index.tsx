@@ -1,11 +1,12 @@
+import { ethers } from 'ethers'
 import React, { useContext } from 'react'
 import { IAppContext, IAppContextState } from 'types'
 
 import { TRADE_TYPES } from '../utils'
 
-const initialState : IAppContextState = {
+export const initialContextState : IAppContextState = {
   visible: false,
-  count: 1,
+  count: ethers.utils.bigNumberify(1),
   valid: false,
   tradeType: TRADE_TYPES.BUY,
   showConnect: false
@@ -13,7 +14,7 @@ const initialState : IAppContextState = {
 
 export const AppContext = React.createContext<IAppContext>(
   {
-    state: initialState,
+    state: initialContextState,
     setState: () => {}
   }
 )

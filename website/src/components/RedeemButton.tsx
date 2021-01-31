@@ -34,7 +34,7 @@ const Shim = styled.div`
 `
 
 export default function RedeemButton({ balanceSOCKS }) {
-  const [, setState] = useAppContext()
+  const { setState } = useAppContext()
   const { account } = useWeb3Context()
 
   function handleToggleCheckout(tradeType) {
@@ -52,7 +52,7 @@ export default function RedeemButton({ balanceSOCKS }) {
         }}
       />
       <Shim />
-      <ButtonFrame
+  {/*     <ButtonFrame
         disabled={
           account === null ||
           !balanceSOCKS ||
@@ -63,7 +63,7 @@ export default function RedeemButton({ balanceSOCKS }) {
         onClick={() => {
           handleToggleCheckout(TRADE_TYPES.REDEEM)
         }}
-      />
+      /> */}
     </BuyButtonFrame>
   )
 }

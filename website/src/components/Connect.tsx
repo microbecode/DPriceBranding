@@ -10,24 +10,24 @@ export default function Connect({ setShowConnect, closeCheckout }) {
   const { account, connector, setConnector } = useWeb3Context()
 
   // connector error
-  const [connectorError, setConnectorError] = useState()
+  const [connectorError, setConnectorError] = useState<boolean>(false)
 
   function activateInjected() {
     setConnector('Injected', { suppressAndThrowErrors: true }).catch(error => {
-      setConnectorError(error)
+      setConnectorError(true)
     })
   }
 
   function activateWalletConnect() {
     setConnector('WalletConnect', { suppressAndThrowErrors: true }).catch(error => {
-      setConnectorError(error)
+      setConnectorError(true)
     })
   }
   const walletconnectUri = connector && connector.walletConnector && connector.walletConnector.uri
 
   // unset the error on connector change
   useEffect(() => {
-    setConnectorError()
+    setConnectorError(true)
   }, [connector])
 
   // once an account is connected, don't show this screen

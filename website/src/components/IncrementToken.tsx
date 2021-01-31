@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import React from 'react'
 import styled from 'styled-components'
 import { useCount } from './Checkout'
@@ -48,8 +49,11 @@ const IncrementButton = styled.span`
   justify-content: ${props => props.justify};
   justify-content: center;
 `
-
-export default function IncrementToken({ initialValue, max }) {
+interface Props {
+  initialValue?: ethers.utils.BigNumber,
+  max?: ethers.utils.BigNumber
+}
+export default function IncrementToken({ initialValue, max } : Props) {
   const [count, incrementCount, decrementCount] = useCount(initialValue, max)
 
   return (
@@ -57,7 +61,7 @@ export default function IncrementToken({ initialValue, max }) {
       <IncrementButton justify={'flex-start'} onClick={decrementCount}>
         -
       </IncrementButton>
-      <SelectMenu>{count}</SelectMenu>
+      <SelectMenu>{count.toString()}</SelectMenu>
 
       <IncrementButton justify={'flex-end'} onClick={incrementCount}>
         +

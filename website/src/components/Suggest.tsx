@@ -3,7 +3,27 @@ import React, { useState, useEffect } from 'react'
 import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete'
 import styled from 'styled-components'
 
-export default function LocationSearchInput({ myRef, inputY, value, setAutoAddress }) {
+interface Props {
+  myRef, 
+  inputY, 
+  value, 
+  setAutoAddress
+}
+/*
+          required
+          myRef={suggestEl}
+          inputY={inputY}
+          setAutoAddress={setAutoAddress}
+          type="text"
+          name={line1}
+          value={formState[line1]}
+          onChange={handleChange}
+          placeholder={nameMap[line1]}
+          autoComplete="off"
+
+*/
+
+export default function LocationSearchInput({ myRef, inputY, value, setAutoAddress } : Props) {
   const [address, setAddress] = useState('')
 
   function handleChange(address) {

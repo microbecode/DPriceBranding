@@ -32,7 +32,7 @@ const ButtonFrame = styled(Button)`
 // `
 
 export default function BuyButtons(props) {
-  const [, setState] = useAppContext()
+  const {setState} = useAppContext()
 
   function handleToggleCheckout(tradeType) {
     setState(state => ({ ...state, visible: !state.visible, tradeType }))

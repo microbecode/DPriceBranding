@@ -68,7 +68,15 @@ const SpinnerWrapper = styled(Spinner)`
   margin: 0 0.25rem 0 0.3rem;
 `
 
-export default function Button({ text, onClick = () => {}, preventDefault = true, pending, ...rest }) {
+interface Props {
+  text: string,
+  onClick: (event) => void,
+  preventDefault?: boolean,
+  pending?: boolean
+  type?: string
+}
+
+export default function Button({ text, onClick = (ev) => {}, preventDefault = true, pending, ...rest } : Props) {
   return (
     <ButtonFrame
       onClick={e => {

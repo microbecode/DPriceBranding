@@ -76,7 +76,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
   const [recaptcha, setRecaptcha] = useState()
   const [autoAddress, setAutoAddress] = useState([])
   const [inputY, setInputY] = useState(0)
-  const suggestEl = useRef()
+  const suggestEl = useRef<Element>()
 
   const [formState, setFormState] = useState(defaultState)
 
@@ -163,7 +163,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         placeholder={nameMap[name]}
         autoComplete="name"
       />
-      <Compressed>
+   {/*    <Compressed>
         <Suggest
           required
           myRef={suggestEl}
@@ -185,7 +185,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
           placeholder={nameMap[line2]}
           autoComplete="off"
         />
-      </Compressed>
+      </Compressed> */}
       <input
         required
         type="text"

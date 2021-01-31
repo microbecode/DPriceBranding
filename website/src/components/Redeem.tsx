@@ -17,6 +17,7 @@ import close from './Gallery/close.svg'
 import closeDark from './Gallery/close_dark.svg'
 
 import Confetti from 'react-dom-confetti'
+import { ethers } from 'ethers'
 
 const config = {
   angle: 90,
@@ -31,7 +32,13 @@ const config = {
   colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
 }
 
-export function Controls({ closeCheckout, theme, type }) {
+interface Props {
+  closeCheckout: () => void,
+  theme?: string,
+  type?: string
+}
+
+export function Controls({ closeCheckout, theme, type } : Props) {
   return (
     <FrameControls>
       <Unicorn theme={theme}>
@@ -62,9 +69,9 @@ export default function Redeem({
   closeCheckout
 }) {
   const { library, account, setConnector } = useWeb3Context()
-  const [state] = useAppContext()
+  const { state } = useAppContext()
 
-  const [numberBurned, setNumberBurned] = useState()
+  const [numberBurned, setNumberBurned] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
   const [hasPickedAmount, setHasPickedAmount] = useState(false)
   const [hasConfirmedAddress, setHasConfirmedAddress] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
@@ -116,8 +123,8 @@ export default function Redeem({
                 <p>Redeem SOCKS</p>
               </Owned>
               <IncrementToken
-                initialValue={Number(amountFormatter(balanceSOCKS, 18, 0))}
-                max={Number(amountFormatter(balanceSOCKS, 18, 0))}
+                initialValue={ethers.utils.bigNumberify(amountFormatter(balanceSOCKS, 18, 0))}
+                max={ethers.utils.bigNumberify(amountFormatter(balanceSOCKS, 18, 0))}
               />
             </InfoFrame>
           </TopFrame>
@@ -143,8 +150,8 @@ export default function Redeem({
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
                 <p>{state.count} Unisocks</p>
-                <p style={{ fontSize: '20px', fontWeight: '400', color: '#AEAEAE' }}>One size fits most</p>
-                <p style={{ fontSize: '14px', fontWeight: '500', marginTop: '16px', color: '#AEAEAE' }}>Edition 0</p>
+                <p style={{ fontSize: '20px', color: '#AEAEAE' }}>One size fits most</p>
+                <p style={{ fontSize: '14px', marginTop: '16px', color: '#AEAEAE' }}>Edition 0</p>
               </Owned>
             </InfoFrame>
           </TopFrame>
@@ -160,7 +167,7 @@ export default function Redeem({
           <Back>
             <span
               onClick={() => {
-                setNumberBurned()
+                setNumberBurned(ethers.utils.bigNumberify(0))
                 setHasPickedAmount(false)
               }}
             >
@@ -178,11 +185,10 @@ export default function Redeem({
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
                 <p style={{ fontSize: '18px' }}>{state.count} Unisocks</p>
-                <p style={{ fontSize: '14px', fontWeight: '500' }}>One size fits most</p>
+                <p style={{ fontSize: '14px' }}>One size fits most</p>
                 <p
                   style={{
                     fontSize: '12px',
-                    fontWeight: '500',
                     color: '#AEAEAE',
                     marginTop: '16px',
                     marginRight: '16px'
@@ -197,11 +203,10 @@ export default function Redeem({
               <Bonus>Bonus</Bonus>
               <Owned>
                 <p style={{ fontSize: '18px' }}>{state.count} Unisocks NFT</p>
-                <p style={{ fontSize: '14px', fontWeight: '500' }}>Digital Collectible (10kb)</p>
+                <p style={{ fontSize: '14px' }}>Digital Collectible (10kb)</p>
                 <p
                   style={{
                     fontSize: '12px',
-                    fontWeight: '500',
                     color: '#AEAEAE',
                     marginTop: '16px',
                     marginRight: '16px',

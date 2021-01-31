@@ -27,7 +27,7 @@ const config = {
 }
 
 export function useCount(initialValue, max) {
-  const [state, setState] = useAppContext()
+  const { state, setState } = useAppContext()
 
   function increment() {
     setState(state => {
@@ -41,7 +41,7 @@ export function useCount(initialValue, max) {
   }
 
   function decrement() {
-    if (state.count > 1) {
+    if (state.count.gt(1)) {
       setState(state => ({ ...state, count: state.count - 1 }))
     }
   }
@@ -110,7 +110,7 @@ export default function Checkout({
   setShowWorks
 } : Props) {
   const { library } = useWeb3Context()
-  const [state, setState] = useAppContext()
+  const { state, setState } = useAppContext()
 
   const [lastTransactionHash, setLastTransactionHash] = useState('')
   const [lastTransactionType, setLastTransactionType] = useState('')

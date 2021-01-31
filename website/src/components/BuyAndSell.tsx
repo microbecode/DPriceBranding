@@ -9,6 +9,7 @@ import { useAppContext } from '../context'
 import { ERROR_CODES, amountFormatter, TRADE_TYPES } from '../utils'
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
+import { ethers } from 'ethers'
 // import { ethers } from 'ethers'
 
 export function useCount() {
@@ -19,7 +20,7 @@ export function useCount() {
   }
 
   function decrement() {
-    if (state.count >= 1) {
+    if (state.count.gte(1)) {
       setState(state => ({ ...state, count: state.count - 1 }))
     }
   }
@@ -109,8 +110,13 @@ export default function BuyAndSell({
   const buying = state.tradeType === TRADE_TYPES.BUY
   const selling = !buying
 
-  const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>() // { maximumInputValue, inputValue, outputValue }
-  const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>() // { inputValue, outputValue, minimumOutputValue }
+  const initialVal : IValidationTradeResult = {
+    inputValue: ethers.utils.bigNumberify(0),
+    outputValue: ethers.utils.bigNumberify(0),
+  }
+
+  const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>(initialVal) // { maximumInputValue, inputValue, outputValue }
+  const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
   const [validationError, setValidationError] = useState<IValidationError>()
 
 

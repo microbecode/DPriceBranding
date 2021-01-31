@@ -49,7 +49,7 @@ const Unicorn = styled.p`
 `
 
 export default function Confirmed({ hash, type, amount, clearLastTransaction, closeCheckout }) {
-  const [state, setState] = useAppContext()
+  const { state } = useAppContext()
 
   function link(hash) {
     return `https://etherscan.io/tx/${hash}`
@@ -98,7 +98,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
             Transaction Details ↗
           </EtherscanLink>
         </CheckoutPrompt>
-        <ButtonFrame
+{/*         <ButtonFrame
           text={`Redeem your SOCKS now`}
           type={'cta'}
           onClick={() => {
@@ -106,7 +106,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
             setState(state => ({ ...state, tradeType: TRADE_TYPES.REDEEM }))
             // Trigger buy frame here!
           }}
-        />
+        /> */}
         {/* <Shim /> */}
       </ConfirmedFrame>
     )

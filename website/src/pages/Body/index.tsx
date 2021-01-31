@@ -175,7 +175,11 @@ export default function Body({
 } : Props) {
   const { account } = useWeb3Context()
 
-  const [currentTransaction, _setCurrentTransaction] = useState<TransactionI>(null)
+  const [currentTransaction, _setCurrentTransaction] = useState<TransactionI>({
+    amount: 0,
+    hash: null,
+    type: null
+  })
   const setCurrentTransaction = useCallback((hash, type, amount) => {
     _setCurrentTransaction({ hash, type, amount })
   }, [])
