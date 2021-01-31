@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Web3Provider, { Connectors } from 'web3-react'
 import WalletConnectApi from '@walletconnect/web3-subprovider'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import GlobalStyle, { ThemeProvider } from '../theme'
 import Web3ReactManager from '../components/Web3ReactManager'
-import AppProvider from '../context'
 import Main from './Main'
 import { USED_CHAIN_ID } from '../utils'
+import { AppContext, AppI } from 'context'
 
 const PROVIDER_URL = process.env.REACT_APP_PROVIDER_URL
 
@@ -26,20 +26,26 @@ const Injected = new InjectedConnector({ supportedNetworks: [USED_CHAIN_ID] })
 })
 const connectors = { Network, Injected, WalletConnect  }
 
+
+
 export default function App() {
+
+  const [state, setState] = useState<AppI>();
+  const value = { state, setState };
+
   return (
     <ThemeProvider>
         <GlobalStyle />
         <Web3Provider connectors={connectors} libraryName={'ethers.js'}>
           <Web3ReactManager>
-            <AppProvider>
+            <AppContext.Provider value={value}>
               <BrowserRouter>
                 <Switch>
                   <Route exact strict path="/" render={() => <Main />} />
                   <Redirect to="/" />
                 </Switch>
               </BrowserRouter>
-            </AppProvider>
+            </AppContext.Provider>
           </Web3ReactManager>
         </Web3Provider>
     </ThemeProvider>

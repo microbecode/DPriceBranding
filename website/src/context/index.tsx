@@ -2,11 +2,16 @@ import React, { useState, useContext } from 'react'
 
 import { TRADE_TYPES } from '../utils'
 
-interface AppI {
+export interface AppI {
   visible: boolean,
   count: number,
   valid : boolean,
   tradeType: string
+}
+
+export interface ContextI {
+  state: AppI,
+  setState: (AppI) => void
 }
 
 const initialState : AppI = {
@@ -16,21 +21,25 @@ const initialState : AppI = {
   tradeType: TRADE_TYPES.BUY
 }
 
-export const AppContext = React.createContext(
+export const AppContext = React.createContext<ContextI>(
   {
-    cont: initialState,
-    setCont: () => {}
+    state: initialState,
+    setState: () => {}
   }
 )
 
+export function useAppContext() {
+  return useContext(AppContext)
+}
 
 
-/* export default function AppProvider({ children }) {
+
+/*  export default function AppProvider({ children }) {
   const [state, setState] = useState(initialState)
 
   return <AppContext.Provider value={[state, setState]}>{children}</AppContext.Provider>
-}
-
+} */
+/*
 export function useAppContext() {
   return useContext(AppContext) */
 
