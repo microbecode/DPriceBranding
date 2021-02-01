@@ -11,7 +11,7 @@ import { useAppContext } from '../context'
 import { TRADE_TYPES } from '../utils'
 
 import Confetti from 'react-dom-confetti'
-import { IValidateTrade } from 'types'
+import { IAppContextState, IValidateTrade } from 'types'
 
 const config = {
   angle: 90,
@@ -30,9 +30,9 @@ export function useCount(initialValue, max) {
   const { state, setState } = useAppContext()
 
   function increment() {
-    setState(state => {
-      const newCount = state.count + 1
-      if (!max || newCount <= max) {
+    setState((state : IAppContextState) => {
+      const newCount = state.count.add(1)
+      if (!max || newCount.lte(max)) {
         return { ...state, count: newCount }
       } else {
         return state
@@ -42,12 +42,12 @@ export function useCount(initialValue, max) {
 
   function decrement() {
     if (state.count.gt(1)) {
-      setState(state => ({ ...state, count: state.count - 1 }))
+      setState({ ...state, count: state.count.sub(1) })
     }
   }
 
   function setCount(val) {
-    setState(state => ({ ...state, count: val }))
+    setState ({ ...state, count: val })
   }
 
   // ok to disable exhaustive-deps for `setState` b/c it's actually just a useState setter

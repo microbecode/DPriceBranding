@@ -86,16 +86,16 @@ const HeaderFrame = styled.div`
 `
 
 const Account = styled.div`
-  background-color: ${props => (props.balanceSOCKS ? '#f1f2f6' : props.theme.blue)};
+  background-color: ${props => (props.balanceOWN ? '#f1f2f6' : props.theme.blue)};
   padding: 0.75rem;
   border-radius: 6px;
-  cursor: ${props => (props.balanceSOCKS ? 'auto' : 'pointer')};
+  cursor: ${props => (props.balanceOWN ? 'auto' : 'pointer')};
 
   transform: scale(1);
   transition: transform 0.3s ease;
 
   :hover {
-    transform: ${props => (props.balanceSOCKS ? 'scale(1)' : 'scale(1.02)')};
+    transform: ${props => (props.balanceOWN ? 'scale(1)' : 'scale(1.02)')};
     text-decoration: underline;
   }
 `
@@ -135,7 +135,7 @@ const SockCount = styled.p`
 `
 
 const Status = styled.div`
-  display: ${props => (props.balanceSOCKS ? 'initial' : 'none')};
+  display: ${props => (props.balanceOWN ? 'initial' : 'none')};
   width: 12px;
   height: 12px;
   border-radius: 100%;
@@ -146,12 +146,6 @@ const Status = styled.div`
     props.account === null ? props.theme.orange : props.ready ? props.theme.green : props.theme.orange};
   // props.account === null ? props.theme.orange : props.theme.green};
 `
-
-export interface TransactionI {
-hash: string,
-type: string,
-amount: number
-}
 
 interface Props {
   selectedTokenSymbol,
@@ -188,7 +182,13 @@ export default function Body({
 } : Props) {
   const { account } = useWeb3Context()
 
-  const [currentTransaction, _setCurrentTransaction] = useState<TransactionI>({
+  interface ITransaction {
+    hash: string,
+    type: string,
+    amount: number
+    }
+
+  const [currentTransaction, _setCurrentTransaction] = useState<ITransaction>({
     amount: 0,
     hash: null,
     type: null
