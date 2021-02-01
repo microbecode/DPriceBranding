@@ -69,7 +69,7 @@ interface Props {
   validateSell : IValidateTrade,
   dollarPrice,
   pending,
-  reserveSOCKSToken,
+  reserveOWNToken,
   sell,
   dollarize,
   setCurrentTransaction,
@@ -87,7 +87,7 @@ export default function BuyAndSell({
   validateSell,
   dollarPrice,
   pending,
-  reserveSOCKSToken,
+  reserveOWNToken,
   sell,
   dollarize,
   setCurrentTransaction,
@@ -241,7 +241,7 @@ export default function BuyAndSell({
           <CurrentPrice>
             {/* {dollarPrice && `$${amountFormatter(dollarPrice, 18, 2)} USD`} */}
             <USDPrice>{renderFormData()}</USDPrice>
-            <SockCount>{reserveSOCKSToken && `${amountFormatter(reserveSOCKSToken, 18, 0)}/500 available`}</SockCount>
+            <SockCount>{reserveOWNToken && `${amountFormatter(reserveOWNToken, 18, 0)}/500 available`}</SockCount>
           </CurrentPrice>
           <IncrementToken />
         </InfoFrame>

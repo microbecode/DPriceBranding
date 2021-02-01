@@ -70,9 +70,9 @@ interface Props {
   validateSell : IValidateTrade,
   sell,
   burn,
-  balanceSOCKS,
+  balanceOWN,
   dollarPrice,
-  reserveSOCKSToken,
+  reserveOWNToken,
   dollarize,
   currentTransactionHash,
   currentTransactionType,
@@ -95,9 +95,9 @@ export default function Checkout({
   validateSell,
   sell,
   burn,
-  balanceSOCKS,
+  balanceOWN,
   dollarPrice,
-  reserveSOCKSToken,
+  reserveOWNToken,
   dollarize,
   currentTransactionHash,
   currentTransactionType,
@@ -184,7 +184,7 @@ export default function Checkout({
           currentTransactionHash={currentTransactionHash}
           setShowConnect={setShowConnect}
           dollarPrice={dollarPrice}
-          reserveSOCKSToken={reserveSOCKSToken}
+          reserveOWNToken={reserveOWNToken}
           pending={pending}
         />
       )

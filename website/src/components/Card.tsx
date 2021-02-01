@@ -6,23 +6,29 @@ import Tilt from 'react-tilt'
 import { amountFormatter } from '../utils'
 
 import Gallery from './Gallery'
+import { ethers } from 'ethers'
 
-export default function Card({ totalSupply, reserveSOCKSToken }) {
+interface Props {
+  totalSupply : ethers.utils.BigNumber,
+  reserveOWNToken : ethers.utils.BigNumber
+};
+
+export default function Card({ totalSupply, reserveOWNToken } : Props) {
   return (
     <Tilt
       style={{ background: '#000', borderRadius: '8px' }}
       options={{ scale: 1.01, max: 10, glare: true, 'max-glare': 1, speed: 1000 }}
     >
       <CardWrapper>
-        <Title>Unisocks Edition 0</Title>
-        <SubTitle>$SOCKS</SubTitle>
+        <Title>DPriceBranding Edition 0</Title>
+        <SubTitle>$OWN</SubTitle>
         <Gallery />
         <MarketData>
           <span>
             {/* <CurrentPrice>{dollarPrice ? `$${amountFormatter(dollarPrice, 18, 2)} USD` : '$0.00'}</CurrentPrice> */}
             <SockCount>
-              {reserveSOCKSToken && totalSupply
-                ? `${amountFormatter(reserveSOCKSToken, 18, 0)}/${totalSupply} available`
+              {reserveOWNToken && totalSupply
+                ? `${amountFormatter(reserveOWNToken, 18, 0)}/${totalSupply} available`
                 : ''}
             </SockCount>
           </span>

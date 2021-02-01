@@ -84,14 +84,14 @@ function calculateAmount(
   inputTokenSymbol,
   outputTokenSymbol,
   SOCKSAmount,
-  reserveSOCKSETH,
-  reserveSOCKSToken,
+  reserveTOKENETH,
+  reserveOWNToken,
   reserveSelectedTokenETH,
   reserveSelectedTokenToken
 ) {
   // eth to token - buy
   if (inputTokenSymbol === TOKEN_SYMBOLS.ETH && outputTokenSymbol === TOKEN_SYMBOLS.OWN) {
-    const amount = calculateEtherTokenInputFromOutput(SOCKSAmount, reserveSOCKSETH, reserveSOCKSToken)
+    const amount = calculateEtherTokenInputFromOutput(SOCKSAmount, reserveTOKENETH, reserveOWNToken)
     if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
       throw Error()
     }
@@ -100,7 +100,7 @@ function calculateAmount(
 
   // token to eth - sell
   if (inputTokenSymbol === TOKEN_SYMBOLS.OWN && outputTokenSymbol === TOKEN_SYMBOLS.ETH) {
-    const amount = calculateEtherTokenOutputFromInput(SOCKSAmount, reserveSOCKSToken, reserveSOCKSETH)
+    const amount = calculateEtherTokenOutputFromInput(SOCKSAmount, reserveOWNToken, reserveTOKENETH)
     if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
       throw Error()
     }
@@ -113,7 +113,7 @@ function calculateAmount(
 
   if (buyingSOCKS) {
     // eth needed to buy x socks
-    const intermediateValue = calculateEtherTokenInputFromOutput(SOCKSAmount, reserveSOCKSETH, reserveSOCKSToken)
+    const intermediateValue = calculateEtherTokenInputFromOutput(SOCKSAmount, reserveTOKENETH, reserveOWNToken)
     // calculateEtherTokenOutputFromInput
     if (intermediateValue.lte(ethers.constants.Zero) || intermediateValue.gte(ethers.constants.MaxUint256)) {
       throw Error()
@@ -130,7 +130,7 @@ function calculateAmount(
     return amount
   } else {
     // eth gained from selling x socks
-    const intermediateValue = calculateEtherTokenOutputFromInput(SOCKSAmount, reserveSOCKSToken, reserveSOCKSETH)
+    const intermediateValue = calculateEtherTokenOutputFromInput(SOCKSAmount, reserveOWNToken, reserveTOKENETH)
     if (intermediateValue.lte(ethers.constants.Zero) || intermediateValue.gte(ethers.constants.MaxUint256)) {
       throw Error()
     }
@@ -163,7 +163,7 @@ export default function Main() {
 
   // get balances
   const balanceETH = useAddressBalance(account, TOKEN_ADDRESSES.ETH)
-  const balanceSOCKS = useAddressBalance(account, TOKEN_ADDRESSES.OWN)
+  const balanceOWN = useAddressBalance(account, TOKEN_ADDRESSES.OWN)
   const balanceSelectedToken = useAddressBalance(account, TOKEN_ADDRESSES[selectedTokenSymbol])
 
   // totalsupply
@@ -179,8 +179,8 @@ export default function Main() {
   const allowanceSelectedToken = useExchangeAllowance(account, TOKEN_ADDRESSES[selectedTokenSymbol])
 
   // get reserves
-  const reserveSOCKSETH = useAddressBalance(exchangeContractSOCKS && exchangeContractSOCKS.address, TOKEN_ADDRESSES.ETH)
-  const reserveSOCKSToken = useAddressBalance(
+  const reserveTOKENETH = useAddressBalance(exchangeContractSOCKS && exchangeContractSOCKS.address, TOKEN_ADDRESSES.ETH)
+  const reserveOWNToken = useAddressBalance(
     exchangeContractSOCKS && exchangeContractSOCKS.address,
     TOKEN_ADDRESSES.OWN
   )
@@ -195,10 +195,10 @@ export default function Main() {
     (account === null || allowanceSOCKS) &&
     (selectedTokenSymbol === 'ETH' || account === null || allowanceSelectedToken) &&
     (account === null || balanceETH) &&
-    (account === null || balanceSOCKS) &&
+    (account === null || balanceOWN) &&
     (account === null || balanceSelectedToken) &&
-    reserveSOCKSETH &&
-    reserveSOCKSToken &&
+    reserveTOKENETH &&
+    reserveOWNToken &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenETH) &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenToken) &&
     selectedTokenSymbol &&
@@ -219,7 +219,7 @@ export default function Main() {
   const [dollarPrice, setDollarPrice] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
   useEffect(() => {
     try {
-      const SOCKSExchangeRateETH = getExchangeRate(reserveSOCKSToken, reserveSOCKSETH)
+      const SOCKSExchangeRateETH = getExchangeRate(reserveOWNToken, reserveTOKENETH)
       setDollarPrice(
         SOCKSExchangeRateETH.mul(USDExchangeRateETH).div(
           ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18))
@@ -228,7 +228,7 @@ export default function Main() {
     } catch {
       setDollarPrice(ethers.utils.bigNumberify(0))
     }
-  }, [USDExchangeRateETH, reserveSOCKSETH, reserveSOCKSToken])
+  }, [USDExchangeRateETH, reserveTOKENETH, reserveOWNToken])
 
   async function unlock(buyingSOCKS = true) {
     const contract = buyingSOCKS ? tokenContractSelectedToken : tokenContractSOCKS
@@ -263,8 +263,8 @@ export default function Main() {
           selectedTokenSymbol,
           TOKEN_SYMBOLS.OWN,
           parsedValue,
-          reserveSOCKSETH,
-          reserveSOCKSToken,
+          reserveTOKENETH,
+          reserveOWNToken,
           reserveSelectedTokenETH,
           reserveSelectedTokenToken
         )
@@ -318,8 +318,8 @@ export default function Main() {
       allowanceSelectedToken,
       balanceETH,
       balanceSelectedToken,
-      reserveSOCKSETH,
-      reserveSOCKSToken,
+      reserveTOKENETH,
+      reserveOWNToken,
       reserveSelectedTokenETH,
       reserveSelectedTokenToken,
       selectedTokenSymbol
@@ -383,8 +383,8 @@ export default function Main() {
           TOKEN_SYMBOLS.OWN,
           selectedTokenSymbol,
           parsedValue,
-          reserveSOCKSETH,
-          reserveSOCKSToken,
+          reserveTOKENETH,
+          reserveOWNToken,
           reserveSelectedTokenETH,
           reserveSelectedTokenToken
         )
@@ -409,7 +409,7 @@ export default function Main() {
       }
 
       // validate minimum socks balance
-      if (balanceSOCKS.lt(parsedValue)) {
+      if (balanceOWN.lt(parsedValue)) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE
         if (!errorAccumulator) {
@@ -436,9 +436,9 @@ export default function Main() {
     [
       allowanceSOCKS,
       balanceETH,
-      balanceSOCKS,
-      reserveSOCKSETH,
-      reserveSOCKSToken,
+      balanceOWN,
+      reserveTOKENETH,
+      reserveOWNToken,
       reserveSelectedTokenETH,
       reserveSelectedTokenToken,
       selectedTokenSymbol
@@ -512,8 +512,8 @@ export default function Main() {
       burn={burn}
       dollarize={dollarize}
       dollarPrice={dollarPrice}
-      balanceSOCKS={balanceSOCKS}
-      reserveSOCKSToken={reserveSOCKSToken}
+      balanceOWN={balanceOWN}
+      reserveOWNToken={reserveOWNToken}
       totalSupply={totalSupply}
     />
   )

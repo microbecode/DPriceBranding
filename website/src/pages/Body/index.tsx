@@ -10,8 +10,21 @@ import RedeemButton from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
 import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
 import { IValidateTrade, } from 'types'
+import { ethers } from 'ethers'
 
-export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
+interface HeaderProps {
+  totalSupply, 
+  ready, 
+  balanceOWN : ethers.utils.BigNumber, 
+  setShowConnect : (boolean) => void
+}
+
+export function Header(
+  { totalSupply, 
+    ready, 
+    balanceOWN, 
+    setShowConnect 
+  } : HeaderProps) {
   const { account, setConnector } = useWeb3Context()
 
   function handleAccount() {
@@ -21,7 +34,7 @@ export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
   }
 
   return (
-    <HeaderFrame balanceSOCKS={balanceSOCKS}>
+    <HeaderFrame balanceSOCKS={balanceOWN}>
       <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
         <Unicorn>
           <span role="img" aria-label="unicorn">
@@ -41,10 +54,10 @@ export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
             </Burned>
           </Link>
         )}
-        <Account onClick={() => handleAccount()} balanceSOCKS={balanceSOCKS}>
+        <Account onClick={() => handleAccount()} balanceOWN={balanceOWN}>
           {account ? (
-            balanceSOCKS > 0 ? (
-              <SockCount>{balanceSOCKS && `${amountFormatter(balanceSOCKS, 18, 0)}`} SOCKS</SockCount>
+            balanceOWN.gt(0) ? (
+              <SockCount>{balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`} SOCKS</SockCount>
             ) : (
               <SockCount>{account.slice(0, 6)}...</SockCount>
             )
@@ -52,7 +65,7 @@ export function Header({ totalSupply, ready, balanceSOCKS, setShowConnect }) {
             <SockCount>Connect Wallet</SockCount>
           )}
 
-          <Status balanceSOCKS={balanceSOCKS} ready={ready} account={account} />
+          <Status balanceOWN={balanceOWN} ready={ready} account={account} />
         </Account>
       </div>
     </HeaderFrame>
@@ -65,7 +78,7 @@ const HeaderFrame = styled.div`
   box-sizing: border-box;
   margin: 0px;
   font-size: 1.25rem;
-  color: ${props => (props.balanceSOCKS ? props.theme.primary : 'white')};
+  color: ${props => (props.balanceOWN ? props.theme.primary : 'white')};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -152,9 +165,9 @@ interface Props {
   burn,
   dollarize,
   dollarPrice,
-  balanceSOCKS,
-  reserveSOCKSToken,
-  totalSupply
+  balanceOWN : ethers.utils.BigNumber,
+  reserveOWNToken : ethers.utils.BigNumber,
+  totalSupply : ethers.utils.BigNumber
 };
 
 export default function Body({
@@ -169,8 +182,8 @@ export default function Body({
   burn,
   dollarize,
   dollarPrice,
-  balanceSOCKS,
-  reserveSOCKSToken,
+  balanceOWN,
+  reserveOWNToken,
   totalSupply
 } : Props) {
   const { account } = useWeb3Context()
@@ -195,11 +208,11 @@ export default function Body({
       <Header
         totalSupply={totalSupply}
         ready={ready}
-        balanceSOCKS={balanceSOCKS}
+        balanceOWN={balanceOWN}
         setShowConnect={setShowConnect}
       />
       <Content>
-        <Card totalSupply={totalSupply} reserveSOCKSToken={reserveSOCKSToken} />{' '}
+        <Card totalSupply={totalSupply} reserveOWNToken={reserveOWNToken} />{' '}
         <Info>
           <div style={{ marginBottom: '4px' }}>Buy and sell real socks with digital currency.</div>
           <div style={{ marginBottom: '4px' }}>
@@ -229,7 +242,7 @@ export default function Body({
             </a>
           </SubInfo> */}
         </Info>
-        <BuyButtons balanceSOCKS={balanceSOCKS} />
+        <BuyButtons balanceOWN={balanceOWN} />
       </Content>
       <Checkout
         selectedTokenSymbol={selectedTokenSymbol}
@@ -241,9 +254,9 @@ export default function Body({
         validateSell={validateSell}
         sell={sell}
         burn={burn}
-        balanceSOCKS={balanceSOCKS}
+        balanceOWN={balanceOWN}
         dollarPrice={dollarPrice}
-        reserveSOCKSToken={reserveSOCKSToken}
+        reserveOWNToken={reserveOWNToken}
         dollarize={dollarize}
         showConnect={showConnect}
         setShowConnect={setShowConnect}
