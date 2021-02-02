@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
-
 import { Message } from './styles'
+import { USED_CHAIN_ID } from '../../utils'
 
 export default function Web3ReactManager({ children }) {
-  const { setConnector, error, active } = useWeb3Context()
+  const { setConnector, error, active, networkId, connector } = useWeb3Context()
+
+  const checkCorrectNetwork = async (library) => {
+    var network = await library.getNetwork();
+    if (network.chainId !== USED_CHAIN_ID) {
+      console.warn("Skipping injected network " + network.chainId + " since we require " + USED_CHAIN_ID);
+      return false;      
+    }
+    return true;
+  }
 
   // initialization management
-  useEffect(() => {
-    if (!active) {
-      if (window.ethereum) {
-        try {
-          const library = new ethers.providers.Web3Provider(window.ethereum)
-          library.listAccounts().then(accounts => {
-            if (accounts.length >= 1) {
-              setConnector('Injected', { suppressAndThrowErrors: true })
-            } else {
-              setConnector('Network')
+  useEffect(()  =>  {
+    const main = async () => {
+      if (!active) {
+        if (window.ethereum) {
+          try {
+            const library = new ethers.providers.Web3Provider(window.ethereum)
+            if (!await checkCorrectNetwork(library)) {
+              await setConnector('Network')
             }
-          })
-        } catch {
+            else {
+              library.listAccounts().then(accounts => {
+                if (accounts.length >= 1) {
+                  setConnector('Injected', { suppressAndThrowErrors: true })
+                } else {
+                  setConnector('Network')
+                }
+              })
+            }
+          } catch {
+            setConnector('Network')
+          }
+        } else {
           setConnector('Network')
         }
-      } else {
-        setConnector('Network')
       }
     }
+   main();
   }, [active, setConnector])
 
   const [showLoader, setShowLoader] = useState(false)
@@ -38,6 +55,11 @@ export default function Web3ReactManager({ children }) {
       clearTimeout(timeout)
     }
   }, [])
+
+  if (active) {
+    console.log('active' )
+  }
+  console.log('network', networkId, connector)
 
   if (error) {
     console.error(error)

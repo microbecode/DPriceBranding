@@ -17,7 +17,7 @@ export const TOKEN_ADDRESSES = {
 export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
 
 export const TOTAL_NUM_OF_TOKENS = 50;
-export const USED_CHAIN_ID = 3;
+export const USED_CHAIN_ID : number = 3;
 
 export const TOKEN_SYMBOLS = { ETH: 'ETH', OWN: 'OWN'};/* Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {
   o[k] = k
@@ -65,7 +65,7 @@ export function isAddress(value) {
 
 // account is optional
 export function getProviderOrSigner(library, account) {
-  console.log('get provider', account, library);
+  //console.log('get provider', account, library);
   return account ? new UncheckedJsonRpcSigner(library.getSigner(account)) : library
 }
 
