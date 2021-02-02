@@ -74,9 +74,9 @@ export function getContract(address, ABI, library, account) {
   if (!isAddress(address) || address === ethers.constants.AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-console.log('getting contract ', address, ABI, getProviderOrSigner(library, account));
+//console.log('getting contract ', address, ABI, getProviderOrSigner(library, account));
   const c = new ethers.Contract(address, ABI, getProviderOrSigner(library, account))
-  console.log('found contract ', c);
+  //console.log('found contract ', c);
   return c;
 }
 

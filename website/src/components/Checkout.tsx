@@ -53,7 +53,7 @@ export function useCount(initialValue, max) {
   // ok to disable exhaustive-deps for `setState` b/c it's actually just a useState setter
   useEffect(() => {
     if (initialValue) {
-      setState(state => ({ ...state, count: initialValue }))
+      setState({ ...state, count: initialValue })
     }
   }, [initialValue]) // eslint-disable-line react-hooks/exhaustive-deps
 

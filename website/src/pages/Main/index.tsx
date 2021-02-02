@@ -200,9 +200,10 @@ export default function Main() {
     reserveOWNToken &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenETH) &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenToken) &&
-    selectedTokenSymbol &&
-    (USDExchangeRateETH || USDExchangeRateSelectedToken)
+    selectedTokenSymbol &&    (USDExchangeRateETH || USDExchangeRateSelectedToken)
   )
+
+  console.log('is ready', ready);
 
   function _dollarize(amount, exchangeRate) {
     return amount.mul(exchangeRate).div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))

@@ -97,6 +97,8 @@ export default function BuyAndSell({
   const { state } = useAppContext()
   const { account, setConnector } = useWeb3Context()
 
+  //console.log('is pending in bb', pending);
+
   // function fake() {
   //   setCurrentTransaction(
   //     true
@@ -117,7 +119,7 @@ export default function BuyAndSell({
 
   const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>(initialVal) // { maximumInputValue, inputValue, outputValue }
   const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
-  const [validationError, setValidationError] = useState<IValidationError>()
+  const [validationError, setValidationError] = useState<IValidationError>(null)
 
 
 
@@ -126,6 +128,7 @@ export default function BuyAndSell({
   }
 
   function getText(account, buying, errorMessage, ready, pending, hash) {
+  //  console.log('getting text', account, buying, errorMessage, ready, pending, hash)
     if (account === null) {
       return 'Connect Wallet'
     } else if (ready && !errorMessage) {
@@ -225,6 +228,8 @@ export default function BuyAndSell({
       return '0'
     }
   }
+
+  //console.log('so21', validationError !== null || (pending && currentTransactionHash), validationError, pending , currentTransactionHash)
 
   return (
     <>

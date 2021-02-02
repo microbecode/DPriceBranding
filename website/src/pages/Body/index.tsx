@@ -56,7 +56,7 @@ export function Header(
         )}
         <Account onClick={() => handleAccount()} balanceOWN={balanceOWN}>
           {account ? (
-            balanceOWN.gt(0) ? (
+            balanceOWN && balanceOWN.gt(0) ? (
               <SockCount>{balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`} SOCKS</SockCount>
             ) : (
               <SockCount>{account.slice(0, 6)}...</SockCount>
@@ -193,6 +193,7 @@ export default function Body({
     hash: null,
     type: null
   })
+ // console.log('curr tran', currentTransaction)
   const setCurrentTransaction = useCallback((hash, type, amount) => {
     _setCurrentTransaction({ hash, type, amount })
   }, [])
