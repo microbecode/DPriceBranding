@@ -9,7 +9,6 @@ import Main from './Main'
 import { TRADE_TYPES, USED_CHAIN_ID } from '../utils'
 import { AppContext, initialContextState } from 'context'
 import { IAppContextState } from 'types'
-import { ethers } from 'ethers'
 
 const PROVIDER_URL = process.env.REACT_APP_PROVIDER_URL
 
