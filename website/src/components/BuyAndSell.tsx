@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
 
@@ -112,10 +112,13 @@ export default function BuyAndSell({
   const buying = state.tradeType === TRADE_TYPES.BUY
   const selling = !buying
 
-  const initialVal : IValidationTradeResult = {
-    inputValue: ethers.utils.bigNumberify(0),
-    outputValue: ethers.utils.bigNumberify(0),
-  }
+  const initialVal = useCallback(() : IValidationTradeResult => {
+    return {
+      inputValue: ethers.utils.bigNumberify(0),
+      outputValue: ethers.utils.bigNumberify(0),
+    }
+  }, []);
+  
 
   const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>(initialVal) // { maximumInputValue, inputValue, outputValue }
   const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
@@ -128,7 +131,7 @@ export default function BuyAndSell({
   }
 
   function getText(account, buying, errorMessage, ready, pending, hash) {
-  //  console.log('getting text', account, buying, errorMessage, ready, pending, hash)
+    //console.log('getting text', account, buying, errorMessage, ready, pending, hash)
     if (account === null) {
       return 'Connect Wallet'
     } else if (ready && !errorMessage) {
@@ -153,21 +156,23 @@ export default function BuyAndSell({
   // buy state validation
   useEffect(() => {
     if (ready && buying) {
+      //console.log('hmm')
       try {
         const { error: validationError, ...validationState } = validateBuy(String(state.count))
+        //console.log('try1 ', validationError)
         setBuyValidationState(validationState)
         setValidationError(validationError || null)
 
         return () => {
-          setBuyValidationState(null)
+          setBuyValidationState(initialVal)
           setValidationError(null)
         }
       } catch (error) {
-        setBuyValidationState(null)
+        setBuyValidationState(initialVal)
         setValidationError(error)
       }
     }
-  }, [ready, buying, validateBuy, state.count])
+  }, [ready, buying, validateBuy, state.count, initialVal])
 
   // sell state validation
   useEffect(() => {
@@ -178,15 +183,15 @@ export default function BuyAndSell({
         setValidationError(validationError || null)
 
         return () => {
-          setSellValidationState(null)
+          setSellValidationState(initialVal)
           setValidationError(null)
         }
       } catch (error) {
-        setSellValidationState(null)
+        setSellValidationState(initialVal)
         setValidationError(error)
       }
     }
-  }, [ready, selling, validateSell, state.count])
+  }, [ready, selling, validateSell, state.count, initialVal])
 
   const shouldRenderUnlock = validationError && validationError.code === ERROR_CODES.INSUFFICIENT_ALLOWANCE
 
@@ -298,7 +303,7 @@ export default function BuyAndSell({
                 setShowConnect(true)
               })
             } else {
-              ;(buying
+              (buying
                 ? buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
                 : sell(sellValidationState.inputValue, sellValidationState.minimumOutputValue)
               ).then(response => {

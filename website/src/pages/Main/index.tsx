@@ -200,19 +200,20 @@ export default function Main() {
     reserveOWNToken &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenETH) &&
     (selectedTokenSymbol === 'ETH' || reserveSelectedTokenToken) &&
-    selectedTokenSymbol &&    (USDExchangeRateETH || USDExchangeRateSelectedToken)
+    selectedTokenSymbol// &&    (USDExchangeRateETH || USDExchangeRateSelectedToken)
   )
 
-  console.log('is ready', ready);
+  //console.log('is ready', ready);
 
   function _dollarize(amount, exchangeRate) {
+    //console.log('doffari', amount.toString(), exchangeRate)
     return amount.mul(exchangeRate).div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
   }
 
   function dollarize(amount) {
     return _dollarize(
       amount,
-      selectedTokenSymbol === TOKEN_SYMBOLS.ETH ? USDExchangeRateETH : USDExchangeRateSelectedToken
+      1//selectedTokenSymbol === TOKEN_SYMBOLS.ETH ? USDExchangeRateETH : USDExchangeRateSelectedToken
     )
   }
 
@@ -277,11 +278,12 @@ export default function Main() {
       const { maximum } = calculateSlippageBounds(requiredValueInSelectedToken)
 
       // the following are 'non-breaking' errors that will still return the data
-      let errorAccumulator = {} as IValidationError;
+      let errorAccumulator : IValidationError;
       // validate minimum ether balance
       if (balanceETH && balanceETH !== undefined && balanceETH.lt(ethers.utils.parseEther('.01'))) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_ETH_GAS
+        //console.log('accumu1', error)
         if (!errorAccumulator) {
           errorAccumulator = error
         }
@@ -291,6 +293,7 @@ export default function Main() {
       if (balanceSelectedToken && maximum && balanceSelectedToken.lt(maximum)) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE
+        //console.log('accumu2', error)
         if (!errorAccumulator) {
           errorAccumulator = error
         }
@@ -301,12 +304,13 @@ export default function Main() {
         if (allowanceSelectedToken && maximum && allowanceSelectedToken.lt(maximum)) {
           const error = {} as IValidationError;
           error.code = ERROR_CODES.INSUFFICIENT_ALLOWANCE
+          //console.log('accumu3', error)
           if (!errorAccumulator) {
             errorAccumulator = error
           }
         }
       }
-
+      
       return {
         inputValue: requiredValueInSelectedToken,
         maximumInputValue: maximum,

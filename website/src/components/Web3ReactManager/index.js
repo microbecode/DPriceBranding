@@ -56,11 +56,6 @@ export default function Web3ReactManager({ children }) {
     }
   }, [])
 
-  if (active) {
-    console.log('active' )
-  }
-  console.log('network', networkId, connector)
-
   if (error) {
     console.error(error)
     return <Message>Connection Error.</Message>
