@@ -2,11 +2,14 @@ import { ethers } from 'ethers'
 
 import ERC20_ABI from './erc20.json'
 import EXCHANGE_ABI from './router02.json'
+import ROUTER_ABI from './router02.json'
 import FACTORY_ABI from './factory02.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
 export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropsten //;process.env.REACT_APP_FACTORY_ADDRESS;
+export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'; 
+export const WETH_ADDRESS ='0xc778417e063141139fce010982780140aa0cd5ab'; // Ropsten
 
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
@@ -86,6 +89,10 @@ export function getTokenContract(tokenAddress, library, account) {
 
 export function getExchangeContract(exchangeAddress, library, account) {
   return getContract(exchangeAddress, EXCHANGE_ABI, library, account)
+}
+
+export function getRouterContract(address, library, account) {
+  return getContract(address, ROUTER_ABI, library, account)
 }
 
 export async function getTokenExchangeAddressFromFactory(tokenAddress, library, account) {

@@ -14,6 +14,7 @@ import {
 } from '../../hooks'
 import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
+import { Web3Context } from 'web3-react/dist/context'
 
 // denominated in bips
 const GAS_MARGIN = ethers.utils.bigNumberify(1000)
@@ -143,12 +144,21 @@ function calculateAmount(
     if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
       throw Error()
     }
-    return amount
+    return amount 
   }
 }
 
 export default function Main() {
-  const { library, account } = useWeb3Context()
+  const { library, account } : {library?: ethers.providers.Web3Provider, account?: string} = useWeb3Context()
+  
+  if (library != null) {
+    const aaa = async () => {
+      console.log('price', await (await (library.getGasPrice())).toString())
+      // 2198356255
+    };
+    aaa();
+  
+  }
 
   // selected token
   const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(TOKEN_SYMBOLS.ETH)
@@ -331,6 +341,7 @@ export default function Main() {
   )
 
   async function buy(maximumInputValue, outputValue) {
+    console.log('start buy', maximumInputValue.toString(), outputValue.toString())
     const deadline = Math.ceil(Date.now() / 1000) + DEADLINE_FROM_NOW
 
     const estimatedGasPrice = await library
