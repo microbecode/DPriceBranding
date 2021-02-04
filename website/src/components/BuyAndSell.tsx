@@ -6,7 +6,7 @@ import Button from './Button'
 import SelectToken from './SelectToken'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
-import { ERROR_CODES, amountFormatter, TRADE_TYPES } from '../utils'
+import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID } from '../utils'
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
@@ -127,6 +127,9 @@ export default function BuyAndSell({
 
 
   function link(hash) {
+    if (USED_CHAIN_ID === 3) {
+      return `https://ropsten.etherscan.io/tx/${hash}`;
+    }
     return `https://etherscan.io/tx/${hash}`
   }
 

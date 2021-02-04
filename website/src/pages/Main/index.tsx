@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
 
-import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES } from '../../utils'
+import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS } from '../../utils'
 import {
   useTokenContract,
   useExchangeContract,
@@ -10,7 +10,8 @@ import {
   useAddressAllowance,
   useExchangeReserves,
   useExchangeAllowance,
-  useTotalSupply
+  useTotalSupply,
+  useRouterContract
 } from '../../hooks'
 import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
@@ -149,16 +150,15 @@ function calculateAmount(
 }
 
 export default function Main() {
-  const { library, account } : {library?: ethers.providers.Web3Provider, account?: string} = useWeb3Context()
+  const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
   
-  if (library != null) {
+/*   if (library != null) {
     const aaa = async () => {
       console.log('price', await (await (library.getGasPrice())).toString())
       // 2198356255
     };
-    aaa();
-  
-  }
+    aaa();  
+  } */
 
   // selected token
   const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(TOKEN_SYMBOLS.ETH)
@@ -166,6 +166,9 @@ export default function Main() {
   // get exchange contracts
   const exchangeContractSOCKS = useExchangeContract(TOKEN_ADDRESSES.OWN)
   const exchangeContractSelectedToken = useExchangeContract(TOKEN_ADDRESSES[selectedTokenSymbol])
+
+  // get pair contract
+  const routerContract = useRouterContract(ROUTER_ADDRESS);
 
   // get token contracts
   const tokenContractSOCKS = useTokenContract(TOKEN_ADDRESSES.OWN)
@@ -349,9 +352,15 @@ export default function Main() {
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
     if (selectedTokenSymbol === TOKEN_SYMBOLS.ETH) {
+      await routerContract.estimate.swapETHForExactTokens
+
+
+
       const estimatedGasLimit = await exchangeContractSOCKS.estimate.ethToTokenSwapOutput(outputValue, deadline, {
         value: maximumInputValue
       })
+
+
       return exchangeContractSOCKS.ethToTokenSwapOutput(outputValue, deadline, {
         value: maximumInputValue,
         gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),

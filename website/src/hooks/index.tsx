@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useWeb3Context } from 'web3-react'
-import { FACTORY_ADDRESS } from '../utils'
+import { FACTORY_ADDRESS, getRouterContract } from '../utils'
 
 import {
   isAddress,
@@ -12,7 +12,7 @@ import {
   getTokenAllowance,
   TOKEN_ADDRESSES
 } from '../utils'
-import { utils } from 'ethers'
+import { ethers, utils } from 'ethers'
 
 export function useBlockEffect(functionToRun) {
   const { library } = useWeb3Context()
@@ -69,6 +69,18 @@ export function useExchangeContract(tokenAddress, withSignerIfPossible = true) {
       return null
     }
   }, [exchangeAddress, library, withSignerIfPossible, account])
+}
+
+export function useRouterContract(routerAddress : string, withSignerIfPossible = true ) {
+  const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
+
+  return useMemo(() => {
+    try {
+      return getRouterContract(routerAddress, library, withSignerIfPossible ? account : undefined)
+    } catch {
+      return null
+    }
+  }, [routerAddress, library, withSignerIfPossible, account])
 }
 
 export function useAddressBalance(address, tokenAddress) {

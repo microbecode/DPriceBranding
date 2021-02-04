@@ -17,7 +17,7 @@ export const TOKEN_ADDRESSES = {
   OWN: '0x0306bac141b07ab9dd8cbabfc0d8aaa995821ae2' // My own token in ropsten, 50 * 1e18 totalsupply
 }
 
-export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
+export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A'; // Wrong?
 
 export const TOTAL_NUM_OF_TOKENS = 50;
 export const USED_CHAIN_ID : number = 3;

@@ -1,7 +1,8 @@
+// hardhat deployment
 const tokenAmount = 10000000;
 const ethAmount = 1000000;
 
-console.log('THIS DEPLOYMENT IS USELESS, the router\'s pair creation doesn\'t work properly');
+console.log('THIS DEPLOYMENT IS USELESS, the router\'s pair creation doesn\'t work properly. Use truffle instead.');
 
 async function main() {
   const accounts = await ethers.getSigners();
