@@ -14,10 +14,10 @@ export const WETH_ADDRESS ='0xc778417e063141139fce010982780140aa0cd5ab'; // Rops
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  OWN: '0x0306bac141b07ab9dd8cbabfc0d8aaa995821ae2' // My own token in ropsten, 50 * 1e18 totalsupply
+  OWN: '0x1224A550aB134873A37EcA685cEeF574dA811c6B' // My own token in ropsten, 50 * 1e18 totalsupply
 }
 
-export const PAIR_ADDRESS= '0x1210CFdbce237500f77119DfbDe9177b035Ff24A'; // Wrong?
+export const PAIR_ADDRESS= '0x29F825F5532B56E27A937D35f9315ED4811696Da';
 
 export const TOTAL_NUM_OF_TOKENS = 50;
 export const USED_CHAIN_ID : number = 3;
