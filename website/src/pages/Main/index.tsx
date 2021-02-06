@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
 
-import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS } from '../../utils'
+import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS, WETH_ADDRESS, LAURI_WALLET } from '../../utils'
 import {
   useTokenContract,
   useExchangeContract,
@@ -16,6 +16,7 @@ import {
 import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
 import { Web3Context } from 'web3-react/dist/context'
+import { BigNumber } from 'ethers/utils'
 
 // denominated in bips
 const GAS_MARGIN = ethers.utils.bigNumberify(1000)
@@ -352,11 +353,29 @@ export default function Main() {
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
     if (selectedTokenSymbol === TOKEN_SYMBOLS.ETH) {
-      await routerContract.estimate.swapETHForExactTokens
+
+      console.log('eth');
+
+      const oneToken = ethers.utils.bigNumberify(10).pow(17);
+      const routerPath = [WETH_ADDRESS, TOKEN_ADDRESSES.OWN];
+
+      const aa = await routerContract.getAmountsIn(oneToken, routerPath) as BigNumber;
+      const maximumInputValue = aa[0];
+      console.log('aaa', aa[0].toString());
+
+      const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(1, routerPath, LAURI_WALLET, 9999999999, {value: aa[0]}) as BigNumber;
+      console.log('res', estimatedGasLimit.toString());
+
+      const trx = await routerContract.swapETHForExactTokens(1, routerPath, LAURI_WALLET, 9999999999, {
+        value: maximumInputValue,
+        gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
+        gasPrice: estimatedGasPrice
+      }) as BigNumber;
+console.log('trx', trx)
+return trx;
 
 
-
-      const estimatedGasLimit = await exchangeContractSOCKS.estimate.ethToTokenSwapOutput(outputValue, deadline, {
+      /*const estimatedGasLimit = await exchangeContractSOCKS.estimate.ethToTokenSwapOutput(outputValue, deadline, {
         value: maximumInputValue
       })
 
@@ -365,7 +384,7 @@ export default function Main() {
         value: maximumInputValue,
         gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
         gasPrice: estimatedGasPrice
-      })
+      }) */
     } else {
       const estimatedGasLimit = await exchangeContractSelectedToken.estimate.tokenToTokenSwapOutput(
         outputValue,
