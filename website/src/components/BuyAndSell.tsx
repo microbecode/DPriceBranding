@@ -238,6 +238,8 @@ export default function BuyAndSell({
   }
 
   //console.log('so21', validationError !== null || (pending && currentTransactionHash), validationError, pending , currentTransactionHash)
+//console.log('state', buyValidationState.inputValue?.toString(), buyValidationState.outputValue.toString(), 
+//  buyValidationState.minimumOutputValue?.toString(), buyValidationState.maximumInputValue?.toString())
 
   return (
     <>
@@ -289,6 +291,7 @@ export default function BuyAndSell({
           pending={pending}
           onClick={() => {
             unlock(buying).then(({ hash }) => {
+              console.log('unlocking', hash)
               setCurrentTransaction(hash, TRADE_TYPES.UNLOCK, undefined)
             })
           }}
@@ -310,6 +313,7 @@ export default function BuyAndSell({
                 ? buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
                 : sell(sellValidationState.inputValue, sellValidationState.minimumOutputValue)
               ).then(response => {
+                //console.log('in bs then', response);
                 setCurrentTransaction(
                   response.hash,
                   buying ? TRADE_TYPES.BUY : TRADE_TYPES.SELL,

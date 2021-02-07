@@ -4,6 +4,7 @@ import ERC20_ABI from './erc20.json'
 import EXCHANGE_ABI from './router02.json'
 import ROUTER_ABI from './router02.json'
 import FACTORY_ABI from './factory02.json'
+import PAIR_ABI from './pair.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
@@ -94,6 +95,10 @@ export function getExchangeContract(exchangeAddress, library, account) {
 
 export function getRouterContract(address, library, account) {
   return getContract(address, ROUTER_ABI, library, account)
+}
+
+export function getPairContract(address, library, account) {
+  return getContract(address, PAIR_ABI, library, account)
 }
 
 export async function getTokenExchangeAddressFromFactory(tokenAddress, library, account) {

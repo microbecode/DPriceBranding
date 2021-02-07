@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useWeb3Context } from 'web3-react'
-import { FACTORY_ADDRESS, getRouterContract } from '../utils'
+import { FACTORY_ADDRESS, getPairContract, getRouterContract, PAIR_ADDRESS, ROUTER_ADDRESS } from '../utils'
 
 import {
   isAddress,
@@ -13,6 +13,8 @@ import {
   TOKEN_ADDRESSES
 } from '../utils'
 import { ethers, utils } from 'ethers'
+import { BigNumber } from 'ethers/utils'
+import { IPairReserves } from 'types'
 
 export function useBlockEffect(functionToRun) {
   const { library } = useWeb3Context()
@@ -83,6 +85,18 @@ export function useRouterContract(routerAddress : string, withSignerIfPossible =
   }, [routerAddress, library, withSignerIfPossible, account])
 }
 
+export function usePairContract(pairAddress : string, withSignerIfPossible = true ) {
+  const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
+
+  return useMemo(() => {
+    try {
+      return getPairContract(pairAddress, library, withSignerIfPossible ? account : undefined)
+    } catch {
+      return null
+    }
+  }, [pairAddress, library, withSignerIfPossible, account])
+}
+
 export function useAddressBalance(address, tokenAddress) {
   const { library } = useWeb3Context()
 
@@ -90,9 +104,9 @@ export function useAddressBalance(address, tokenAddress) {
 
   const updateBalance = useCallback(() => {
     if (isAddress(address) && (tokenAddress === 'ETH' || isAddress(tokenAddress))) {
-      let stale = false
+      let stale = false;
 
-      ;(tokenAddress === 'ETH' ? getEtherBalance(address, library) : getTokenBalance(tokenAddress, address, library))
+      (tokenAddress === 'ETH' ? getEtherBalance(address, library) : getTokenBalance(tokenAddress, address, library))
         .then(value => {
           if (!stale) {
             setBalance(value)
@@ -154,13 +168,57 @@ export function useTotalSupply(contract) {
   return totalSupply && Math.round(Number(utils.formatEther(totalSupply)))
 }
 
-export function useExchangeReserves(tokenAddress) {
-  const exchangeContract = useExchangeContract(tokenAddress)
+export function usePairReserves() : IPairReserves {
+  const defaultVal = useCallback(() => {
+    return { reserveETH: utils.bigNumberify(0), reserveToken: utils.bigNumberify(0) };
+  }, []);
 
-  const reserveETH = useAddressBalance(exchangeContract && exchangeContract.address, TOKEN_ADDRESSES.ETH)
-  const reserveToken = useAddressBalance(exchangeContract && exchangeContract.address, tokenAddress)
+  const [reserves, setReserves] = useState<IPairReserves>(defaultVal())
+  const contr = usePairContract(PAIR_ADDRESS);
+  const updateReserves = useCallback(() => {
+    let stale = false
+    contr.getReserves().then(res => {
+      if (!stale) {
+        const reserveETH = res[1] as BigNumber;
+        const reserveToken = res[0] as BigNumber;
+        //console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
+        const data : IPairReserves = { reserveETH, reserveToken };
+        setReserves(data);        
+      }
+    })
+    .catch(() => {
+      if (!stale) {
+        setReserves(defaultVal())
+      }
+    });
+    return () => {
+      stale = true
+      setReserves(defaultVal())
+    }    
+  }, [contr, defaultVal])
 
-  return { reserveETH, reserveToken }
+  useEffect(() => {
+    return updateReserves()
+  }, [updateReserves])
+
+  useBlockEffect(updateReserves)
+  
+/*   if (reserves) {
+console.log('return reserves' , reserves.reserveETH.toString(), reserves.reserveToken.toString())
+  } */
+  return reserves
+  /*
+  const contr = usePairContract(PAIR_ADDRESS);
+  contr.getReserves().then(res => {
+    const reserveETH = res[1] as BigNumber;
+    const reserveToken = res[0] as BigNumber;
+    console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
+    return { reserveETH, reserveToken }
+  });
+
+  return { reserveETH: utils.bigNumberify(0), reserveToken: utils.bigNumberify(0) };
+*/
+
 }
 
 export function useAddressAllowance(address, tokenAddress, spenderAddress) {

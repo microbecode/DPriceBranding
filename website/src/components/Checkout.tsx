@@ -74,9 +74,9 @@ interface Props {
   dollarPrice,
   reserveOWNToken,
   dollarize,
-  currentTransactionHash,
-  currentTransactionType,
-  currentTransactionAmount,
+  currentTransactionHash?,
+  currentTransactionType?,
+  currentTransactionAmount?,
   setCurrentTransaction,
   clearCurrentTransaction,
   setShowConnect,
@@ -123,6 +123,7 @@ export default function Checkout({
         setLastTransactionHash(currentTransactionHash)
         setLastTransactionType(currentTransactionType)
         setLastTransactionAmount(currentTransactionAmount)
+        console.log('clearing tr');
         clearCurrentTransaction()
       })
     }

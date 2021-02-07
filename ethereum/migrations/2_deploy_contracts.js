@@ -15,8 +15,6 @@ const ethAmount = 1000;
 
 module.exports = async function(_deployer, network, accounts) {
   let routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
- // const factoryAddress = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';
- // const wethAddress = '0xc778417E063141139Fce010982780140Aa0cD5Ab'; // different in mainnet?
 
 const tokenName = 'tok' + new Date().toLocaleTimeString();
 const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
@@ -24,7 +22,7 @@ const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
    await _deployer.deploy(token1Artifact, tokenAmount, tokenName, tokenSymbol, {from: accounts[0] });
   const token = await token1Artifact.deployed();
 
-console.log('token ', token.address) 
+//console.log('token ', token.address) 
 
   const router = await routerArtifact.at(routerAddr);
   await token.approve(router.address, tokenAmount, {from: accounts[0] });
@@ -36,7 +34,7 @@ console.log('token ', token.address)
   //console.log('factAddr' , factAddr)
 
   const wethAddress = await router.WETH();
-  console.log('weth', wethAddress);
+  //console.log('weth', wethAddress);
 
   factoryArtifact.setProvider(this.web3._provider);
   const factory = await factoryArtifact.at(factAddr);
@@ -44,5 +42,5 @@ console.log('token ', token.address)
   
   const pair = await factory.getPair(token.address, wethAddress)
   console.log('pair', pair)
-  console.log('token name', tokenName)
+  console.log('token name', tokenName, "token address", token.address)
 };

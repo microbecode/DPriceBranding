@@ -9,7 +9,7 @@ import BuyButtons from '../../components/Buttons'
 import RedeemButton from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
 import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
-import { IValidateTrade, } from 'types'
+import { ITransaction, IValidateTrade, } from 'types'
 import { ethers } from 'ethers'
 
 interface HeaderProps {
@@ -182,18 +182,14 @@ export default function Body({
 } : Props) {
   const { account } = useWeb3Context()
 
-  interface ITransaction {
-    hash: string,
-    type: string,
-    amount: number
-    }
+  
 
   const [currentTransaction, _setCurrentTransaction] = useState<ITransaction>({
     amount: 0,
     hash: null,
     type: null
   })
- // console.log('curr tran', currentTransaction)
+  //console.log('curr tran', currentTransaction)
   const setCurrentTransaction = useCallback((hash, type, amount) => {
     _setCurrentTransaction({ hash, type, amount })
   }, [])
@@ -261,9 +257,9 @@ export default function Body({
         dollarize={dollarize}
         showConnect={showConnect}
         setShowConnect={setShowConnect}
-        currentTransactionHash={currentTransaction.hash}
-        currentTransactionType={currentTransaction.type}
-        currentTransactionAmount={currentTransaction.amount}
+        currentTransactionHash={currentTransaction?.hash}
+        currentTransactionType={currentTransaction?.type}
+        currentTransactionAmount={currentTransaction?.amount}
         setCurrentTransaction={setCurrentTransaction}
         clearCurrentTransaction={clearCurrentTransaction}
         showWorks={showWorks}

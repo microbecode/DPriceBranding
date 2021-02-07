@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { BigNumber } from "ethers/utils";
 
 export interface IAppContextState {
   visible: boolean,
@@ -27,4 +28,15 @@ export interface IValidationTradeResult {
 
 export interface IValidateTrade {
  (numberOfOwnTokens : string) :  IValidationTradeResult
+}
+
+export interface ITransaction {
+  hash: string,
+  type: string,
+  amount: number
+}
+
+export interface IPairReserves {
+  reserveETH: BigNumber,
+  reserveToken: BigNumber
 }
