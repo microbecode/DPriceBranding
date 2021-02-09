@@ -15,13 +15,14 @@ export const WETH_ADDRESS ='0xc778417e063141139fce010982780140aa0cd5ab'; // Rops
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  OWN: '0x395a44e86F944D79450C9970Bd1e37Dc53Cc1A27' // My own token in ropsten, 50 * 1e18 totalsupply
+  OWN: '0xA94A9Bc53BBf49Bdd31CA8e8AF1cd3A62E5F84a5' // My own token in ropsten, 50 * 1e18 totalsupply
 }
 
-export const PAIR_ADDRESS= '0x1bde2D80C44d32C8EBCCAC67f13f5E17E38fBB1e';
+export const PAIR_ADDRESS= '0xb81f6C08E8D08B1Ece07fD9659d32c554995C892';
 export const LAURI_WALLET = '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';
 
 export const TOTAL_NUM_OF_TOKENS = 50;
+
 export const USED_CHAIN_ID : number = 3;
 
 export const TOKEN_SYMBOLS = { ETH: 'ETH', OWN: 'OWN'};/* Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {

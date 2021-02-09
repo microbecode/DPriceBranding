@@ -93,7 +93,7 @@ function calculateAmount(
   reserveSelectedTokenToken */
 ) {
 
-  console.log('reserveEth', reserveETH.toString(), "reserveToken", reserveToken.toString());
+  console.log('reserveEth', reserveETH.toString(), "reserveToken", reserveToken.toString(), "tokenAmount", tokenAmount.toString());
   // eth to token - buy
   if (inputTokenSymbol === TOKEN_SYMBOLS.ETH && outputTokenSymbol === TOKEN_SYMBOLS.OWN) {
     const amount = calculateEtherTokenInputFromOutput(tokenAmount, reserveETH, reserveToken)
@@ -294,7 +294,7 @@ export default function Main() {
 
       // the following are 'non-breaking' errors that will still return the data
       let errorAccumulator : IValidationError;
-/*       // validate minimum ether balance
+      // validate minimum ether balance
       if (myBalanceETH && myBalanceETH !== undefined && myBalanceETH.lt(ethers.utils.parseEther('.01'))) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_ETH_GAS
@@ -302,17 +302,17 @@ export default function Main() {
         if (!errorAccumulator) {
           errorAccumulator = error
         }
-      } */
+      }
 
       // validate minimum selected token balance
-      if (myBalanceOWN && maximum && myBalanceOWN.lt(maximum)) {
+      /* if (myBalanceOWN && maximum && myBalanceOWN.lt(maximum)) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE
         //console.log('accumu2', error)
         if (!errorAccumulator) {
           errorAccumulator = error
         }
-      }
+      } */
 
       // validate allowance
       if (selectedTokenSymbol !== 'ETH') {
@@ -335,8 +335,8 @@ export default function Main() {
     },
     [
       allowanceSelectedToken,
-     // myBalanceETH,
-      myBalanceOWN,
+      myBalanceETH,
+     // myBalanceOWN,
       reserveETH,
       reserveToken,
 /*       reserveSelectedTokenETH,
@@ -369,7 +369,7 @@ export default function Main() {
       const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(1, routerPath, LAURI_WALLET, 9999999999, {value: aa[0]}) as BigNumber;
       console.log('res', estimatedGasLimit.toString());
 
-      const trx = await routerContract.swapETHForExactTokens(1, routerPath, LAURI_WALLET, deadline, {
+      const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, LAURI_WALLET, deadline, {
         value: maximumInputValue,
         gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
         gasPrice: estimatedGasPrice
