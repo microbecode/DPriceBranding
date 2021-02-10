@@ -8,7 +8,7 @@ import Card from '../../components/Card'
 import BuyButtons from '../../components/Buttons'
 import RedeemButton from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
-import { amountFormatter, TOTAL_NUM_OF_TOKENS } from '../../utils'
+import { amountFormatter, TOKEN_NAME, TOTAL_NUM_OF_TOKENS } from '../../utils'
 import { ITransaction, IValidateTrade, } from 'types'
 import { ethers } from 'ethers'
 
@@ -154,8 +154,6 @@ interface Props {
   unlock,
   validateBuy : IValidateTrade,
   buy,
-  validateSell : IValidateTrade,
-  sell,
   burn,
   dollarize,
   dollarPrice,
@@ -171,8 +169,6 @@ export default function Body({
   unlock,
   validateBuy,
   buy,
-  validateSell,
-  sell,
   burn,
   dollarize,
   dollarPrice,
@@ -211,7 +207,7 @@ export default function Body({
       <Content>
         <Card totalSupply={totalSupply} reserveOWNToken={reserveOWNToken} />{' '}
         <Info>
-          <div style={{ marginBottom: '4px' }}>Buy and sell real socks with digital currency.</div>
+          <div style={{ marginBottom: '4px' }}>Buy and sell real {TOKEN_NAME} with digital currency.</div>
           <div style={{ marginBottom: '4px' }}>
             Delivered on demand.{' '}
             <a
@@ -240,6 +236,7 @@ export default function Body({
           </SubInfo> */}
         </Info>
         <BuyButtons balanceOWN={balanceOWN} />
+        <RedeemButton balanceOWN={balanceOWN} />
       </Content>
       <Checkout
         selectedTokenSymbol={selectedTokenSymbol}
@@ -248,8 +245,6 @@ export default function Body({
         unlock={unlock}
         validateBuy={validateBuy}
         buy={buy}
-        validateSell={validateSell}
-        sell={sell}
         burn={burn}
         balanceOWN={balanceOWN}
         dollarPrice={dollarPrice}

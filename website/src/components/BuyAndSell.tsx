@@ -6,7 +6,7 @@ import Button from './Button'
 import SelectToken from './SelectToken'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
-import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID } from '../utils'
+import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID, TOKEN_NAME } from '../utils'
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
@@ -66,11 +66,9 @@ interface Props {
   unlock,
   validateBuy : IValidateTrade,
   buy,
-  validateSell : IValidateTrade,
   dollarPrice,
   pending,
   reserveOWNToken,
-  sell,
   dollarize,
   setCurrentTransaction,
   currentTransactionHash,
@@ -84,11 +82,9 @@ export default function BuyAndSell({
   unlock,
   validateBuy,
   buy,
-  validateSell,
   dollarPrice,
   pending,
   reserveOWNToken,
-  sell,
   dollarize,
   setCurrentTransaction,
   currentTransactionHash,
@@ -110,7 +106,6 @@ export default function BuyAndSell({
   // }
 
   const buying = state.tradeType === TRADE_TYPES.BUY
-  const selling = !buying
 
   const initialVal = useCallback(() : IValidationTradeResult => {
     return {
@@ -142,13 +137,13 @@ export default function BuyAndSell({
         if (pending && hash) {
           return 'Waiting for confirmation'
         } else {
-          return 'Sell Socks'
+          return 'Sell ' + TOKEN_NAME;
         }
       } else {
         if (pending && hash) {
           return 'Waiting for confirmation'
         } else {
-          return 'Buy Socks'
+          return 'Buy ' + TOKEN_NAME;
         }
       }
     } else {
@@ -177,25 +172,6 @@ export default function BuyAndSell({
     }
   }, [ready, buying, validateBuy, state.count, initialVal])
 
-  // sell state validation
-  useEffect(() => {
-    if (ready && selling) {
-      try {
-        const { error: validationError, ...validationState } = validateSell(String(state.count))
-        setSellValidationState(validationState)
-        setValidationError(validationError || null)
-
-        return () => {
-          setSellValidationState(initialVal)
-          setValidationError(null)
-        }
-      } catch (error) {
-        setSellValidationState(initialVal)
-        setValidationError(error)
-      }
-    }
-  }, [ready, selling, validateSell, state.count, initialVal])
-
   const shouldRenderUnlock = validationError && validationError.code === ERROR_CODES.INSUFFICIENT_ALLOWANCE
 
   const errorMessage = getValidationErrorMessage(validationError)
@@ -211,16 +187,7 @@ export default function BuyAndSell({
           </p>
         </>
       )
-    } else if (selling && sellValidationState.outputValue) {
-      conditionalRender = (
-        <>
-          <p>
-            ${ready && amountFormatter(dollarize(sellValidationState.outputValue), 18, 2)}
-            {/* ({amountFormatter(sellValidationState.outputValue, 18, 4)} {selectedTokenSymbol}) */}
-          </p>
-        </>
-      )
-    } else {
+    }  else {
       conditionalRender = <p>$0.00</p>
     }
 
@@ -230,8 +197,6 @@ export default function BuyAndSell({
   function TokenVal() {
     if (buying && buyValidationState.inputValue) {
       return amountFormatter(buyValidationState.inputValue, 18, 4)
-    } else if (selling && sellValidationState.outputValue) {
-      return amountFormatter(sellValidationState.outputValue, 18, 4)
     } else {
       return '0'
     }
@@ -286,7 +251,7 @@ export default function BuyAndSell({
       )}
       {shouldRenderUnlock ? (
         <ButtonFrame
-          text={`Unlock ${buying ? selectedTokenSymbol : 'SOCKS'}`}
+          text={`Unlock ${buying ? selectedTokenSymbol : TOKEN_NAME}`}
           type={'cta'}
           pending={pending}
           onClick={() => {
@@ -309,15 +274,13 @@ export default function BuyAndSell({
                 setShowConnect(true)
               })
             } else {
-              (buying
-                ? buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
-                : sell(sellValidationState.inputValue, sellValidationState.minimumOutputValue)
-              ).then(response => {
+              buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
+              .then(response => {
                 //console.log('in bs then', response);
                 setCurrentTransaction(
                   response.hash,
-                  buying ? TRADE_TYPES.BUY : TRADE_TYPES.SELL,
-                  buying ? buyValidationState.outputValue : sellValidationState.inputValue
+                  TRADE_TYPES.BUY,
+                  buyValidationState.outputValue
                 )
               })
             }

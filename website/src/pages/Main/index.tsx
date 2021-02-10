@@ -410,125 +410,6 @@ return trx;
     }
   }
 
-  // sell functionality
-  const validateSell = useCallback(
-    (numberOfOwnTokens : string) : IValidationTradeResult => {
-      // validate passed amount
-      let parsedValue : ethers.utils.BigNumber;
-      try {
-        parsedValue = ethers.utils.parseUnits(numberOfOwnTokens, 18)
-      } catch (error) {
-        error.code = ERROR_CODES.INVALID_AMOUNT
-        throw error
-      }
-
-      // how much ETH or tokens the sale will result in
-      let requiredValueInSelectedToken
-      try {
-        requiredValueInSelectedToken = calculateAmount(
-          TOKEN_SYMBOLS.OWN,
-          selectedTokenSymbol,
-          parsedValue,
-          reserveETH,
-          reserveToken/* ,
-          reserveSelectedTokenETH,
-          reserveSelectedTokenToken */
-        )
-      } catch (error) {
-        //error.code = ERROR_CODES.INVALID_EXCHANGE
-        // LAURITODO
-        throw error
-      }
-
-      // slippage-ized
-      const { minimum } = calculateSlippageBounds(requiredValueInSelectedToken)
-
-      // the following are 'non-breaking' errors that will still return the data
-      let errorAccumulator : IValidationError;
-      // validate minimum ether balance
-      if (myBalanceETH.lt(ethers.utils.parseEther('.01'))) {
-        const error = {} as IValidationError;
-        error.code = ERROR_CODES.INSUFFICIENT_ETH_GAS
-        if (!errorAccumulator) {
-          errorAccumulator = error
-        }
-      }
-
-      // validate minimum socks balance
-      if (myBalanceOWN.lt(parsedValue)) {
-        const error = {} as IValidationError;
-        error.code = ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE
-        if (!errorAccumulator) {
-          errorAccumulator = error
-        }
-      }
-
-      // validate allowance
-      if (allowanceSOCKS.lt(parsedValue)) {
-        const error = {} as IValidationError;
-        error.code = ERROR_CODES.INSUFFICIENT_ALLOWANCE
-        if (!errorAccumulator) {
-          errorAccumulator = error
-        }
-      }
-
-      return {
-        inputValue: parsedValue,
-        outputValue: requiredValueInSelectedToken,
-        minimumOutputValue: minimum,
-        error: errorAccumulator
-      }
-    },
-    [
-      allowanceSOCKS,
-      myBalanceETH,
-      myBalanceOWN,
-      reserveETH,
-      reserveToken,
-/*       reserveSelectedTokenETH,
-      reserveSelectedTokenToken, */
-      selectedTokenSymbol
-    ]
-  )
-
-  async function sell(inputValue, minimumOutputValue) {
-    /* const deadline = Math.ceil(Date.now() / 1000) + DEADLINE_FROM_NOW
-
-    const estimatedGasPrice = await library
-      .getGasPrice()
-      .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
-
-    if (selectedTokenSymbol === TOKEN_SYMBOLS.ETH) {
-      const estimatedGasLimit = await exchangeContractSOCKS.estimate.tokenToEthSwapInput(
-        inputValue,
-        minimumOutputValue,
-        deadline
-      )
-      return exchangeContractSOCKS.tokenToEthSwapInput(inputValue, minimumOutputValue, deadline, {
-        gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-        gasPrice: estimatedGasPrice
-      })
-    } else {
-      const estimatedGasLimit = await exchangeContractSOCKS.estimate.tokenToTokenSwapInput(
-        inputValue,
-        minimumOutputValue,
-        ethers.constants.One,
-        deadline,
-        TOKEN_ADDRESSES[selectedTokenSymbol]
-      )
-      return exchangeContractSOCKS.tokenToTokenSwapInput(
-        inputValue,
-        minimumOutputValue,
-        ethers.constants.One,
-        deadline,
-        TOKEN_ADDRESSES[selectedTokenSymbol],
-        {
-          gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-          gasPrice: estimatedGasPrice
-        }
-      )
-    } */
-  }
 
   async function burn(amount) {
     const parsedAmount = ethers.utils.parseUnits(amount, 18)
@@ -569,8 +450,6 @@ return trx;
       unlock={unlock}
       validateBuy={validateBuy}
       buy={buy}
-      validateSell={validateSell}
-      sell={sell}
       burn={burn}
       dollarize={dollarize}
       dollarPrice={dollarPrice}

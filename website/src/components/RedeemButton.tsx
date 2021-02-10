@@ -6,6 +6,7 @@ import { useWeb3Context } from 'web3-react'
 import Button from './Button'
 import { useAppContext } from '../context'
 import { TRADE_TYPES } from '../utils'
+import { BigNumber } from 'ethers/utils'
 
 const BuyButtonFrame = styled.div`
   margin: 0.5rem 0rem 0.5rem 0rem;
@@ -33,7 +34,7 @@ const Shim = styled.div`
   height: 1rem;
 `
 
-export default function RedeemButton({ balanceSOCKS }) {
+export default function RedeemButton({ balanceOWN } : { balanceOWN: BigNumber }) {
   const { setState } = useAppContext()
   const { account } = useWeb3Context()
 
@@ -43,27 +44,18 @@ export default function RedeemButton({ balanceSOCKS }) {
 
   return (
     <BuyButtonFrame>
-      <ButtonFrame
-        disabled={balanceSOCKS > 0 ? false : true}
-        text={'Sell'}
-        type={'secondary'}
-        onClick={() => {
-          handleToggleCheckout(TRADE_TYPES.SELL)
-        }}
-      />
-      <Shim />
-  {/*     <ButtonFrame
+       <ButtonFrame
         disabled={
           account === null ||
-          !balanceSOCKS ||
-          balanceSOCKS.lt(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
+          !balanceOWN ||
+          balanceOWN.lt(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
         }
         text={'Redeem'}
         type={'secondary'}
         onClick={() => {
           handleToggleCheckout(TRADE_TYPES.REDEEM)
         }}
-      /> */}
+      />
     </BuyButtonFrame>
   )
 }

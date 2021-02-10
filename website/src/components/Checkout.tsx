@@ -67,8 +67,6 @@ interface Props {
   unlock,
   validateBuy : IValidateTrade,
   buy,
-  validateSell : IValidateTrade,
-  sell,
   burn,
   balanceOWN,
   dollarPrice,
@@ -92,8 +90,6 @@ export default function Checkout({
   unlock,
   validateBuy,
   buy,
-  validateSell,
-  sell,
   burn,
   balanceOWN,
   dollarPrice,
@@ -178,8 +174,6 @@ export default function Checkout({
           unlock={unlock}
           validateBuy={validateBuy}
           buy={buy}
-          validateSell={validateSell}
-          sell={sell}
           dollarize={dollarize}
           setCurrentTransaction={setCurrentTransaction}
           currentTransactionHash={currentTransactionHash}
