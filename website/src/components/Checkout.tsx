@@ -108,6 +108,8 @@ export default function Checkout({
   const { library } = useWeb3Context()
   const { state, setState } = useAppContext()
 
+  const redeeming = state.tradeType === TRADE_TYPES.REDEEM
+
   const [lastTransactionHash, setLastTransactionHash] = useState('')
   const [lastTransactionType, setLastTransactionType] = useState('')
   const [lastTransactionAmount, setLastTransactionAmount] = useState('')
@@ -166,6 +168,7 @@ export default function Checkout({
         />
       )
     } else {
+      if (!redeeming) {
       return (
         <BuyAndSell
           selectedTokenSymbol={selectedTokenSymbol}
@@ -183,7 +186,21 @@ export default function Checkout({
           pending={pending}
         />
       )
-    
+      }
+      else {
+        return (
+          <Redeem
+            ready={ready}
+            burn={burn}
+            balanceOWN={balanceOWN}
+            dollarize={dollarize}
+            setCurrentTransaction={setCurrentTransaction}
+            setShowConnect={setShowConnect}
+            closeCheckout={closeCheckout}
+            unlock={pending}
+          />
+        )
+      }
       
     }
   }

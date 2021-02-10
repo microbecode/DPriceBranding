@@ -75,6 +75,13 @@ interface Props {
   setShowConnect
 }
 
+export function link(hash) {
+  if (USED_CHAIN_ID === 3) {
+    return `https://ropsten.etherscan.io/tx/${hash}`;
+  }
+  return `https://etherscan.io/tx/${hash}`
+}
+
 export default function BuyAndSell({
   selectedTokenSymbol,
   setSelectedTokenSymbol,
@@ -118,15 +125,6 @@ export default function BuyAndSell({
   const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>(initialVal) // { maximumInputValue, inputValue, outputValue }
   const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
   const [validationError, setValidationError] = useState<IValidationError>(null)
-
-
-
-  function link(hash) {
-    if (USED_CHAIN_ID === 3) {
-      return `https://ropsten.etherscan.io/tx/${hash}`;
-    }
-    return `https://etherscan.io/tx/${hash}`
-  }
 
   function getText(account, buying, errorMessage, ready, pending, hash) {
     //console.log('getting text', account, buying, errorMessage, ready, pending, hash)

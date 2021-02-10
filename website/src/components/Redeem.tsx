@@ -18,6 +18,7 @@ import closeDark from './Gallery/close_dark.svg'
 
 import Confetti from 'react-dom-confetti'
 import { ethers } from 'ethers'
+import { link } from './BuyAndSell'
 
 const config = {
   angle: 90,
@@ -32,13 +33,13 @@ const config = {
   colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
 }
 
-interface Props {
-  closeCheckout: () => void,
-  theme?: string,
-  type?: string
+interface ControlsProps {
+  closeCheckout, 
+  theme?, 
+  type?
 }
 
-export function Controls({ closeCheckout, theme, type } : Props) {
+export function Controls({ closeCheckout, theme, type } : ControlsProps) {
   return (
     <FrameControls>
       <Unicorn theme={theme}>
@@ -57,17 +58,27 @@ export function Controls({ closeCheckout, theme, type } : Props) {
   )
 }
 
-export default function Redeem({
-  burn,
-  balanceSOCKS,
-  balance,
+interface Props {
   ready,
-  unlock,
+  burn,
+  balanceOWN,
   dollarize,
   setCurrentTransaction,
   setShowConnect,
-  closeCheckout
-}) {
+  closeCheckout : () => void,
+  unlock
+}
+
+export default function Redeem({
+  ready,
+  burn,
+  balanceOWN,
+  dollarize,
+  setCurrentTransaction,
+  setShowConnect,
+  closeCheckout,  
+  unlock,
+} : Props) {
   const { library, account, setConnector } = useWeb3Context()
   const { state } = useAppContext()
 
@@ -92,10 +103,6 @@ export default function Redeem({
     }
   })
 
-  function link(hash) {
-    return `https://etherscan.io/tx/${hash}`
-  }
-
   function renderContent() {
     if (account === null) {
       return (
@@ -119,12 +126,12 @@ export default function Redeem({
             <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
             <InfoFrame pending={pending}>
               <Owned>
-                <SockCount>You own {balanceSOCKS && `${amountFormatter(balanceSOCKS, 18, 0)}`}</SockCount>
+                <SockCount>You own {balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`}</SockCount>
                 <p>Redeem SOCKS</p>
               </Owned>
               <IncrementToken
-                initialValue={ethers.utils.bigNumberify(amountFormatter(balanceSOCKS, 18, 0))}
-                max={ethers.utils.bigNumberify(amountFormatter(balanceSOCKS, 18, 0))}
+                initialValue={ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0))}
+                max={ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0))}
               />
             </InfoFrame>
           </TopFrame>
