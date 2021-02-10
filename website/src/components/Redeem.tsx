@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useAppContext } from '../context'
 import Button from './Button'
 import RedeemForm from './RedeemForm'
-import { amountFormatter } from '../utils'
+import { amountFormatter, TOKEN_NAME } from '../utils'
 
 import IncrementToken from './IncrementToken'
 import test from './Gallery/test.png'
@@ -19,6 +19,8 @@ import closeDark from './Gallery/close_dark.svg'
 import Confetti from 'react-dom-confetti'
 import { ethers } from 'ethers'
 import { link } from './BuyAndSell'
+import { BigNumber, bigNumberify } from 'ethers/utils'
+import IncrementAmount from './IncrementAmount'
 
 const config = {
   angle: 90,
@@ -61,7 +63,7 @@ export function Controls({ closeCheckout, theme, type } : ControlsProps) {
 interface Props {
   ready,
   burn,
-  balanceOWN,
+  balanceOWN : BigNumber,
   dollarize,
   setCurrentTransaction,
   setShowConnect,
@@ -103,6 +105,9 @@ export default function Redeem({
     }
   })
 
+  const initialTokens = balanceOWN ? ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0)) : bigNumberify(0)
+  const [tokenCount, setTokenCount] = useState(initialTokens);
+
   function renderContent() {
     if (account === null) {
       return (
@@ -124,16 +129,19 @@ export default function Redeem({
           <TopFrame hasPickedAmount={hasPickedAmount}>
             <Controls closeCheckout={closeCheckout} />
             <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
-            <InfoFrame pending={pending}>
-              <Owned>
-                <SockCount>You own {balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`}</SockCount>
-                <p>Redeem SOCKS</p>
-              </Owned>
-              <IncrementToken
-                initialValue={ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0))}
-                max={ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0))}
-              />
-            </InfoFrame>
+            {(balanceOWN ?
+              <InfoFrame pending={pending}>              
+                <Owned>
+                  <SockCount>You own {balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`}</SockCount>
+                  <p>Redeem SOCKS</p>
+                </Owned>
+                <IncrementAmount
+                  count={tokenCount}
+                  setCount={setTokenCount}
+                  max={ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0))}
+                />              
+              </InfoFrame>
+             : '')}
           </TopFrame>
           <ButtonFrame
             className="button"
@@ -141,7 +149,7 @@ export default function Redeem({
             text={'Next'}
             type={'cta'}
             onClick={() => {
-              setNumberBurned(state.count)
+              setNumberBurned(tokenCount)
               setHasPickedAmount(true)
             }}
           />
@@ -156,14 +164,13 @@ export default function Redeem({
             <InfoFrame hasPickedAmount={hasPickedAmount}>
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
-                <p>{state.count} Unisocks</p>
+                <p>{tokenCount.toString()} Unisocks</p>
                 <p style={{ fontSize: '20px', color: '#AEAEAE' }}>One size fits most</p>
                 <p style={{ fontSize: '14px', marginTop: '16px', color: '#AEAEAE' }}>Edition 0</p>
               </Owned>
             </InfoFrame>
           </TopFrame>
 
-          {/* <Count>2/3</Count> */}
           <CheckoutPrompt>Where should we send them?</CheckoutPrompt>
           <RedeemFrame
             burn={burn}
@@ -239,7 +246,7 @@ export default function Redeem({
             disabled={pending}
             pending={pending}
             // text={pending ? `Waiting for confirmation...` : `Redeem ${numberBurned} SOCKS`}
-            text={pending ? `Waiting for confirmation...` : `Place order (Redeem ${numberBurned} SOCKS) `}
+            text={pending ? `Waiting for confirmation...` : `Place order (Redeem ${numberBurned} ${TOKEN_NAME}) `}
             type={'cta'}
             onClick={() => {
               burn(numberBurned.toString())
@@ -248,11 +255,6 @@ export default function Redeem({
                 })
                 .catch(error => {
                   console.error(error)
-                  // setTransactionHash(
-                  //   true
-                  //     ? '0x888503cb966a67192afb74c740abaec0b7e8bda370bc8f853fb040eab247c63f'
-                  //     : '0x66dac079f7ee27ba7b2cae27eaabf64574c2011aacd007968be6d282b3c2065b'
-                  // )
                 })
             }}
           />
@@ -281,7 +283,7 @@ export default function Redeem({
             <ImgStyle src={sent} alt="Logo" hasPickedAmount={hasPickedAmount} hasBurnt={hasBurnt} />
             <InfoFrame>
               <Owned>
-                <p>You got socks!</p>
+                <p>You got {TOKEN_NAME}!</p>
               </Owned>
             </InfoFrame>
           </TopFrame>

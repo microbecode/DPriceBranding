@@ -71,6 +71,12 @@ const addressMapping = [
 
 const recaptchaEnabled = false
 
+/* interface Props {
+  setHasConfirmedAddress, 
+  setUserAddress, 
+  numberBurned: actualNumberBurned
+} */
+
 export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, numberBurned: actualNumberBurned }) {
   const { library, account } = useWeb3Context()
   const [recaptcha, setRecaptcha] = useState()
