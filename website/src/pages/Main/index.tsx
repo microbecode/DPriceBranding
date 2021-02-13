@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
 
-import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS, WETH_ADDRESS, LAURI_WALLET } from '../../utils'
+import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS, WETH_ADDRESS } from '../../utils'
 import {
   useTokenContract,
   useExchangeContract,
@@ -366,10 +366,10 @@ export default function Main() {
       console.log('aaa', aa[0].toString(), aa[1].toString());
       console.log('max input', maximumInputValue.toString(), "output", outputValue.toString());
 
-      const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(1, routerPath, LAURI_WALLET, 9999999999, {value: aa[0]}) as BigNumber;
+      const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(1, routerPath, account, 9999999999, {value: aa[0]}) as BigNumber;
       console.log('res', estimatedGasLimit.toString());
 
-      const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, LAURI_WALLET, deadline, {
+      const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, account, deadline, {
         value: maximumInputValue,
         gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
         gasPrice: estimatedGasPrice

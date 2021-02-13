@@ -246,10 +246,10 @@ export default function Redeem({
             disabled={pending}
             pending={pending}
             // text={pending ? `Waiting for confirmation...` : `Redeem ${numberBurned} SOCKS`}
-            text={pending ? `Waiting for confirmation...` : `Place order (Redeem ${numberBurned} ${TOKEN_NAME}) `}
+            text={pending ? `Waiting for confirmation...` : `Place order (Redeem ${numberBurned.toString()} ${TOKEN_NAME}) `}
             type={'cta'}
             onClick={() => {
-              burn(numberBurned.toString())
+              burn(numberBurned)
                 .then(response => {
                   setTransactionHash(response.hash)
                 })
