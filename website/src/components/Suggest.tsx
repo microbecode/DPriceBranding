@@ -23,7 +23,7 @@ interface Props {
 
 */
 
-export default function LocationSearchInput({ myRef, inputY, value, setAutoAddress } : Props) {
+export default function Suggest({ myRef, inputY, value, setAutoAddress } : Props) {
   const [address, setAddress] = useState('')
 
   function handleChange(address) {

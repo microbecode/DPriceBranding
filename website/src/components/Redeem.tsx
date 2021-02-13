@@ -82,7 +82,7 @@ export default function Redeem({
   unlock,
 } : Props) {
   const { library, account, setConnector } = useWeb3Context()
-  const { state } = useAppContext()
+/*   const { state } = useAppContext() */
 
   const [numberBurned, setNumberBurned] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
   const [hasPickedAmount, setHasPickedAmount] = useState(false)
@@ -198,7 +198,7 @@ export default function Redeem({
             <InfoFrame hasPickedAmount={hasPickedAmount}>
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
-                <p style={{ fontSize: '18px' }}>{state.count} Unisocks</p>
+                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} Unisocks</p>
                 <p style={{ fontSize: '14px' }}>One size fits most</p>
                 <p
                   style={{
@@ -216,7 +216,7 @@ export default function Redeem({
               <ImgStyle src={nfc} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Bonus>Bonus</Bonus>
               <Owned>
-                <p style={{ fontSize: '18px' }}>{state.count} Unisocks NFT</p>
+                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} Unisocks NFT</p>
                 <p style={{ fontSize: '14px' }}>Digital Collectible (10kb)</p>
                 <p
                   style={{

@@ -151,6 +151,10 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     formState[country] &&
     formState[email]
 
+    if (!canSign) {
+      console.log('cant', formState[name], 'line1' + formState[line1], formState[city], formState[state], formState[zip], formState[country], formState[email])
+    }
+
   function onRecaptcha(value) {
     if (value) {
       setRecaptcha(value)
@@ -169,9 +173,8 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         placeholder={nameMap[name]}
         autoComplete="name"
       />
-   {/*    <Compressed>
-        <Suggest
-          required
+      <Compressed>
+ {/*        <Suggest
           myRef={suggestEl}
           inputY={inputY}
           setAutoAddress={setAutoAddress}
@@ -181,8 +184,15 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
           onChange={handleChange}
           placeholder={nameMap[line1]}
           autoComplete="off"
+        /> */}
+<input
+          type="text"
+          name={line1}
+          value={formState[line1]}
+          onChange={handleChange}
+          placeholder={nameMap[line1]}
+          autoComplete="off"
         />
-
         <input
           type="text"
           name={line2}
@@ -191,7 +201,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
           placeholder={nameMap[line2]}
           autoComplete="off"
         />
-      </Compressed> */}
+      </Compressed> 
       <input
         required
         type="text"
