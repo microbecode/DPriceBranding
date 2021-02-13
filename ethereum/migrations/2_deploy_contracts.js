@@ -26,25 +26,26 @@ const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
    await _deployer.deploy(token1Artifact, tokenAmount, tokenName, tokenSymbol, {from: accounts[0] });
   const token = await token1Artifact.deployed();
 
-//console.log('token ', token.address) 
+  if (network != 'development') {
+    const router = await routerArtifact.at(routerAddr);
+    await token.approve(router.address, tokenAmount, {from: accounts[0] });
 
-  const router = await routerArtifact.at(routerAddr);
-  await token.approve(router.address, tokenAmount, {from: accounts[0] });
+    await router.addLiquidityETH(token.address, tokenAmount, 1, 1, token.address, 9999999999, 
+      {from: accounts[0], value: ethAmount} ) 
 
-  await router.addLiquidityETH(token.address, tokenAmount, 1, 1, token.address, 9999999999, 
-    {from: accounts[0], value: ethAmount} ) 
+    const factAddr = await router.factory();
+    //console.log('factAddr' , factAddr)
 
-  const factAddr = await router.factory();
-  //console.log('factAddr' , factAddr)
+    const wethAddress = await router.WETH();
+    //console.log('weth', wethAddress);
 
-  const wethAddress = await router.WETH();
-  //console.log('weth', wethAddress);
+    factoryArtifact.setProvider(this.web3._provider);
+    const factory = await factoryArtifact.at(factAddr);
+    //console.log('fact', factory.address)
+    
+    const pair = await factory.getPair(token.address, wethAddress)
+    console.log('pair', pair)
+  }
 
-  factoryArtifact.setProvider(this.web3._provider);
-  const factory = await factoryArtifact.at(factAddr);
-  //console.log('fact', factory.address)
-  
-  const pair = await factory.getPair(token.address, wethAddress)
-  console.log('pair', pair)
   console.log('token name', tokenName, "token address", token.address)
 };
