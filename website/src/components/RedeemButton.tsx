@@ -8,7 +8,7 @@ import { useAppContext } from '../context'
 import { TRADE_TYPES } from '../utils'
 import { BigNumber } from 'ethers/utils'
 
-const BuyButtonFrame = styled.div`
+export const BuyButtonFrame = styled.div`
   margin: 0.5rem 0rem 0.5rem 0rem;
   display: flex;
   align-items: center;
@@ -27,6 +27,8 @@ const BuyButtonFrame = styled.div`
 `
 const ButtonFrame = styled(Button)`
   width: 100%;
+  background-color: black;
+  color: ${props => props.theme.textColor};
 `
 
 const Shim = styled.div`
@@ -50,8 +52,7 @@ export default function RedeemButton({ balanceOWN } : { balanceOWN: BigNumber })
           !balanceOWN ||
           balanceOWN.lt(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
         }
-        text={'Redeem'}
-        type={'secondary'}
+        text={'Redeem'}        
         onClick={() => {
           handleToggleCheckout(TRADE_TYPES.REDEEM)
         }}

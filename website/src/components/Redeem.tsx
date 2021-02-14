@@ -133,7 +133,7 @@ export default function Redeem({
               <InfoFrame pending={pending}>              
                 <Owned>
                   <SockCount>You own {balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`}</SockCount>
-                  <p>Redeem SOCKS</p>
+                  <p>Redeem t-shirt</p>
                 </Owned>
                 <IncrementAmount
                   count={tokenCount}
@@ -317,7 +317,7 @@ const TopFrame = styled.div`
   width: 100%;
   max-width: 375px;
   background: #000000;
-  background: linear-gradient(162.92deg, #2b2b2b 12.36%, #000000 94.75%);
+ /*  background: linear-gradient(162.92deg, #2b2b2b 12.36%, #000000 94.75%); */
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   color: white;
@@ -452,6 +452,7 @@ const CheckoutPrompt = styled.p`
 `
 
 const ButtonFrame = styled(Button)`
+  color: ${props => props.theme.textColor};
   margin: 16px;
   height: 48px;
   padding: 16px;

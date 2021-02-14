@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom'
 import { AppContext, useAppContext } from '../../context'
 import Card from '../../components/Card'
 import BuyButtons from '../../components/Buttons'
-import RedeemButton from '../../components/RedeemButton'
+import RedeemButton, { BuyButtonFrame } from '../../components/RedeemButton'
 import Checkout from '../../components/Checkout'
 import { amountFormatter, TOKEN_NAME, TOTAL_NUM_OF_TOKENS } from '../../utils'
 import { ITransaction, IValidateTrade, } from 'types'
 import { ethers } from 'ethers'
+import logo from '../../components/Gallery/hiddenklass-rojo.png'
 
 interface HeaderProps {
   totalSupply, 
@@ -36,12 +37,13 @@ export function Header(
   return (
     <HeaderFrame balanceSOCKS={balanceOWN}>
       <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-        <Unicorn>
+      {/*   <Unicorn>
           <span role="img" aria-label="unicorn">
             🦄
           </span>{' '}
           Unisocks
-        </Unicorn>
+        </Unicorn> */}
+        <UpperLogo src={logo} alt='logo'></UpperLogo>
       </Link>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         {totalSupply && (
@@ -72,6 +74,10 @@ export function Header(
   )
 }
 
+const UpperLogo = styled.img`
+  background-color: black;
+`
+
 const HeaderFrame = styled.div`
   position: fixed;
   width: 100%;
@@ -86,7 +92,7 @@ const HeaderFrame = styled.div`
 `
 
 const Account = styled.div`
-  background-color: ${props => (props.balanceOWN ? '#f1f2f6' : props.theme.blue)};
+  background-color: black;/* ${props => (props.balanceOWN ? '#f1f2f6' : props.theme.blue)}; */
   padding: 0.75rem;
   border-radius: 6px;
   cursor: ${props => (props.balanceOWN ? 'auto' : 'pointer')};
@@ -101,7 +107,7 @@ const Account = styled.div`
 `
 
 const Burned = styled.div`
-  background-color: none;
+  background-color: black;
   border: 1px solid red;
   margin-right: 1rem;
   padding: 0.75rem;
@@ -235,8 +241,10 @@ export default function Body({
             </a>
           </SubInfo> */}
         </Info>
-        <BuyButtons balanceOWN={balanceOWN} />
-        <RedeemButton balanceOWN={balanceOWN} />
+        <BuyButtonFrame>
+          <BuyButtons balanceOWN={balanceOWN} />
+          <RedeemButton balanceOWN={balanceOWN} />
+        </BuyButtonFrame>
       </Content>
       <Checkout
         selectedTokenSymbol={selectedTokenSymbol}
@@ -285,7 +293,7 @@ const Content = styled.div`
 `
 
 const Info = styled.div`
-  color: ${props => props.theme.text};
+  color: ${props => props.theme.textColor};
   font-weight: 500;
   margin: 0px;
   font-size: 14px;
@@ -296,7 +304,7 @@ const Info = styled.div`
   margin-bottom: 12px;
   margin-top: -12px;
   /* margin-top: 16px; */
-  background-color: ${props => '#f1f2f6'};
+  background-color: black;
   a {
     color: ${props => props.theme.uniswapPink};
     text-decoration: none;

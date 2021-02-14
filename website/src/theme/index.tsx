@@ -10,12 +10,16 @@ export default createGlobalStyle`
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: Inter, sans-serif;
-    /* background-color: #F1F2F6; */
+    font-family: United Sans, sans-serif;
+     background-color: #E63137; 
+  }
+  p {
+    color: #E63137;
   }
 `
 
 const theme = {
+  textColor: '#E63137',
   uniswapPink: '#FE6DDE',
   primary: '#2B2B2B',
   secondary: '#F1F2F6',

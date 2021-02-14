@@ -17,7 +17,7 @@ export const TOKEN_ADDRESSES = {
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
   OWN: '0xA94A9Bc53BBf49Bdd31CA8e8AF1cd3A62E5F84a5' // My own token in ropsten, 50 * 1e18 totalsupply
 }
-export const TOKEN_NAME = 'Own';
+export const TOKEN_NAME = '$HDK';
 
 export const PAIR_ADDRESS= '0xb81f6C08E8D08B1Ece07fD9659d32c554995C892';
 //export const LAURI_WALLET = '0x1210CFdbce237500f77119DfbDe9177b035Ff24A';

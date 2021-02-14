@@ -20,8 +20,8 @@ export default function Card({ totalSupply, reserveOWNToken } : Props) {
       options={{ scale: 1.01, max: 10, glare: true, 'max-glare': 1, speed: 1000 }}
     >
       <CardWrapper>
-        <Title>DPriceBranding Edition 0</Title>
-        <SubTitle>$OWN</SubTitle>
+        <Title>T-shirt edition</Title>
+        <SubTitle>$HDK</SubTitle>
         <Gallery />
         <MarketData>
           <span>
@@ -47,7 +47,7 @@ export default function Card({ totalSupply, reserveOWNToken } : Props) {
 const CardWrapper = styled.div`
   /* max-width: 300px; */
   background: #000000;
-  background: linear-gradient(162.92deg, #2b2b2b 12.36%, #000000 94.75%);
+  background: black;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   color: white;

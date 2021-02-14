@@ -42,37 +42,19 @@ export default function Works({ closeCheckout }) {
 
       <Title>How it works:</Title>
       <Desc>
-        $SOCKS is a token that entitles you to 1 real pair of limited edition socks, shipped anywhere in the world.
-      </Desc>
-      <Desc>
-        You can sell the token back at any time. To get a <i>real</i> pair, redeem a $SOCKS token
+      $HDK is a token that entitles you to 1 real limited-edition T-shirt, shipped anywhere in the world. You can sell the token back at any time. To get a real T-shirt, redeem a $HDK token.
       </Desc>
       <Title>How it's priced:</Title>
       <Desc>
-        $SOCKS tokens are listed starting at $12 USD. Each buy/sell will move the price. The increase or decrease
-        follows a{' '}
-        <a
-          href="https://blog.relevant.community/bonding-curves-in-depth-intuition-parametrization-d3905a681e0a"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          bonding curve
-        </a>
-        . $SOCKS will eventually find an equillibrium based on market demand.
+      $HDK tokens are listed starting at $50. Each buy/sell will move the price. The increase or decrease follows a bonding curve. HIDDENKLASS will eventually find an equilibrium based on market demand.
       </Desc>
-      <Title>Unipay:</Title>
+      <Title>Uniswap:</Title>
       <Desc>
-        Buying or selling socks uses the uniswap protocol and accepts any token input as a payment method. The pool of
-        SOCKS is a uniswap pool where 500 SOCKS tokens were deposited along with the starting value of ETH.{' '}
+      Buying or selling HDK uses the uniswap protocol and accepts ETH as a payment method. The pool of $HDK is a uniswap pool where X $HDK tokens were deposited along with the starting value of ETH.
       </Desc>
       <Desc>
         <a href="https://docs.uniswap.io/" target="_blank" rel="noopener noreferrer">
           Learn more about how uniswap works.
-        </a>
-      </Desc>
-      <Desc>
-        <a href="mailto:contact@uniswap.io" target="_blank" rel="noopener noreferrer">
-          Get in touch.
         </a>
       </Desc>
     </WorksFrame>

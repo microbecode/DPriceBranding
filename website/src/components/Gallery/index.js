@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import test from './test.png'
+import test from './hidden-klass-1.png'
 
 const GalleryFrame = styled.div`
   width: 100%;
@@ -12,6 +12,7 @@ const GalleryFrame = styled.div`
   flex-direction: center;
   /* background-color: ${props => props.theme.black}; */
   box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.05);
+ 
 `
 
 const ImgStyle = styled.img`
@@ -19,6 +20,7 @@ const ImgStyle = styled.img`
   box-sizing: border-box;
   border-radius: 4px;
   /* background-color: ${props => props.theme.black}; */
+  background-color: ${props => props.theme.textColor};
 `
 
 export default function Gallery() {

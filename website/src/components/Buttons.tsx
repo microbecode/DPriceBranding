@@ -24,6 +24,7 @@ const BuyButtonFrame = styled.div`
 `
 const ButtonFrame = styled(Button)`
   width: 100%;
+  color: ${props => props.theme.textColor};
 `
 
 // const Shim = styled.div`
