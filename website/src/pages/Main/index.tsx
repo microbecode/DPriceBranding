@@ -17,6 +17,7 @@ import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
 import { Web3Context } from 'web3-react/dist/context'
 import { BigNumber } from 'ethers/utils'
+import Stats from 'pages/Stats'
 
 // denominated in bips
 const GAS_MARGIN = ethers.utils.bigNumberify(1000)
@@ -153,7 +154,11 @@ function calculateAmount(
   } */
 }
 
-export default function Main() {
+interface Props {
+  showStats?: boolean;
+}
+
+export default function Main({showStats} : Props) {
   const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
   
 /*   if (library != null) {
@@ -441,8 +446,10 @@ return trx;
   }, [reserveToken, reserveETH]);
 
   
-
-  return (
+  return showStats ? (
+    <Stats reserveSOCKSToken={reserveToken} totalSupply={totalSupply} ready={ready} balanceSOCKS={myBalanceOWN} />
+  ) : 
+  (
     <Body
       selectedTokenSymbol={selectedTokenSymbol}
       setSelectedTokenSymbol={setSelectedTokenSymbol}
