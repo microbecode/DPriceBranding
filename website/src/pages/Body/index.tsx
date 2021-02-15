@@ -74,12 +74,30 @@ export function Header(
   )
 }
 
+export function Footer() {
+
+  return (
+    <HeaderFrame>
+      <FooterBox>
+        <Link to="/learnmore" style={{ textDecoration: 'none' }}>
+          Learn more
+        </Link>
+      </FooterBox>
+      <FooterBox>
+      <Link to="/faq" style={{ textDecoration: 'none' }}>
+          FAQ
+        </Link>
+      </FooterBox>
+    </HeaderFrame>
+  )
+}
+
 const UpperLogo = styled.img`
   background-color: black;
 `
 
 const HeaderFrame = styled.div`
-  position: fixed;
+ /*  position: fixed; */
   width: 100%;
   box-sizing: border-box;
   margin: 0px;
@@ -123,7 +141,20 @@ const Burned = styled.div`
 
   font-weight: 500;
   font-size: 14px;
-  color: red;
+`
+
+const FooterBox = styled.div`
+  background-color: black;
+  border: 1px solid red;
+  margin-right: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transform: scale(1);
+  line-height: 1;
+  font-weight: 500;
+  font-size: 24px;
+  color: ${props => props.theme.textColor};
 `
 
 const HideMobile = styled.span`
@@ -268,6 +299,7 @@ export default function Body({
         showWorks={showWorks}
         setShowWorks={setShowWorks}
       />
+      <Footer></Footer>
     </AppWrapper>
   )
 }

@@ -42,8 +42,10 @@ export default function App() {
             <AppContext.Provider value={value}>
               <BrowserRouter>
                 <Switch>
-                  <Route exact strict path="/" render={() => <Main />} />
+                  <Route exact strict path="/" render={() => <Main />} />                  
+                  <Route exact strict path="/learnmore" render={() => <Main showLearnMore={true} />} />
                   <Route exact strict path="/stats" render={() => <Main showStats={true} />} />
+                  <Route exact strict path="/faq" render={() => <Main showFAQ={true} />} />
                   <Redirect to="/" />
                 </Switch>
               </BrowserRouter>

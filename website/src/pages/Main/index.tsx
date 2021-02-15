@@ -18,6 +18,8 @@ import { IValidationError, IValidationTradeResult } from 'types'
 import { Web3Context } from 'web3-react/dist/context'
 import { BigNumber } from 'ethers/utils'
 import Stats from 'pages/Stats'
+import LearnMore from 'pages/LearnMore'
+import FAQ from 'pages/FAQ'
 
 // denominated in bips
 const GAS_MARGIN = ethers.utils.bigNumberify(1000)
@@ -94,7 +96,7 @@ function calculateAmount(
   reserveSelectedTokenToken */
 ) {
 
-  console.log('reserveEth', reserveETH.toString(), "reserveToken", reserveToken.toString(), "tokenAmount", tokenAmount.toString());
+  //console.log('reserveEth', reserveETH.toString(), "reserveToken", reserveToken.toString(), "tokenAmount", tokenAmount.toString());
   // eth to token - buy
   if (inputTokenSymbol === TOKEN_SYMBOLS.ETH && outputTokenSymbol === TOKEN_SYMBOLS.OWN) {
     const amount = calculateEtherTokenInputFromOutput(tokenAmount, reserveETH, reserveToken)
@@ -156,9 +158,12 @@ function calculateAmount(
 
 interface Props {
   showStats?: boolean;
+  showLearnMore?: boolean;
+  showFAQ?: boolean;
 }
 
-export default function Main({showStats} : Props) {
+export default function Main({showStats, showLearnMore, showFAQ} : Props) {
+  console.log('show learn', showLearnMore, 'show stats', showStats, 'show faq', showFAQ)
   const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
   
 /*   if (library != null) {
@@ -279,7 +284,7 @@ export default function Main({showStats} : Props) {
 
       let requiredValueInSelectedToken
       try {
-        console.log('validating buy with data', reserveETH.toString(), reserveToken.toString());
+       // console.log('validating buy with data', reserveETH.toString(), reserveToken.toString());
         requiredValueInSelectedToken = calculateAmount(
           selectedTokenSymbol,
           TOKEN_SYMBOLS.OWN,
@@ -436,33 +441,38 @@ return trx;
   } */
   useEffect(() => {
     if (myBalanceOWN) {
-      console.log('my balance', myBalanceOWN.toString())
+      //console.log('my balance', myBalanceOWN.toString())
     }
   }, [myBalanceOWN]);
   useEffect(() => {
     if (reserveToken) {
-      console.log('used res, eth', reserveETH.toString(), 'used tok', reserveToken.toString())
+      //console.log('used res, eth', reserveETH.toString(), 'used tok', reserveToken.toString())
     }
   }, [reserveToken, reserveETH]);
 
-  
-  return showStats ? (
-    <Stats reserveSOCKSToken={reserveToken} totalSupply={totalSupply} ready={ready} balanceSOCKS={myBalanceOWN} />
-  ) : 
-  (
-    <Body
-      selectedTokenSymbol={selectedTokenSymbol}
-      setSelectedTokenSymbol={setSelectedTokenSymbol}
-      ready={ready}
-      unlock={unlock}
-      validateBuy={validateBuy}
-      buy={buy}
-      burn={burn}
-      dollarize={dollarize}
-      dollarPrice={dollarPrice}
-      balanceOWN={myBalanceOWN}
-      reserveOWNToken={reserveToken}
-      totalSupply={totalSupply}
+  if (showStats) {
+    return <Stats reserveSOCKSToken={reserveToken} totalSupply={totalSupply} ready={ready} balanceSOCKS={myBalanceOWN} />
+  }
+  else if (showLearnMore) {
+    return <LearnMore/>
+  }
+  else if (showFAQ) {
+    return <FAQ/>
+  }
+  else {
+    return <Body
+    selectedTokenSymbol={selectedTokenSymbol}
+    setSelectedTokenSymbol={setSelectedTokenSymbol}
+    ready={ready}
+    unlock={unlock}
+    validateBuy={validateBuy}
+    buy={buy}
+    burn={burn}
+    dollarize={dollarize}
+    dollarPrice={dollarPrice}
+    balanceOWN={myBalanceOWN}
+    reserveOWNToken={reserveToken}
+    totalSupply={totalSupply}
     />
-  )
+  }
 }

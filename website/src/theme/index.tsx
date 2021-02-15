@@ -16,6 +16,9 @@ export default createGlobalStyle`
   p {
     color: #E63137;
   }
+  a {
+    color: #E63137;
+  }
 `
 
 const theme = {
