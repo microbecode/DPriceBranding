@@ -21,7 +21,7 @@ export default function Body() {
       <p>
       How to sell $HDK:
       </p>
-      <p>Token can be swapped through www.uniswap.com , using the swap function between $HDK and ETH.</p>
+      <p>Token can be swapped through <a href='http://www.uniswap.com'>Uniswap</a> , using the swap function between $HDK and ETH.</p>
       </Content>
     </AppWrapper>
   )
