@@ -5,6 +5,7 @@
   "dependencies": {
     "ethers": "^4.0.27",
     "http-proxy-middleware": "^0.19.1",
+    "qrcode.react": "^0.9.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-dom-confetti": "^0.1.1",
