@@ -2,6 +2,10 @@
   command = "yarn build"
   publish = "start"
 
+[build.environment]
+  YARN_VERSION = "1.22.10"
+  YARN_FLAGS = "--production=false"
+
 # support SPA setup
 [[redirects]]
   from = "/*"
