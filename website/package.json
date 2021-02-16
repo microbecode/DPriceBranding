@@ -22,7 +22,6 @@
   "scripts": {
     "start": "run-p start:**",
     "start:app": "react-scripts start",
-    "prebuild": "cd functions/ && yarn",
     "build": "run-p build:**",
     "build:app": "react-scripts build",
     "test": "react-scripts test",
