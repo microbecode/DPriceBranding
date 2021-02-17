@@ -240,8 +240,9 @@ const CheckoutFrame = styled.div`
   justify-content: space-between;
   background-color: #fff;
   border-color: ${props => props.theme.black};
-  color: ${props => props.theme.primary};
+  color: ${props => props.theme.textColor};
   box-sizing: border-box;
+  background-color: black;
 
   @media only screen and (min-device-width: 768px) {
     max-width: 375px;

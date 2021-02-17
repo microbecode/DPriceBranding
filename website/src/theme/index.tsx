@@ -13,10 +13,7 @@ export default createGlobalStyle`
     font-family: United Sans, sans-serif;
      background-color: #E63137; 
   }
-  p {
-    color: #E63137;
-  }
-  a {
+  p, a {
     color: #E63137;
   }
 `

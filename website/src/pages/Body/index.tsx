@@ -229,7 +229,7 @@ export default function Body({
   const clearCurrentTransaction = useCallback(() => {
     _setCurrentTransaction(null)
   }, [])
-  const { state, setState } = useAppContext()
+  const { state } = useAppContext()
   const [showConnect, setShowConnect] = useState(false)
   const [showWorks, setShowWorks] = useState(false)
 
@@ -243,35 +243,6 @@ export default function Body({
       />
       <Content>
         <Card totalSupply={totalSupply} reserveOWNToken={reserveOWNToken} />{' '}
-        <Info>
-          <div style={{ marginBottom: '4px' }}>Buy and sell real {TOKEN_NAME} with digital currency.</div>
-          <div style={{ marginBottom: '4px' }}>
-            Delivered on demand.{' '}
-            <a
-              href="/"
-              onClick={e => {
-                e.preventDefault()
-                setState(state => ({ ...state, visible: !state.visible }))
-                setShowWorks(true)
-              }}
-            >
-              Learn more
-            </a>
-          </div>
-          {/* <SubInfo>
-            An experiment in pricing and user experience by the team at Uniswap.{' '}
-            <a
-              href="/"
-              onClick={e => {
-                e.preventDefault()
-                setState(state => ({ ...state, visible: !state.visible }))
-                setShowWorks(true)
-              }}
-            >
-              How it works.
-            </a>
-          </SubInfo> */}
-        </Info>
         <BuyButtonFrame>
           <BuyButtons balanceOWN={balanceOWN} />
           <RedeemButton balanceOWN={balanceOWN} />
@@ -322,6 +293,7 @@ const Content = styled.div`
   width: calc(100vw - 32px);
   max-width: 375px;
   margin-top: 72px;
+  background-color: black;
 `
 
 const Info = styled.div`

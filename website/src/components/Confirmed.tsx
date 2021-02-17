@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { amountFormatter, TRADE_TYPES } from '../utils'
+import { amountFormatter, TOKEN_NAME, TRADE_TYPES } from '../utils'
 import Button from './Button'
 
 import close from './Gallery/close.svg'
@@ -89,7 +89,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
           <ImgStyle src={sent} alt="Logo" />
           <InfoFrame>
             <Owned>
-              <p> {`You got ${amountFormatter(amount, 18, 0)} SOCKS!`}</p>
+              <p> {`You got ${amountFormatter(amount, 18, 0)} ${TOKEN_NAME}!`}</p>
             </Owned>
           </InfoFrame>
         </TopFrame>
@@ -217,7 +217,7 @@ const CheckoutPrompt = styled.p`
 `
 const EtherscanLink = styled.a`
   text-decoration: none;
-  color: ${props => props.theme.uniswapPink};
+  color: ${props => props.theme.textColor};
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

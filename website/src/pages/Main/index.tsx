@@ -163,7 +163,6 @@ interface Props {
 }
 
 export default function Main({showStats, showLearnMore, showFAQ} : Props) {
-  console.log('show learn', showLearnMore, 'show stats', showStats, 'show faq', showFAQ)
   const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
   
 /*   if (library != null) {

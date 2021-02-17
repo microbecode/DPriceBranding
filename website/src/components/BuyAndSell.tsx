@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
 
 import Button from './Button'
-import SelectToken from './SelectToken'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
 import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID, TOKEN_NAME } from '../utils'
@@ -112,8 +111,6 @@ export default function BuyAndSell({
   //   )
   // }
 
-  const buying = state.tradeType === TRADE_TYPES.BUY
-
   const initialVal = useCallback(() : IValidationTradeResult => {
     return {
       inputValue: ethers.utils.bigNumberify(0),
@@ -126,24 +123,16 @@ export default function BuyAndSell({
   const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
   const [validationError, setValidationError] = useState<IValidationError>(null)
 
-  function getText(account, buying, errorMessage, ready, pending, hash) {
+  function getText(account, errorMessage, ready, pending, hash) {
     //console.log('getting text', account, buying, errorMessage, ready, pending, hash)
     if (account === null) {
       return 'Connect Wallet'
     } else if (ready && !errorMessage) {
-      if (!buying) {
-        if (pending && hash) {
-          return 'Waiting for confirmation'
-        } else {
-          return 'Sell ' + TOKEN_NAME;
-        }
+      if (pending && hash) {
+        return 'Waiting for confirmation'
       } else {
-        if (pending && hash) {
-          return 'Waiting for confirmation'
-        } else {
-          return 'Buy ' + TOKEN_NAME;
-        }
-      }
+        return 'Buy ' + TOKEN_NAME;
+      }      
     } else {
       return errorMessage ? errorMessage : 'Loading...'
     }
@@ -151,7 +140,7 @@ export default function BuyAndSell({
 
   // buy state validation
   useEffect(() => {
-    if (ready && buying) {
+    if (ready) {
       //console.log('hmm')
       try {
         const { error: validationError, ...validationState } = validateBuy(String(state.count))
@@ -168,7 +157,7 @@ export default function BuyAndSell({
         setValidationError(error)
       }
     }
-  }, [ready, buying, validateBuy, state.count, initialVal])
+  }, [ready, validateBuy, state.count, initialVal])
 
   const shouldRenderUnlock = validationError && validationError.code === ERROR_CODES.INSUFFICIENT_ALLOWANCE
 
@@ -176,7 +165,7 @@ export default function BuyAndSell({
 
   function renderFormData() {
     let conditionalRender
-    if (buying && buyValidationState.inputValue) {
+    if (buyValidationState.inputValue) {
       conditionalRender = (
         <>
           <p>
@@ -193,7 +182,7 @@ export default function BuyAndSell({
   }
 
   function TokenVal() {
-    if (buying && buyValidationState.inputValue) {
+    if (buyValidationState.inputValue) {
       return amountFormatter(buyValidationState.inputValue, 18, 4)
     } else {
       return '0'
@@ -225,7 +214,7 @@ export default function BuyAndSell({
         </InfoFrame>
       </TopFrame>
       {pending && currentTransactionHash ? (
-        <CheckoutControls buying={buying}>
+        <CheckoutControls>
           <CheckoutPrompt>
             <i>Your transaction is pending.</i>
           </CheckoutPrompt>
@@ -236,24 +225,19 @@ export default function BuyAndSell({
           </CheckoutPrompt>
         </CheckoutControls>
       ) : (
-        <CheckoutControls buying={buying}>
+        <CheckoutControls>
           <CheckoutPrompt>
-            <i>{buying ? 'How do you want to pay?' : 'What token do you want to receive?'}</i>
-          </CheckoutPrompt>
-          <SelectToken
-            selectedTokenSymbol={selectedTokenSymbol}
-            setSelectedTokenSymbol={setSelectedTokenSymbol}
-            prefix={TokenVal()}
-          />
+            <i>Current price in Ethers: {TokenVal()}Ξ</i>
+          </CheckoutPrompt>          
         </CheckoutControls>
       )}
       {shouldRenderUnlock ? (
         <ButtonFrame
-          text={`Unlock ${buying ? selectedTokenSymbol : TOKEN_NAME}`}
+          text={`Unlock ${selectedTokenSymbol}`}
           type={'cta'}
           pending={pending}
           onClick={() => {
-            unlock(buying).then(({ hash }) => {
+            unlock(true).then(({ hash }) => {
               console.log('unlocking', hash)
               setCurrentTransaction(hash, TRADE_TYPES.UNLOCK, undefined)
             })
@@ -264,7 +248,7 @@ export default function BuyAndSell({
           className="button"
           pending={pending}
           disabled={validationError !== null || (pending && currentTransactionHash)}
-          text={getText(account, buying, errorMessage, ready, pending, currentTransactionHash)}
+          text={getText(account, errorMessage, ready, pending, currentTransactionHash)}
           type={'cta'}
           onClick={() => {
             if (account === null) {
@@ -304,6 +288,7 @@ const TopFrame = styled.div`
   align-items: center;
   padding: 16px;
   box-sizing: border-box;
+  background-color: black;
 `
 
 const Unicorn = styled.p`
@@ -354,6 +339,8 @@ const CheckoutControls = styled.span`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  color: ${props => props.theme.textColor};
+  background-color: black;
 `
 
 const CheckoutPrompt = styled.p`
@@ -363,6 +350,7 @@ const CheckoutPrompt = styled.p`
   margin-left: 8px;
   text-align: left;
   width: 100%;
+  background-color: black;
 `
 
 const ButtonFrame = styled(Button)`
