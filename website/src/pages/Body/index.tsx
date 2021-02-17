@@ -45,7 +45,7 @@ export function Header(
         </Unicorn> */}
         <UpperLogo src={logo} alt='logo'></UpperLogo>
       </Link>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', height: '40px' }}>
         {totalSupply && (
           <Link to="/stats" style={{ textDecoration: 'none' }}>
             <Burned>
@@ -59,7 +59,7 @@ export function Header(
         <Account onClick={() => handleAccount()} balanceOWN={balanceOWN}>
           {account ? (
             balanceOWN && balanceOWN.gt(0) ? (
-              <SockCount>{balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`} SOCKS</SockCount>
+              <SockCount>{balanceOWN && `${amountFormatter(balanceOWN, 18, 0)}`} {TOKEN_NAME}</SockCount>
             ) : (
               <SockCount>{account.slice(0, 6)}...</SockCount>
             )

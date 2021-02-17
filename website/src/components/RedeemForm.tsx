@@ -151,10 +151,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     formState[country] &&
     formState[email]
 
-    if (!canSign) {
-      console.log('cant', formState[name], 'line1' + formState[line1], formState[city], formState[state], formState[zip], formState[country], formState[email])
-    }
-
   function onRecaptcha(value) {
     if (value) {
       setRecaptcha(value)
