@@ -41,7 +41,7 @@ const nameMap = {
   [email]: 'Email',
   [address]: 'Ethereum Address',
   [timestamp]: 'Time',
-  [numberBurned]: 'SOCKS Redeemed'
+  [numberBurned]: 'Shirts Redeemed'
 }
 
 // the order for fields that will be submitted
@@ -59,7 +59,7 @@ const defaultState = {
   [country]: '',
   [email]: ''
 }
-
+/* 
 // mapping from field to google maps return value
 const addressMapping = [
   { [line1]: 'street_address' },
@@ -67,7 +67,7 @@ const addressMapping = [
   { [state]: 'administrative_area_level_1' },
   { [zip]: 'postal_code' },
   { [country]: 'country' }
-]
+] */
 
 const recaptchaEnabled = false
 
@@ -77,7 +77,14 @@ const recaptchaEnabled = false
   numberBurned: actualNumberBurned
 } */
 
-export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, numberBurned: actualNumberBurned }) {
+interface RedeemFormProps {
+  setHasConfirmedAddress, 
+  setUserAddress, 
+  numberBurned,
+  shirtSize : string
+}
+
+export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, numberBurned: actualNumberBurned, shirtSize } : RedeemFormProps) {
   const { library, account } = useWeb3Context()
   const [recaptcha, setRecaptcha] = useState()
   const [autoAddress, setAutoAddress] = useState([])
@@ -91,7 +98,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     setFormState(state => ({ ...state, [name]: value }))
   }
 
-  function updateAutoFields(address) {
+  /* function updateAutoFields(address) {
     let constructedStreetAddress = ''
     function getTypes(addressItem, addressVal, item) {
       addressItem.forEach(type => {
@@ -127,12 +134,12 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         getTypes(addressItem.types, addressItem.long_name, item)
       })
     })
-  }
+  } */
 
   // keep acount in sync
   useEffect(() => {
     setUserAddress(autoAddress['formatted_address'])
-    updateAutoFields(autoAddress['address_components'] ? autoAddress['address_components'] : [])
+    //updateAutoFields(autoAddress['address_components'] ? autoAddress['address_components'] : [])
     handleChange({ target: { name: [address], value: account } })
   }, [account, autoAddress, setUserAddress])
 
@@ -149,7 +156,8 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     formState[state] &&
     formState[zip] &&
     formState[country] &&
-    formState[email]
+    formState[email] &&
+    !!shirtSize
 
   function onRecaptcha(value) {
     if (value) {
@@ -260,10 +268,50 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
 
           const header = `PLEASE VERIFY YOUR ADDRESS.\nYour data will never be shared publicly.`
           const formDataMessage = nameOrder.map(o => `${nameMap[o]}: ${formState[o]}`).join('\n')
-          const autoMessage = `${nameMap[address]}: ${account}\n${nameMap[timestamp]}: ${timestampToSign}\n${nameMap[numberBurned]}: ${actualNumberBurned}`
+          const autoMessage = `${nameMap[address]}: ${account}\n${nameMap[timestamp]}: ${timestampToSign}\n${nameMap[numberBurned]}: ${actualNumberBurned}\nsize:${shirtSize}`
 
           signer.signMessage(`${header}\n\n${formDataMessage}\n${autoMessage}`).then(returnedSignature => {
-            fetch('/', {
+            const doit = async () => {
+
+              const faunadb = require('faunadb')
+
+              const q = faunadb.query
+              const client = new faunadb.Client({
+                secret: process.env.REACT_APP_FAUNADB_SERVER_SECRET
+              })
+            
+              try {
+                await client.query(
+                  q.Create(q.Collection('addresses'), {
+                    data: {
+                      numberOfTokens: Number(numberBurned),
+                      timestamp: Number(timestamp),
+                      addressPhysical: {
+                        name : formState[name],
+                        line1 : formState[line1],
+                        line2 : formState[line2],
+                        city : formState[city],
+                        state : formState[state],
+                        zip : formState[zip],
+                        country : formState[country],
+                        email: formState[email]
+                      },
+                      addressEthereum: address,
+                      returnedSignature,
+                      shirtSize: shirtSize,
+/*                       invalid: isInvalid, */
+                      matched: false
+                    }
+                  })
+                )
+                console.log('stored');
+              } catch (error) {
+                console.error(error)
+                //return returnError('Unknown Error')
+              }
+            }
+            doit();
+           /*  fetch('/', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: encode({
@@ -281,7 +329,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
               .then(() => {
                 setHasConfirmedAddress(true)
               })
-              .catch(console.error)
+              .catch(console.error) */
           })
 
           event.preventDefault()

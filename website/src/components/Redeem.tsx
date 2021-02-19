@@ -21,6 +21,7 @@ import { ethers } from 'ethers'
 import { link } from './BuyAndSell'
 import { BigNumber, bigNumberify } from 'ethers/utils'
 import IncrementAmount from './IncrementAmount'
+import arrow from './Gallery/arrow.svg'
 
 const config = {
   angle: 90,
@@ -107,6 +108,17 @@ export default function Redeem({
 
   const initialTokens = balanceOWN ? ethers.utils.bigNumberify(amountFormatter(balanceOWN, 18, 0)) : bigNumberify(0)
   const [tokenCount, setTokenCount] = useState(initialTokens);
+  const [shirtSize, setShirtSize] = useState('');
+  const shirtOptions = ['', 'S', 'M', 'L', 'XL'];
+
+  function renderOptions(val) {
+    return (
+      <SelectItem key={val} value={val}>
+        {val}
+      </SelectItem>
+    )
+    
+  }
 
   function renderContent() {
     if (account === null) {
@@ -165,7 +177,20 @@ export default function Redeem({
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
                 <p>{tokenCount.toString()} Unisocks</p>
-                <p style={{ fontSize: '20px', color: '#AEAEAE' }}>One size fits most</p>
+                <SelectFrame>
+                  <SizeBox>Size:</SizeBox>
+                  <SelectMenu
+                    onChange={e => {
+                      setShirtSize(e.target.value)
+                    }}
+                    className="dropdown"
+                  >
+                    {shirtOptions.map((item, i) => renderOptions(item))}
+                  </SelectMenu>
+                  <NoHeight>
+                    <DropControl src={arrow} alt="dropdown-arrow" />
+                  </NoHeight>
+                 </SelectFrame>
                 <p style={{ fontSize: '14px', marginTop: '16px', color: '#AEAEAE' }}>Edition 0</p>
               </Owned>
             </InfoFrame>
@@ -177,6 +202,7 @@ export default function Redeem({
             setHasConfirmedAddress={setHasConfirmedAddress}
             setUserAddress={setUserAddress}
             numberBurned={numberBurned}
+            shirtSize={shirtSize}
           />
           <Back>
             <span
@@ -312,6 +338,58 @@ export default function Redeem({
     </>
   )
 }
+
+const SizeBox = styled.p`
+  padding-top: 10px;
+  padding-right: 10px;
+`
+
+const SelectFrame = styled.div`
+  width: 80px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+`
+
+const SelectMenu = styled.select`
+  font-size: 16px;
+  border-radius: 24px;
+  margin: 1rem;
+  font-family: sans-serif;
+  font-weight: 700;
+  min-width: 80px;
+  height: 48px;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+  appearance: none;
+  background-color: #fff;
+  background-color: ${props => props.theme.grey};
+  display: flex;
+  flex-direction: row;
+  padding-left: 1rem;
+`
+
+const SelectItem = styled.option`
+  border: none;
+  width: 100%;
+  border-radius: 24px;
+  background-color: ${props => props.theme.grey};
+  padding: 0px 0.5rem 0px 0.5rem;
+`
+
+const NoHeight = styled.div`
+  height: 0px;
+  position: relative;
+  top: 5px;
+  left: -40px;
+`
+
+const DropControl = styled.img`
+  height: 9px;
+
+`
 
 const TopFrame = styled.div`
   width: 100%;
