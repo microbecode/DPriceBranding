@@ -66,7 +66,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
-      provider: () => new HDWalletProvider(process.env.MNEMONIC, process.env.PROVIDER_URL),
+      provider: () => new HDWalletProvider([process.env.PRIVATE_KEY], process.env.PROVIDER_URL),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       //confirmations: 1,    // # of confs to wait between deployments. (default: 0)
