@@ -271,7 +271,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
           const autoMessage = `${nameMap[address]}: ${account}\n${nameMap[timestamp]}: ${timestampToSign}\n${nameMap[numberBurned]}: ${actualNumberBurned}\nsize:${shirtSize}`
 
           signer.signMessage(`${header}\n\n${formDataMessage}\n${autoMessage}`).then(returnedSignature => {
-            const doit = async () => {
+            const storeToDb = async () => {
 
               const faunadb = require('faunadb')
 
@@ -305,12 +305,22 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
                   })
                 )
                 console.log('stored');
+                return true;
               } catch (error) {
                 console.error(error)
+                return false;
                 //return returnError('Unknown Error')
               }
             }
-            doit();
+            const succeeded = storeToDb().then((succeeded) => {
+              if (succeeded) {
+                setHasConfirmedAddress(true)
+              }
+              else {
+                console.warn("failed to save db entry")
+              }
+            });
+            
            /*  fetch('/', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -327,7 +337,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
               })
             })
               .then(() => {
-                setHasConfirmedAddress(true)
+                
               })
               .catch(console.error) */
           })

@@ -224,8 +224,7 @@ export default function Redeem({
             <InfoFrame hasPickedAmount={hasPickedAmount}>
               <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
-                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} Unisocks</p>
-                <p style={{ fontSize: '14px' }}>One size fits most</p>
+                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} T-shirt</p>
                 <p
                   style={{
                     fontSize: '12px',
@@ -242,8 +241,8 @@ export default function Redeem({
               <ImgStyle src={nfc} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Bonus>Bonus</Bonus>
               <Owned>
-                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} Unisocks NFT</p>
-                <p style={{ fontSize: '14px' }}>Digital Collectible (10kb)</p>
+                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} NFT</p>
+                <p style={{ fontSize: '14px' }}>Digital, unique collectible</p>
                 <p
                   style={{
                     fontSize: '12px',
@@ -309,15 +308,12 @@ export default function Redeem({
             <ImgStyle src={sent} alt="Logo" hasPickedAmount={hasPickedAmount} hasBurnt={hasBurnt} />
             <InfoFrame>
               <Owned>
-                <p>You got {TOKEN_NAME}!</p>
+                <p>Stay tuned for your t-shirt!</p>
               </Owned>
             </InfoFrame>
           </TopFrame>
           <CheckoutPrompt>
             Estimated shipping time 2-3 weeks. <br /> Shipping time will vary by region.
-          </CheckoutPrompt>
-          <CheckoutPrompt>
-            Your shipping details can be viewed <Link to="/status">here</Link>.
           </CheckoutPrompt>
           <div style={{ margin: '16px 0 16px 16px' }}>
             <EtherscanLink href={link(lastTransactionHash)} target="_blank" rel="noopener noreferrer">
