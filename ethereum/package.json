@@ -34,6 +34,7 @@
     "@openzeppelin/docs-utils": "^0.1.0",
     "@openzeppelin/gsn-helpers": "^0.2.3",
     "@openzeppelin/gsn-provider": "^0.1.10",
+    "@openzeppelin/test-environment": "^0.1.9",
     "@openzeppelin/test-helpers": "^0.5.9",
     "chai": "^4.2.0",
     "eslint": "^6.5.1",
