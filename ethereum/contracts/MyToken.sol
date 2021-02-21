@@ -5,12 +5,12 @@ import "./token/ERC20/ERC20Burnable.sol";
 import "./MyCollectible.sol";
 
 contract MyToken is ERC20Burnable {
-    MyCollectible public col;
+    MyCollectible public nft;
 
     constructor(uint initialSupply, string memory name, string memory symbol) 
       ERC20(name, symbol) public {
           _mint(msg.sender, initialSupply);
-          col = new MyCollectible("MyCollectible", "MCO");
+          nft = new MyCollectible();
     }
 
     /**
@@ -24,8 +24,8 @@ contract MyToken is ERC20Burnable {
         if (amount >= 10 ** 18) {
             uint fullTokens = amount / (10 ** 18);
             for (uint i = 0; i < fullTokens; i++) {
-                uint newId = col.totalSupply() + 1;
-                col.mintCollectible(msg.sender, newId);
+                uint newId = nft.totalSupply() + 1;
+                nft.mintCollectible(msg.sender, newId);
             }
             
         }

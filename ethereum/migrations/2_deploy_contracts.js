@@ -25,7 +25,7 @@ const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
 
    await _deployer.deploy(token1Artifact, tokenAmount, tokenName, tokenSymbol, {from: accounts[0] });
   const token = await token1Artifact.deployed();
-  const nft = await token.col();
+  const nft = await token.nft();
 
   if (network != 'development') {
     const router = await routerArtifact.at(routerAddr);
@@ -48,5 +48,5 @@ const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
     console.log('pair', pair)
   }
 
-  console.log('token name', tokenName, "token address", token.address, "nft address", nft.address)
+  console.log('token name', tokenName, "token address", token.address, "nft address", nft)
 };
