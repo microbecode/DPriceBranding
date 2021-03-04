@@ -8,8 +8,9 @@ const { ZERO_ADDRESS } = constants;
 const ERC20DecimalsMock = contract.fromArtifact('ERC20DecimalsMock'); */
 
 const MyToken = contract.fromArtifact('MyToken');
+const MyCollectible = contract.fromArtifact('MyCollectible');
 
-describe('MyToken', function () {
+describe('MyToken', async function () {
   const [ initialHolder, recipient, anotherAccount ] = accounts;
 
   const name = 'My Token';
@@ -22,12 +23,34 @@ const tokenAmount = (new BN('50')).mul(powered);
   //const initialSupply = new BN(100);
 
   beforeEach(async function () {
-    this.token = await MyToken.new(tokenAmount, name, symbol);
+    this.token = await MyToken.new(tokenAmount, name, symbol, { from: initialHolder });
   });
 
-  it('has a name', async function () {
-      console.log('hm', await this.token.balanceOf(initialHolder))
-    expect(await this.token.name()).to.equal(name);
+  it('tx sender has all ERC20 tokens', async function () {
+    expect(await this.token.balanceOf(initialHolder)).to.be.bignumber.equal(tokenAmount);
+  });
+
+  describe('NFT', async function () {
+    beforeEach(async function () {
+      const nftAddr = await this.token.nft();
+      this.nft = await MyCollectible.at(nftAddr);
+    });
+
+    it('is set', async function ()  {
+      expect(this.nft.length > 1);
+    })
+
+    it('can be minted by minter', async function () {
+      const one = new BN(1);
+      await this.nft.mintCollectible(recipient, 5, { from: initialHolder });
+      expect(this.nft.balanceOf(recipient).to.be.bignumber.equal(one));
+    })
+
+    it('can\' be minted by non-minter', async function ()  {
+      const zero = new BN(0);
+      await this.nft.mintCollectible(recipient, 5, { from: recipient });
+      expect(this.nft.balanceOf(recipient).to.be.bignumber.equal(zero));
+    })
   });
 
   /* describe('_setupDecimals', function () {
