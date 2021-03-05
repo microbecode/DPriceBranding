@@ -14,7 +14,7 @@ contract MyToken is ERC20Burnable {
     }
 
     /**
-     * @dev Destroys `amount` tokens from the caller and mints an NFT
+     * @dev Destroys `amount` tokens from the caller and mints NFTs
      *
      * See {ERC20-_burn}.
      */

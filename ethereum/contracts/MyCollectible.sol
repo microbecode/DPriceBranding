@@ -10,7 +10,7 @@ contract MyCollectible is ERC721 {
     }
 
     function mintCollectible(address receiver, uint tokenId) public {
-        require(msg.sender == _minter, "only minter can mint");
+        require(msg.sender == _minter, "Only minter can mint");
         _safeMint(receiver, tokenId);
     }
 }
