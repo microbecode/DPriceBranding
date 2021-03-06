@@ -246,9 +246,9 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
     try {
       const getPrice = async () => {
         const key = process.env.REACT_APP_ETHERSCAN_API_KEY_PRICE;
-        const url = '.netlify/functions/ethprice'
+        const url = 'https://dpricebranding.netlify.app/.netlify/functions/ethprice';//'.netlify/functions/ethprice'
         const res = await fetch(url);
-        console.log('res', res)
+        console.log('res', res.json())
       }
       
       getPrice();
