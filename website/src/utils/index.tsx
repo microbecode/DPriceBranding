@@ -8,28 +8,56 @@ import PAIR_ABI from './pair.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
-export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f';// 02 ropsten //;process.env.REACT_APP_FACTORY_ADDRESS;
-export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'; 
-export const WETH_ADDRESS ='0xc778417e063141139fce010982780140aa0cd5ab'; // Ropsten
-
-export const TOKEN_ADDRESSES = {
+/* export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
   OWN: '0xBB393edDe4A8301b06968955EC13A2ab601239A6' // My own token in ropsten, 50 * 1e18 totalsupply
-}
+} */
 export const TOKEN_NAME = '$HDK';
-
-export const PAIR_ADDRESS= '0x4d596212C9734882E0b6D4f148e27fdF33aDd183';
-
 export const TOTAL_NUM_OF_TOKENS = 30;
-
 export const USED_CHAIN_ID : number = 3;
 
-export const TOKEN_SYMBOLS = { ETH: 'ETH', OWN: 'OWN'};/* Object.keys(TOKEN_ADDRESSES).reduce((o, k) => {
-  o[k] = k
-  return o
-}, {}); */
+export enum AddressTypes {
+  OWN,
+  PAIR,
+  WETH,
+  ROUTER,
+  ETH
+}
 
+export const GetAddress = (type : AddressTypes) : string => {
+
+  if (USED_CHAIN_ID == 3) { // Ropsten
+    switch (type) {
+      case AddressTypes.OWN:
+        return '0xBB393edDe4A8301b06968955EC13A2ab601239A6';
+      case AddressTypes.PAIR:
+        return '0x4d596212C9734882E0b6D4f148e27fdF33aDd183';
+      case AddressTypes.ROUTER:
+        return '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+      case AddressTypes.WETH:
+        return '0xc778417e063141139fce010982780140aa0cd5ab';
+    }
+  }
+  else if (USED_CHAIN_ID == 1) { // mainnet
+    switch (type) {
+      case AddressTypes.OWN:
+        return '';
+      case AddressTypes.PAIR:
+        return '';
+      case AddressTypes.ROUTER:
+        return '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+      case AddressTypes.WETH:
+        return '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+    }
+  }
+  if (type === AddressTypes.ETH) {
+    return 'ETH';
+  }
+  return null;
+}
+
+export const TOKEN_SYMBOLS = { ETH: 'ETH', OWN: 'OWN'};
 
 export const ERROR_CODES =
 {
@@ -100,13 +128,6 @@ export function getRouterContract(address, library, account) {
 
 export function getPairContract(address, library, account) {
   return getContract(address, PAIR_ABI, library, account)
-}
-
-export async function getTokenExchangeAddressFromFactory(tokenAddress, library, account) {
-  if (!FACTORY_ABI) {
-    console.log('nope');
-  }
-  return getContract(FACTORY_ADDRESS, FACTORY_ABI, library, account).getExchange(tokenAddress)
 }
 
 // get the ether balance of an address

@@ -1,16 +1,14 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useWeb3Context } from 'web3-react'
-import { FACTORY_ADDRESS, getPairContract, getRouterContract, PAIR_ADDRESS, ROUTER_ADDRESS } from '../utils'
+import { AddressTypes, GetAddress, getPairContract, getRouterContract } from '../utils'
 
 import {
   isAddress,
   getTokenContract,
   getExchangeContract,
-  getTokenExchangeAddressFromFactory,
   getEtherBalance,
   getTokenBalance,
-  getTokenAllowance,
-  TOKEN_ADDRESSES
+  getTokenAllowance
 } from '../utils'
 import { ethers, utils } from 'ethers'
 import { BigNumber } from 'ethers/utils'
@@ -42,35 +40,6 @@ export function useTokenContract(tokenAddress, withSignerIfPossible = true) {
       return null
     }
   }, [account, library, tokenAddress, withSignerIfPossible])
-}
-
-export function useExchangeContract(tokenAddress, withSignerIfPossible = true) {
-  const { library, account } = useWeb3Context()
-
-  const [exchangeAddress, setExchangeAddress] = useState<string>()
-  useEffect(() => {
-    if (isAddress(tokenAddress)) {
-      let stale = false
-      setExchangeAddress(FACTORY_ADDRESS);
-      /* getTokenExchangeAddressFromFactory(tokenAddress, library).then(exchangeAddress => {
-        if (!stale) {
-          setExchangeAddress(exchangeAddress)
-        }
-      }) */
-      return () => {
-        stale = true
-        setExchangeAddress(null)
-      }
-    }
-  }, [library, tokenAddress])
-
-  return useMemo(() => {
-    try {
-      return getExchangeContract(exchangeAddress, library, withSignerIfPossible ? account : undefined)
-    } catch {
-      return null
-    }
-  }, [exchangeAddress, library, withSignerIfPossible, account])
 }
 
 export function useRouterContract(routerAddress : string, withSignerIfPossible = true ) {
@@ -174,7 +143,7 @@ export function usePairReserves() : IPairReserves {
   }, []);
 
   const [reserves, setReserves] = useState<IPairReserves>(defaultVal())
-  const contr = usePairContract(PAIR_ADDRESS);
+  const contr = usePairContract(GetAddress(AddressTypes.PAIR));
   const updateReserves = useCallback(() => {
     let stale = false
     contr.getReserves().then(res => {
@@ -202,23 +171,8 @@ export function usePairReserves() : IPairReserves {
   }, [updateReserves])
 
   useBlockEffect(updateReserves)
-  
-/*   if (reserves) {
-console.log('return reserves' , reserves.reserveETH.toString(), reserves.reserveToken.toString())
-  } */
+
   return reserves
-  /*
-  const contr = usePairContract(PAIR_ADDRESS);
-  contr.getReserves().then(res => {
-    const reserveETH = res[1] as BigNumber;
-    const reserveToken = res[0] as BigNumber;
-    console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
-    return { reserveETH, reserveToken }
-  });
-
-  return { reserveETH: utils.bigNumberify(0), reserveToken: utils.bigNumberify(0) };
-*/
-
 }
 
 export function useAddressAllowance(address, tokenAddress, spenderAddress) {
@@ -256,10 +210,4 @@ export function useAddressAllowance(address, tokenAddress, spenderAddress) {
   useBlockEffect(updateAllowance)
 
   return allowance
-}
-
-export function useExchangeAllowance(address, tokenAddress) {
-  const exchangeContract = useExchangeContract(tokenAddress)
-
-  return useAddressAllowance(address, tokenAddress, exchangeContract && exchangeContract.address)
 }

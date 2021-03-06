@@ -2,14 +2,12 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
 
-import { TOKEN_SYMBOLS, TOKEN_ADDRESSES, ERROR_CODES, PAIR_ADDRESS, ROUTER_ADDRESS, WETH_ADDRESS } from '../../utils'
+import { TOKEN_SYMBOLS, ERROR_CODES, GetAddress, AddressTypes } from '../../utils'
 import {
   useTokenContract,
-  useExchangeContract,
   useAddressBalance,
   useAddressAllowance,
   usePairReserves,
-  useExchangeAllowance,
   useTotalSupply,
   useRouterContract
 } from '../../hooks'
@@ -176,46 +174,29 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   // selected token
   const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(TOKEN_SYMBOLS.ETH)
 
-  // get exchange contracts
-  //const exchangeContractSOCKS = useExchangeContract(TOKEN_ADDRESSES.OWN)
-  //const exchangeContractSelectedToken = useExchangeContract(TOKEN_ADDRESSES[selectedTokenSymbol])
-
   // get pair contract
-  const routerContract = useRouterContract(ROUTER_ADDRESS);
+  const routerContract = useRouterContract(GetAddress(AddressTypes.ROUTER));
 
   // get token contracts
-  const tokenContractSOCKS = useTokenContract(TOKEN_ADDRESSES.OWN)
-  //const tokenContractSelectedToken = useTokenContract(TOKEN_ADDRESSES[selectedTokenSymbol])
+  const tokenContractSOCKS = useTokenContract(GetAddress(AddressTypes.OWN))
 
   // get balances
-  const myBalanceETH = useAddressBalance(account, TOKEN_ADDRESSES.ETH)
-  const myBalanceOWN = useAddressBalance(account, TOKEN_ADDRESSES.OWN)
-  //const balanceSelectedToken = useAddressBalance(account, TOKEN_ADDRESSES[selectedTokenSymbol])
+  const myBalanceETH = useAddressBalance(account, GetAddress(AddressTypes.ETH))
+  const myBalanceOWN = useAddressBalance(account, GetAddress(AddressTypes.OWN))
 //console.log('my bal', myBalanceETH.toString(), 'se', myBalanceOWN.toString())
 
   // totalsupply
   const totalSupply = useTotalSupply(tokenContractSOCKS)
 
-  // get allowances
-  const allowanceSOCKS = useAddressAllowance(
-    account,
-    TOKEN_ADDRESSES.OWN,
-    ROUTER_ADDRESS
-  )
-  const allowanceSelectedToken = useExchangeAllowance(account, TOKEN_ADDRESSES[selectedTokenSymbol])
-
-  // get reserves
-/*   const reserveTOKENETH = useAddressBalance(ROUTER_ADDRESS, TOKEN_ADDRESSES.ETH)
-  const reserveOWNToken = useAddressBalance(ROUTER_ADDRESS, TOKEN_ADDRESSES.OWN) */
-   const { reserveETH, reserveToken } = usePairReserves() 
+  const { reserveETH, reserveToken } = usePairReserves() 
    
 
 /*   const [USDExchangeRateETH, setUSDExchangeRateETH] = useState()
   const [USDExchangeRateSelectedToken, setUSDExchangeRateSelectedToken] = useState() */
 
   const ready = !!(
-    (account === null || allowanceSOCKS) &&
-    (selectedTokenSymbol === 'ETH' || account === null || allowanceSelectedToken) &&
+  //  (account === null || allowanceSOCKS) &&
+   // (selectedTokenSymbol === 'ETH' || account === null || allowanceSelectedToken) &&
     (account === null || myBalanceETH) &&
     (account === null || myBalanceOWN) &&
  //   (account === null || balanceSelectedToken) &&
@@ -267,12 +248,12 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
 /*     const contract = buyingSOCKS ? tokenContractSelectedToken : tokenContractSOCKS
     const spenderAddress = buyingSOCKS ? exchangeContractSelectedToken.address : exchangeContractSOCKS.address */
 
-    const estimatedGasLimit = await tokenContractSOCKS.estimate.approve(ROUTER_ADDRESS, ethers.constants.MaxUint256)
+    const estimatedGasLimit = await tokenContractSOCKS.estimate.approve(GetAddress(AddressTypes.ROUTER), ethers.constants.MaxUint256)
     const estimatedGasPrice = await library
       .getGasPrice()
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
-    return tokenContractSOCKS.approve(ROUTER_ADDRESS, ethers.constants.MaxUint256, {
+    return tokenContractSOCKS.approve(GetAddress(AddressTypes.ROUTER), ethers.constants.MaxUint256, {
       gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
       gasPrice: estimatedGasPrice
     })
@@ -333,7 +314,7 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
       } */
 
       // validate allowance
-      if (selectedTokenSymbol !== 'ETH') {
+/*       if (selectedTokenSymbol !== 'ETH') {
         if (allowanceSelectedToken && maximum && allowanceSelectedToken.lt(maximum)) {
           const error = {} as IValidationError;
           error.code = ERROR_CODES.INSUFFICIENT_ALLOWANCE
@@ -342,7 +323,7 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
             errorAccumulator = error
           }
         }
-      }
+      } */
       
       return {
         inputValue: requiredValueInSelectedToken,
@@ -352,7 +333,6 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
       }
     },
     [
-      allowanceSelectedToken,
       myBalanceETH,
      // myBalanceOWN,
       reserveETH,
@@ -377,7 +357,9 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
 
       const oneToken = ethers.utils.bigNumberify(10).pow(17);
       console.log('one token' , oneToken.toString())
-      const routerPath = [WETH_ADDRESS, TOKEN_ADDRESSES.OWN];
+      const weth = GetAddress(AddressTypes.WETH);
+      const own = GetAddress(AddressTypes.OWN);
+      const routerPath = [weth, own];
 
       const aa = await routerContract.getAmountsIn(oneToken, routerPath) as BigNumber;
     //  const maximumInputValue = aa[1];
