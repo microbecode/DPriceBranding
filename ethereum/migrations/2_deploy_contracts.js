@@ -12,7 +12,7 @@ const tempDivider = new BN('100'); // use less Eth so cheaper to buy
 const ten = new BN('10');
 const eighteen = new BN('18');
 const powered = ten.pow(eighteen);
-const tokenAmount = (new BN('50')).mul(powered);
+const tokenAmount = (new BN('30')).mul(powered);
 const ethAmount = (new BN('4')).mul(powered).div(tempDivider);
 
 

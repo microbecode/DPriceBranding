@@ -15,13 +15,13 @@ export const WETH_ADDRESS ='0xc778417e063141139fce010982780140aa0cd5ab'; // Rops
 export const TOKEN_ADDRESSES = {
   ETH: 'ETH',
   //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  OWN: '0x92a25603981eDA3910b79587FAb098692AfC5113' // My own token in ropsten, 50 * 1e18 totalsupply
+  OWN: '0xBB393edDe4A8301b06968955EC13A2ab601239A6' // My own token in ropsten, 50 * 1e18 totalsupply
 }
 export const TOKEN_NAME = '$HDK';
 
-export const PAIR_ADDRESS= '0x457308abEb0ec81Fa25fF31EF42359F8EaAA3c83';
+export const PAIR_ADDRESS= '0x4d596212C9734882E0b6D4f148e27fdF33aDd183';
 
-export const TOTAL_NUM_OF_TOKENS = 50;
+export const TOTAL_NUM_OF_TOKENS = 30;
 
 export const USED_CHAIN_ID : number = 3;
 

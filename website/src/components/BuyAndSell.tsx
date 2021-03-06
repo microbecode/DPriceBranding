@@ -5,7 +5,7 @@ import { useWeb3Context } from 'web3-react'
 import Button from './Button'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
-import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID, TOKEN_NAME } from '../utils'
+import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID, TOKEN_NAME, TOTAL_NUM_OF_TOKENS } from '../utils'
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
@@ -169,8 +169,7 @@ export default function BuyAndSell({
       conditionalRender = (
         <>
           <p>
-            ${ready && amountFormatter(dollarize(buyValidationState.inputValue), 18, 2)}
-            {/* ({amountFormatter(buyValidationState.inputValue, 18, 4)} {selectedTokenSymbol}) */}
+            ~ ${ready && dollarize(buyValidationState.inputValue).toString()}
           </p>
         </>
       )
@@ -208,7 +207,7 @@ export default function BuyAndSell({
           <CurrentPrice>
             {/* {dollarPrice && `$${amountFormatter(dollarPrice, 18, 2)} USD`} */}
             <USDPrice>{renderFormData()}</USDPrice>
-            <SockCount>{reserveOWNToken && `${amountFormatter(reserveOWNToken, 18, 0)}/50 available`}</SockCount>
+            <SockCount>{reserveOWNToken && `${amountFormatter(reserveOWNToken, 18, 0)}/${TOTAL_NUM_OF_TOKENS} available`}</SockCount>
           </CurrentPrice>
           <IncrementToken />
         </InfoFrame>

@@ -229,15 +229,17 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   //console.log('is ready', ready);
 
   function _dollarize(amount, exchangeRate) {
-    //console.log('doffari', amount.toString(), exchangeRate)
-    return amount.mul(exchangeRate).div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
+    return amount
+      .mul(exchangeRate)
+      .div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18)))
   }
 
   function dollarize(amount) {
-    return _dollarize(
+    const val = _dollarize(
       amount,
-      1//selectedTokenSymbol === TOKEN_SYMBOLS.ETH ? USDExchangeRateETH : USDExchangeRateSelectedToken
-    )
+      dollarPrice
+    );
+    return val;
   }
 
   const [dollarPrice, setDollarPrice] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
@@ -248,7 +250,9 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
         const url = '.netlify/functions/ethprice';
         const res = await fetch(url);
         const json = await res.json();
-        console.log('res', json);
+        const rate = json.result.ethusd.split(".")[0] as string;
+        const bnRate = ethers.utils.bigNumberify(rate);
+        setDollarPrice(bnRate);
       }
       
       getPrice();
