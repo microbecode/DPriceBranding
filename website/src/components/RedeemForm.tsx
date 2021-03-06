@@ -296,11 +296,9 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
                         country : formState[country],
                         email: formState[email]
                       },
-                      addressEthereum: address,
                       returnedSignature,
                       shirtSize: shirtSize,
-/*                       invalid: isInvalid, */
-                      matched: false
+                      accountAddress: account
                     }
                   })
                 )
