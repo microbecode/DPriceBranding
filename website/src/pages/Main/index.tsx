@@ -16,7 +16,7 @@ import {
 import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
 import { Web3Context } from 'web3-react/dist/context'
-import { BigNumber } from 'ethers/utils'
+import { BigNumber, fetchJson } from 'ethers/utils'
 import Stats from 'pages/Stats'
 import LearnMore from 'pages/LearnMore'
 import FAQ from 'pages/FAQ'
@@ -241,18 +241,23 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   }
 
   const [dollarPrice, setDollarPrice] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
-/*   useEffect(() => {
+  useEffect(() => {
+    
     try {
-      const SOCKSExchangeRateETH = getExchangeRate(reserveOWNToken, reserveTOKENETH)
-      setDollarPrice(
-        SOCKSExchangeRateETH.mul(USDExchangeRateETH).div(
-          ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18))
-        )
-      )
+      const getPrice = async () => {
+        const key = process.env.REACT_APP_ETHERSCAN_API_KEY_PRICE;
+        const url = 'https://api.etherscan.io/api?module=stats&action=ethprice&apikey=' + key;
+        const res = await fetch(url);
+        console.log('res', res)
+      }
+      
+      getPrice();
     } catch {
       setDollarPrice(ethers.utils.bigNumberify(0))
     }
-  }, [USDExchangeRateETH, reserveTOKENETH, reserveOWNToken]) */
+  }, []) 
+
+
 
   async function unlock(buyingSOCKS = true) {
 /*     const contract = buyingSOCKS ? tokenContractSelectedToken : tokenContractSOCKS
@@ -428,7 +433,7 @@ return trx;
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
     const estimatedGasLimit = await tokenContractSOCKS.estimate.burn(parsedAmount)
-console.log('burnnnn')
+
      return tokenContractSOCKS.burn(parsedAmount, {
       gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
       gasPrice: estimatedGasPrice
