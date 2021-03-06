@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { amountFormatter, TOKEN_NAME, TRADE_TYPES, USED_CHAIN_ID } from '../utils'
+import { amountFormatter, getEtherscanLink, TOKEN_NAME, TRADE_TYPES } from '../utils'
 import Button from './Button'
 
 import close from './Gallery/close.svg'
@@ -51,13 +51,6 @@ const Unicorn = styled.p`
 export default function Confirmed({ hash, type, amount, clearLastTransaction, closeCheckout }) {
   const { state } = useAppContext()
 
-  function link(hash) {
-    if (USED_CHAIN_ID === 3) {
-      return `https://ropsten.etherscan.io/tx/${hash}`;
-    }
-    return `https://etherscan.io/tx/${hash}`
-  }
-
   useEffect(() => {
     if (!state.visible) {
       clearLastTransaction()
@@ -77,7 +70,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
           </InfoFrame>
         </TopFrame>
         <CheckoutPrompt>
-          <EtherscanLink href={link(hash)} target="_blank" rel="noopener noreferrer">
+          <EtherscanLink href={getEtherscanLink(hash)} target="_blank" rel="noopener noreferrer">
             Transaction Details ↗
           </EtherscanLink>
         </CheckoutPrompt>
@@ -97,7 +90,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
           </InfoFrame>
         </TopFrame>
         <CheckoutPrompt>
-          <EtherscanLink href={link(hash)} target="_blank" rel="noopener noreferrer">
+          <EtherscanLink href={getEtherscanLink(hash)} target="_blank" rel="noopener noreferrer">
             Transaction Details ↗
           </EtherscanLink>
         </CheckoutPrompt>
@@ -126,7 +119,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
           </InfoFrame>
         </TopFrame>
         <CheckoutPrompt>
-          <EtherscanLink href={link(hash)} target="_blank" rel="noopener noreferrer">
+          <EtherscanLink href={getEtherscanLink(hash)} target="_blank" rel="noopener noreferrer">
             Transaction Details ↗
           </EtherscanLink>
         </CheckoutPrompt>

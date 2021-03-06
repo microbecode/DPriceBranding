@@ -5,7 +5,7 @@ import { useWeb3Context } from 'web3-react'
 import Button from './Button'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
-import { ERROR_CODES, amountFormatter, TRADE_TYPES, USED_CHAIN_ID, TOKEN_NAME, TOTAL_NUM_OF_TOKENS } from '../utils'
+import { ERROR_CODES, amountFormatter, TRADE_TYPES, TOKEN_NAME, TOTAL_NUM_OF_TOKENS, getEtherscanLink } from '../utils'
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
@@ -74,12 +74,7 @@ interface Props {
   setShowConnect
 }
 
-export function link(hash) {
-  if (USED_CHAIN_ID === 3) {
-    return `https://ropsten.etherscan.io/tx/${hash}`;
-  }
-  return `https://etherscan.io/tx/${hash}`
-}
+
 
 export default function BuyAndSell({
   selectedTokenSymbol,
@@ -218,7 +213,7 @@ export default function BuyAndSell({
             <i>Your transaction is pending.</i>
           </CheckoutPrompt>
           <CheckoutPrompt>
-            <EtherscanLink href={link(currentTransactionHash)} target="_blank" rel="noopener noreferrer">
+            <EtherscanLink href={getEtherscanLink(currentTransactionHash)} target="_blank" rel="noopener noreferrer">
               View on Etherscan.
             </EtherscanLink>
           </CheckoutPrompt>

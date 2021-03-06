@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
 import { Message } from './styles'
-import { USED_CHAIN_ID } from '../../utils'
+import { getDesiredChainId } from '../../utils'
 
 export default function Web3ReactManager({ children }) {
   const { setConnector, error, active, networkId, connector } = useWeb3Context()
 
   const checkCorrectNetwork = async (library) => {
     var network = await library.getNetwork();
-    if (network.chainId !== USED_CHAIN_ID) {
-      console.warn("Skipping injected network " + network.chainId + " since we require " + USED_CHAIN_ID);
+    if (network.chainId !== getDesiredChainId()) {
+      console.warn("Skipping injected network " + network.chainId + " since we require " + getDesiredChainId());
       return false;      
     }
     return true;

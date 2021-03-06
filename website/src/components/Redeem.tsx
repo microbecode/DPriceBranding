@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useAppContext } from '../context'
 import Button from './Button'
 import RedeemForm from './RedeemForm'
-import { amountFormatter, TOKEN_NAME } from '../utils'
+import { amountFormatter, getEtherscanLink, TOKEN_NAME } from '../utils'
 
 import IncrementToken from './IncrementToken'
 import test from './Gallery/test.png'
@@ -18,7 +18,6 @@ import closeDark from './Gallery/close_dark.svg'
 
 import Confetti from 'react-dom-confetti'
 import { ethers } from 'ethers'
-import { link } from './BuyAndSell'
 import { BigNumber, bigNumberify } from 'ethers/utils'
 import IncrementAmount from './IncrementAmount'
 import arrow from './Gallery/arrow.svg'
@@ -285,7 +284,7 @@ export default function Redeem({
           />
           <Back disabled={!!pending}>
             {pending ? (
-              <EtherscanLink href={link(transactionHash)} target="_blank" rel="noopener noreferrer">
+              <EtherscanLink href={getEtherscanLink(transactionHash)} target="_blank" rel="noopener noreferrer">
                 View on Etherscan.
               </EtherscanLink>
             ) : (
@@ -316,7 +315,7 @@ export default function Redeem({
             Estimated shipping time 2-3 weeks. <br /> Shipping time will vary by region.
           </CheckoutPrompt>
           <div style={{ margin: '16px 0 16px 16px' }}>
-            <EtherscanLink href={link(lastTransactionHash)} target="_blank" rel="noopener noreferrer">
+            <EtherscanLink href={getEtherscanLink(lastTransactionHash)} target="_blank" rel="noopener noreferrer">
               View on Etherscan.
             </EtherscanLink>
           </div>

@@ -3,19 +3,12 @@ import { ethers } from 'ethers'
 import ERC20_ABI from './erc20.json'
 import EXCHANGE_ABI from './router02.json'
 import ROUTER_ABI from './router02.json'
-import FACTORY_ABI from './factory02.json'
 import PAIR_ABI from './pair.json'
 
 import UncheckedJsonRpcSigner from './signer'
 
-/* export const TOKEN_ADDRESSES = {
-  ETH: 'ETH',
-  //SOCKS: '0xad6d458402f60fd3bd25163575031acdce07538d' // <- DAi. old://'0x23B608675a2B2fB1890d3ABBd85c5775c51691d5'
-  OWN: '0xBB393edDe4A8301b06968955EC13A2ab601239A6' // My own token in ropsten, 50 * 1e18 totalsupply
-} */
 export const TOKEN_NAME = '$HDK';
 export const TOTAL_NUM_OF_TOKENS = 30;
-export const USED_CHAIN_ID : number = 3;
 
 export enum AddressTypes {
   OWN,
@@ -25,9 +18,17 @@ export enum AddressTypes {
   ETH
 }
 
-export const GetAddress = (type : AddressTypes) : string => {
+enum ChainIds {
+  Mainnet = 1,
+  Ropsten = 3
+}
 
-  if (USED_CHAIN_ID == 3) { // Ropsten
+export const getDesiredChainId = () : number => {
+  return process.env.REACT_APP_ENVIRONMENT == 'prod' ? ChainIds.Mainnet : ChainIds.Ropsten;
+}
+
+export const GetAddress = (type : AddressTypes) : string => {
+  if (getDesiredChainId() == ChainIds.Ropsten) {
     switch (type) {
       case AddressTypes.OWN:
         return '0xBB393edDe4A8301b06968955EC13A2ab601239A6';
@@ -39,7 +40,7 @@ export const GetAddress = (type : AddressTypes) : string => {
         return '0xc778417e063141139fce010982780140aa0cd5ab';
     }
   }
-  else if (USED_CHAIN_ID == 1) { // mainnet
+  else if (getDesiredChainId() == ChainIds.Mainnet) {
     switch (type) {
       case AddressTypes.OWN:
         return '';
@@ -67,26 +68,12 @@ export const ERROR_CODES =
   INSUFFICIENT_SELECTED_TOKEN_BALANCE: 'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
   INSUFFICIENT_ALLOWANCE: 'INSUFFICIENT_ALLOWANCE'
 };
-/* [
-  'INVALID_AMOUNT',
-  'INVALID_TRADE',
-  'INSUFFICIENT_ETH_GAS',
-  'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
-  'INSUFFICIENT_ALLOWANCE'
-].reduce((o, k, i) => {
-  o[k] = i
-  return o
-}, {}) */
 
 export const TRADE_TYPES = {
   BUY: 'BUY',
   UNLOCK: 'UNLOCK',
   REDEEM: 'REDEEM'
 };
-  /* ['BUY', 'SELL', 'UNLOCK'].reduce((o, k, i) => {
-  o[k] = i
-  return o
-}, {}) */
 
 export function isAddress(value) {
   try {
@@ -95,6 +82,13 @@ export function isAddress(value) {
   } catch {
     return false
   }
+}
+
+export function getEtherscanLink(hash) {
+  if (process.env.REACT_APP_ENVIRONMENT == 'prod') {
+    return `https://etherscan.io/tx/${hash}`    
+  }
+  return `https://ropsten.etherscan.io/tx/${hash}`;
 }
 
 // account is optional
