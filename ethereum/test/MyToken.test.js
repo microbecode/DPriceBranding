@@ -107,5 +107,17 @@ describe('MyToken', async function () {
       expect(await this.nft.ownerOf(ten)).to.be.equal(initialHolder);
       expect(await this.nft.totalSupply()).to.be.bignumber.equal(ten); 
     });
+
+    it('NFT creation for various owners works', async function ()  {
+      await this.token.transfer(recipient, oneToken, { from: initialHolder });
+      await this.token.burn(oneToken, { from: recipient });
+      await this.token.burn(oneToken, { from: initialHolder });
+
+      expect(await this.nft.balanceOf(recipient)).to.be.bignumber.equal(one);
+      expect(await this.nft.balanceOf(initialHolder)).to.be.bignumber.equal(one);
+      expect(await this.nft.ownerOf(one)).to.be.bignumber.equal(recipient);
+      expect(await this.nft.ownerOf(two)).to.be.bignumber.equal(initialHolder);
+      expect(await this.nft.totalSupply()).to.be.bignumber.equal(two);
+    });
   });
 });
