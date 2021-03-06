@@ -145,21 +145,26 @@ export function usePairReserves() : IPairReserves {
   const [reserves, setReserves] = useState<IPairReserves>(defaultVal())
   const contr = usePairContract(GetAddress(AddressTypes.PAIR));
   const updateReserves = useCallback(() => {
-    let stale = false
-    contr.getReserves().then(res => {
-      if (!stale) {
-        const reserveETH = res[1] as BigNumber;
-        const reserveToken = res[0] as BigNumber;
-        //console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
-        const data : IPairReserves = { reserveETH, reserveToken };
-        setReserves(data);        
-      }
-    })
-    .catch(() => {
-      if (!stale) {
-        setReserves(defaultVal())
-      }
-    });
+    let stale = false;
+    if (contr == null) {
+      setReserves(defaultVal());
+    }
+    else {
+      contr.getReserves().then(res => {
+        if (!stale) {
+          const reserveETH = res[1] as BigNumber;
+          const reserveToken = res[0] as BigNumber;
+          //console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
+          const data : IPairReserves = { reserveETH, reserveToken };
+          setReserves(data);        
+        }
+      })
+      .catch(() => {
+        if (!stale) {
+          setReserves(defaultVal())
+        }
+      });
+    }
     return () => {
       stale = true
       setReserves(defaultVal())

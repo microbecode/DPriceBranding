@@ -24,11 +24,11 @@ enum ChainIds {
 }
 
 export const getDesiredChainId = () : number => {
-  return process.env.REACT_APP_ENVIRONMENT == 'prod' ? ChainIds.Mainnet : ChainIds.Ropsten;
+  return process.env.REACT_APP_ENVIRONMENT === 'prod' ? ChainIds.Mainnet : ChainIds.Ropsten;
 }
 
 export const GetAddress = (type : AddressTypes) : string => {
-  if (getDesiredChainId() == ChainIds.Ropsten) {
+  if (getDesiredChainId() === ChainIds.Ropsten) {
     switch (type) {
       case AddressTypes.OWN:
         return '0xBB393edDe4A8301b06968955EC13A2ab601239A6';
@@ -40,7 +40,7 @@ export const GetAddress = (type : AddressTypes) : string => {
         return '0xc778417e063141139fce010982780140aa0cd5ab';
     }
   }
-  else if (getDesiredChainId() == ChainIds.Mainnet) {
+  else if (getDesiredChainId() === ChainIds.Mainnet) {
     switch (type) {
       case AddressTypes.OWN:
         return '';
@@ -85,7 +85,7 @@ export function isAddress(value) {
 }
 
 export function getEtherscanLink(hash) {
-  if (process.env.REACT_APP_ENVIRONMENT == 'prod') {
+  if (process.env.REACT_APP_ENVIRONMENT === 'prod') {
     return `https://etherscan.io/tx/${hash}`    
   }
   return `https://ropsten.etherscan.io/tx/${hash}`;

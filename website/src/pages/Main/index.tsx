@@ -60,30 +60,6 @@ function calculateEtherTokenInputFromOutput(outputAmount, inputReserve, outputRe
   return numerator.div(denominator).add(ethers.constants.One) as ethers.utils.BigNumber;
 }
 
-// get exchange rate for a token/ETH pair
-function getExchangeRate(inputValue : ethers.utils.BigNumber, outputValue : ethers.utils.BigNumber, invert = false) {
-  const inputDecimals = 18
-  const outputDecimals = 18
-
-  if (inputValue && inputDecimals && outputValue && outputDecimals) {
-    const factor = ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(18))
-
-    if (invert) {
-      return inputValue
-        .mul(factor)
-        .div(outputValue)
-        .mul(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(outputDecimals)))
-        .div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(inputDecimals)))
-    } else {
-      return outputValue
-        .mul(factor)
-        .div(inputValue)
-        .mul(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(inputDecimals)))
-        .div(ethers.utils.bigNumberify(10).pow(ethers.utils.bigNumberify(outputDecimals)))
-    }
-  }
-}
-
 function calculateAmount(
   inputTokenSymbol,
   outputTokenSymbol,
@@ -195,16 +171,8 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   const [USDExchangeRateSelectedToken, setUSDExchangeRateSelectedToken] = useState() */
 
   const ready = !!(
-  //  (account === null || allowanceSOCKS) &&
-   // (selectedTokenSymbol === 'ETH' || account === null || allowanceSelectedToken) &&
-    (account === null || myBalanceETH) &&
-    (account === null || myBalanceOWN) &&
- //   (account === null || balanceSelectedToken) &&
     reserveETH &&
-    reserveToken &&
-    (selectedTokenSymbol === 'ETH' || reserveETH) &&
-  //  (selectedTokenSymbol === 'ETH' || reserveSelectedTokenToken) &&
-    selectedTokenSymbol// &&    (USDExchangeRateETH || USDExchangeRateSelectedToken)
+    reserveToken
   )
 
   //console.log('is ready', ready);
