@@ -20,18 +20,22 @@ const ethAmount = (new BN('4')).mul(powered).div(tempDivider);
 module.exports = async function(_deployer, network, accounts) {
   let routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
 
-const tokenName = 'tok' + new Date().toLocaleTimeString();
-const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
+  const tokenName = 'tok' + new Date().toLocaleTimeString();
+  const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
 
-   await _deployer.deploy(token1Artifact, tokenAmount, tokenName, tokenSymbol, {from: accounts[0] });
+  // Deploy ERC20 token contract - also deploys NFT contract
+  await _deployer.deploy(token1Artifact, tokenAmount, tokenName, tokenSymbol, {from: accounts[0] });
   const token = await token1Artifact.deployed();
   const nft = await token.nft();
 
   if (network != 'development') {
     const router = await routerArtifact.at(routerAddr);
+
+    // Add an allowance for the router to withdraw ERC20 tokens from me
     await token.approve(router.address, tokenAmount, {from: accounts[0] });
 
-    await router.addLiquidityETH(token.address, tokenAmount, 1, 1, token.address, 9999999999, 
+    // Adds liquidity to Uniswap (also creates the pair)
+    await router.addLiquidityETH(token.address, tokenAmount, 1, 1, accounts[0], 9999999999, 
       {from: accounts[0], value: ethAmount} ) 
 
     const factAddr = await router.factory();
@@ -42,7 +46,6 @@ const tokenSymbol = 'toks' + new Date().toLocaleTimeString();
 
     factoryArtifact.setProvider(this.web3._provider);
     const factory = await factoryArtifact.at(factAddr);
-    //console.log('fact', factory.address)
     
     const pair = await factory.getPair(token.address, wethAddress)
     console.log('pair', pair)
