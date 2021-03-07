@@ -18,7 +18,7 @@ export enum AddressTypes {
   ETH
 }
 
-enum ChainIds {
+export enum ChainIds {
   Mainnet = 1,
   Ropsten = 3
 }
