@@ -5,10 +5,8 @@ import { AddressTypes, GetAddress, getPairContract, getRouterContract } from '..
 import {
   isAddress,
   getTokenContract,
-  getExchangeContract,
   getEtherBalance,
-  getTokenBalance,
-  getTokenAllowance
+  getTokenBalance
 } from '../utils'
 import { ethers, utils } from 'ethers'
 import { BigNumber } from 'ethers/utils'
@@ -154,7 +152,6 @@ export function usePairReserves() : IPairReserves {
         if (!stale) {
           const reserveETH = res[1] as BigNumber;
           const reserveToken = res[0] as BigNumber;
-          //console.log('used rese2', reserveETH.toString(), 'used tok', reserveToken.toString())
           const data : IPairReserves = { reserveETH, reserveToken };
           setReserves(data);        
         }
@@ -178,41 +175,4 @@ export function usePairReserves() : IPairReserves {
   useBlockEffect(updateReserves)
 
   return reserves
-}
-
-export function useAddressAllowance(address, tokenAddress, spenderAddress) {
-  const { library } = useWeb3Context()
-
-  const [allowance, setAllowance] = useState<utils.BigNumber>()
-
-  const updateAllowance = useCallback(() => {
-    if (isAddress(address) && isAddress(tokenAddress) && isAddress(spenderAddress)) {
-      let stale = false
-
-      getTokenAllowance(address, tokenAddress, spenderAddress, library)
-        .then(allowance => {
-          if (!stale) {
-            setAllowance(allowance)
-          }
-        })
-        .catch(() => {
-          if (!stale) {
-            setAllowance(null)
-          }
-        })
-
-      return () => {
-        stale = true
-        setAllowance(null)
-      }
-    }
-  }, [address, library, spenderAddress, tokenAddress])
-
-  useEffect(() => {
-    return updateAllowance()
-  }, [updateAllowance])
-
-  useBlockEffect(updateAllowance)
-
-  return allowance
 }

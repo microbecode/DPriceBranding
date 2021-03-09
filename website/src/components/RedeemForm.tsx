@@ -4,16 +4,6 @@ import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import Suggest from './Suggest'
-
-// we need to capture the full address into netlify...
-// https://www.netlify.com/blog/2017/07/20/how-to-integrate-netlifys-form-handling-in-a-react-app/
-function encode(data) {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-    .join('&')
-}
-
 // variables for the netlify names of each form field
 const bot = 'beep-boop'
 const name = 'name'
@@ -27,7 +17,6 @@ const email = 'email'
 const address = 'address'
 const timestamp = 'timestamp'
 const numberBurned = 'number-burned'
-const signature = 'signature'
 
 // map from variables to display text for each field
 const nameMap = {
@@ -59,23 +48,7 @@ const defaultState = {
   [country]: '',
   [email]: ''
 }
-/* 
-// mapping from field to google maps return value
-const addressMapping = [
-  { [line1]: 'street_address' },
-  { [city]: 'sublocality' },
-  { [state]: 'administrative_area_level_1' },
-  { [zip]: 'postal_code' },
-  { [country]: 'country' }
-] */
-
 const recaptchaEnabled = false
-
-/* interface Props {
-  setHasConfirmedAddress, 
-  setUserAddress, 
-  numberBurned: actualNumberBurned
-} */
 
 interface RedeemFormProps {
   setHasConfirmedAddress, 
@@ -86,7 +59,6 @@ interface RedeemFormProps {
 
 export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, numberBurned: actualNumberBurned, shirtSize } : RedeemFormProps) {
   const { library, account } = useWeb3Context()
-  const [recaptcha, setRecaptcha] = useState()
   const [autoAddress, setAutoAddress] = useState([])
   const [inputY, setInputY] = useState(0)
   const suggestEl = useRef<Element>()
@@ -98,48 +70,9 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     setFormState(state => ({ ...state, [name]: value }))
   }
 
-  /* function updateAutoFields(address) {
-    let constructedStreetAddress = ''
-    function getTypes(addressItem, addressVal, item) {
-      addressItem.forEach(type => {
-        if (Object.keys(item)[0] === line1) {
-          if (type === 'street_number') {
-            constructedStreetAddress += addressVal
-          } else if (type === 'route') {
-            constructedStreetAddress += ' ' + addressVal
-          }
-          setFormState(state => ({ ...state, [Object.keys(item)[0]]: constructedStreetAddress }))
-        } else if (Object.keys(item)[0] === city) {
-          if (type === 'sublocality' || type === 'locality') {
-            setFormState(state => ({ ...state, [Object.keys(item)[0]]: addressVal }))
-          }
-        } else if (Object.keys(item)[0] === state) {
-          if (type === 'administrative_area_level_1') {
-            setFormState(state => ({ ...state, [Object.keys(item)[0]]: addressVal }))
-          }
-        } else if (Object.keys(item)[0] === country) {
-          if (type === 'country') {
-            setFormState(state => ({ ...state, [Object.keys(item)[0]]: addressVal }))
-          }
-        } else if (Object.keys(item)[0] === zip) {
-          if (type === 'postal_code') {
-            setFormState(state => ({ ...state, [Object.keys(item)[0]]: addressVal }))
-          }
-        }
-      })
-    }
-
-    addressMapping.forEach(item => {
-      address.forEach(addressItem => {
-        getTypes(addressItem.types, addressItem.long_name, item)
-      })
-    })
-  } */
-
   // keep acount in sync
   useEffect(() => {
     setUserAddress(autoAddress['formatted_address'])
-    //updateAutoFields(autoAddress['address_components'] ? autoAddress['address_components'] : [])
     handleChange({ target: { name: [address], value: account } })
   }, [account, autoAddress, setUserAddress])
 
@@ -159,12 +92,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
     formState[email] &&
     !!shirtSize
 
-  function onRecaptcha(value) {
-    if (value) {
-      setRecaptcha(value)
-    }
-  }
-
   return (
     <FormFrame autocomplete="off">
       <input hidden type="text" name="beep-boop" value={formState[bot]} onChange={handleChange} />
@@ -178,18 +105,7 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         autoComplete="name"
       />
       <Compressed>
- {/*        <Suggest
-          myRef={suggestEl}
-          inputY={inputY}
-          setAutoAddress={setAutoAddress}
-          type="text"
-          name={line1}
-          value={formState[line1]}
-          onChange={handleChange}
-          placeholder={nameMap[line1]}
-          autoComplete="off"
-        /> */}
-<input
+        <input
           type="text"
           name={line1}
           value={formState[line1]}
@@ -215,7 +131,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         placeholder={nameMap[city]}
         autoComplete="address-level2"
       />
-
       <Compressed>
         <input
           style={{ marginRight: '8px' }}
@@ -237,7 +152,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
           autoComplete="postal-code"
         />
       </Compressed>
-
       <input
         required
         type="text"
@@ -247,7 +161,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         placeholder={nameMap[country]}
         autoComplete="country-name"
       />
-
       <input
         required
         type="email"
@@ -257,11 +170,9 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
         placeholder={nameMap[email]}
         autoComplete="email"
       />
-
-      {recaptchaEnabled && <ReCAPTCHA sitekey={process.env.REACT_APP_SITE_RECAPTCHA_KEY} onChange={onRecaptcha} />}
       <ButtonFrame
         type="submit"
-        disabled={!canSign || (recaptchaEnabled && !!!recaptcha)}
+        disabled={!canSign}
         onClick={event => {
           const signer = library.getSigner()
           const timestampToSign = Math.round(Date.now() / 1000)
@@ -302,15 +213,13 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
                     }
                   })
                 )
-                console.log('stored');
                 return true;
               } catch (error) {
                 console.error(error)
                 return false;
-                //return returnError('Unknown Error')
               }
             }
-            const succeeded = storeToDb().then((succeeded) => {
+            storeToDb().then((succeeded) => {
               if (succeeded) {
                 setHasConfirmedAddress(true)
               }
@@ -318,26 +227,6 @@ export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, num
                 console.warn("failed to save db entry")
               }
             });
-            
-           /*  fetch('/', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: encode({
-                'form-name': 'redeem',
-                ...{
-                  ...formState,
-                  [address]: account,
-                  [timestamp]: timestampToSign,
-                  [numberBurned]: actualNumberBurned,
-                  [signature]: returnedSignature,
-                  ...(recaptchaEnabled ? { 'g-recaptcha-response': recaptcha } : {})
-                }
-              })
-            })
-              .then(() => {
-                
-              })
-              .catch(console.error) */
           })
 
           event.preventDefault()

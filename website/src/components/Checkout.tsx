@@ -61,10 +61,7 @@ export function useCount(initialValue, max) {
 }
 
 interface Props {
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy : IValidateTrade,
   buy,
   burn,
@@ -84,10 +81,7 @@ interface Props {
 }
 
 export default function Checkout({
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy,
   buy,
   burn,
@@ -171,10 +165,7 @@ export default function Checkout({
       if (!redeeming) {
       return (
         <BuyAndSell
-          selectedTokenSymbol={selectedTokenSymbol}
-          setSelectedTokenSymbol={setSelectedTokenSymbol}
           ready={ready}
-          unlock={unlock}
           validateBuy={validateBuy}
           buy={buy}
           dollarize={dollarize}
@@ -190,18 +181,13 @@ export default function Checkout({
       else {
         return (
           <Redeem
-            ready={ready}
             burn={burn}
             balanceOWN={balanceOWN}
-            dollarize={dollarize}
-            setCurrentTransaction={setCurrentTransaction}
             setShowConnect={setShowConnect}
             closeCheckout={closeCheckout}
-            unlock={pending}
           />
         )
-      }
-      
+      }      
     }
   }
 

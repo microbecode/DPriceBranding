@@ -1,20 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useWeb3Context } from 'web3-react'
 import { ethers } from 'ethers'
-
-import { TOKEN_SYMBOLS, ERROR_CODES, GetAddress, AddressTypes } from '../../utils'
+import { ERROR_CODES, GetAddress, AddressTypes } from '../../utils'
 import {
   useTokenContract,
   useAddressBalance,
-  useAddressAllowance,
   usePairReserves,
   useTotalSupply,
   useRouterContract
 } from '../../hooks'
 import Body from '../Body'
 import { IValidationError, IValidationTradeResult } from 'types'
-import { Web3Context } from 'web3-react/dist/context'
-import { BigNumber, fetchJson } from 'ethers/utils'
+import { BigNumber } from 'ethers/utils'
 import Stats from 'pages/Stats'
 import LearnMore from 'pages/LearnMore'
 import FAQ from 'pages/FAQ'
@@ -26,8 +23,6 @@ export function calculateGasMargin(value, margin) {
   const offset = value.mul(margin).div(ethers.utils.bigNumberify(10000))
   return value.add(offset)
 }
-
-
 
 // denominated in seconds
 const DEADLINE_FROM_NOW = 60 * 15
@@ -45,14 +40,6 @@ function calculateSlippageBounds(value) {
   }
 }
 
-// this mocks the getInputPrice function, and calculates the required output
-function calculateEtherTokenOutputFromInput(inputAmount, inputReserve, outputReserve) {
-  const inputAmountWithFee = inputAmount.mul(ethers.utils.bigNumberify(997))
-  const numerator = inputAmountWithFee.mul(outputReserve)
-  const denominator = inputReserve.mul(ethers.utils.bigNumberify(1000)).add(inputAmountWithFee)
-  return numerator.div(denominator) as ethers.utils.BigNumber;
-}
-
 // this mocks the getOutputPrice function, and calculates the required input
 function calculateEtherTokenInputFromOutput(outputAmount, inputReserve, outputReserve) {
   const numerator = inputReserve.mul(outputAmount).mul(ethers.utils.bigNumberify(1000))
@@ -61,73 +48,16 @@ function calculateEtherTokenInputFromOutput(outputAmount, inputReserve, outputRe
 }
 
 function calculateAmount(
-  inputTokenSymbol,
-  outputTokenSymbol,
   tokenAmount,
   reserveETH,
   reserveToken,
-/*   reserveSelectedTokenETH,
-  reserveSelectedTokenToken */
 ) {
-
-  //console.log('reserveEth', reserveETH.toString(), "reserveToken", reserveToken.toString(), "tokenAmount", tokenAmount.toString());
   // eth to token - buy
-  if (inputTokenSymbol === TOKEN_SYMBOLS.ETH && outputTokenSymbol === TOKEN_SYMBOLS.OWN) {
-    const amount = calculateEtherTokenInputFromOutput(tokenAmount, reserveETH, reserveToken)
-    if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-    return amount
+  const amount = calculateEtherTokenInputFromOutput(tokenAmount, reserveETH, reserveToken)
+  if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
+    throw Error()
   }
-
-  // token to eth - sell
-  if (inputTokenSymbol === TOKEN_SYMBOLS.OWN && outputTokenSymbol === TOKEN_SYMBOLS.ETH) {
-    const amount = calculateEtherTokenOutputFromInput(tokenAmount, reserveToken, reserveETH)
-    if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-
-    return amount
-  }
-  console.log('shouldnt happen')
-
-  /* // token to token - buy or sell
-  const buyingSOCKS = outputTokenSymbol === TOKEN_SYMBOLS.OWN
-
-  if (buyingSOCKS) {
-    // eth needed to buy x socks
-    const intermediateValue = calculateEtherTokenInputFromOutput(tokenAmount, reserveTOKENETH, reserveOWNToken)
-    // calculateEtherTokenOutputFromInput
-    if (intermediateValue.lte(ethers.constants.Zero) || intermediateValue.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-    // tokens needed to buy x eth
-    const amount = calculateEtherTokenInputFromOutput(
-      intermediateValue,
-      reserveSelectedTokenToken,
-      reserveSelectedTokenETH
-    )
-    if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-    return amount
-  } else {
-    // eth gained from selling x socks
-    const intermediateValue = calculateEtherTokenOutputFromInput(tokenAmount, reserveOWNToken, reserveTOKENETH)
-    if (intermediateValue.lte(ethers.constants.Zero) || intermediateValue.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-    // tokens yielded from selling x eth
-    const amount = calculateEtherTokenOutputFromInput(
-      intermediateValue,
-      reserveSelectedTokenETH,
-      reserveSelectedTokenToken
-    )
-    if (amount.lte(ethers.constants.Zero) || amount.gte(ethers.constants.MaxUint256)) {
-      throw Error()
-    }
-    return amount 
-  } */
+  return amount;  
 }
 
 interface Props {
@@ -138,17 +68,6 @@ interface Props {
 
 export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   const { library, account } : {library?: ethers.providers.Web3Provider, account?: string } = useWeb3Context()
-  
-/*   if (library != null) {
-    const aaa = async () => {
-      console.log('price', await (await (library.getGasPrice())).toString())
-      // 2198356255
-    };
-    aaa();  
-  } */
-
-  // selected token
-  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(TOKEN_SYMBOLS.ETH)
 
   // get pair contract
   const routerContract = useRouterContract(GetAddress(AddressTypes.ROUTER));
@@ -159,23 +78,16 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   // get balances
   const myBalanceETH = useAddressBalance(account, GetAddress(AddressTypes.ETH))
   const myBalanceOWN = useAddressBalance(account, GetAddress(AddressTypes.OWN))
-//console.log('my bal', myBalanceETH.toString(), 'se', myBalanceOWN.toString())
 
   // totalsupply
   const totalSupply = useTotalSupply(tokenContractSOCKS)
 
   const { reserveETH, reserveToken } = usePairReserves() 
-   
-
-/*   const [USDExchangeRateETH, setUSDExchangeRateETH] = useState()
-  const [USDExchangeRateSelectedToken, setUSDExchangeRateSelectedToken] = useState() */
 
   const ready = !!(
     reserveETH &&
     reserveToken
   )
-
-  //console.log('is ready', ready);
 
   function _dollarize(amount, exchangeRate) {
     return amount
@@ -192,8 +104,7 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
   }
 
   const [dollarPrice, setDollarPrice] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
-  useEffect(() => {
-    
+  useEffect(() => {    
     try {
       const getPrice = async () => {
         const url = '.netlify/functions/ethprice';
@@ -210,23 +121,6 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
     }
   }, []) 
 
-
-
-  async function unlock(buyingSOCKS = true) {
-/*     const contract = buyingSOCKS ? tokenContractSelectedToken : tokenContractSOCKS
-    const spenderAddress = buyingSOCKS ? exchangeContractSelectedToken.address : exchangeContractSOCKS.address */
-
-    const estimatedGasLimit = await tokenContractSOCKS.estimate.approve(GetAddress(AddressTypes.ROUTER), ethers.constants.MaxUint256)
-    const estimatedGasPrice = await library
-      .getGasPrice()
-      .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
-
-    return tokenContractSOCKS.approve(GetAddress(AddressTypes.ROUTER), ethers.constants.MaxUint256, {
-      gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-      gasPrice: estimatedGasPrice
-    })
-  }
-
   // buy functionality
   const validateBuy = useCallback(
     (numOfTokensIWant : string): IValidationTradeResult => {
@@ -241,15 +135,10 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
 
       let requiredValueInSelectedToken
       try {
-       // console.log('validating buy with data', reserveETH.toString(), reserveToken.toString());
         requiredValueInSelectedToken = calculateAmount(
-          selectedTokenSymbol,
-          TOKEN_SYMBOLS.OWN,
           parsedValue,
           reserveETH,
-          reserveToken/* ,
-          reserveSelectedTokenETH,
-          reserveSelectedTokenToken */
+          reserveToken
         )
       } catch (error) {
         error.code = ERROR_CODES.INVALID_TRADE
@@ -265,34 +154,11 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
       if (myBalanceETH && myBalanceETH !== undefined && myBalanceETH.lt(ethers.utils.parseEther('.01'))) {
         const error = {} as IValidationError;
         error.code = ERROR_CODES.INSUFFICIENT_ETH_GAS
-        //console.log('accumu1', error)
         if (!errorAccumulator) {
           errorAccumulator = error
         }
       }
 
-      // validate minimum selected token balance
-      /* if (myBalanceOWN && maximum && myBalanceOWN.lt(maximum)) {
-        const error = {} as IValidationError;
-        error.code = ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE
-        //console.log('accumu2', error)
-        if (!errorAccumulator) {
-          errorAccumulator = error
-        }
-      } */
-
-      // validate allowance
-/*       if (selectedTokenSymbol !== 'ETH') {
-        if (allowanceSelectedToken && maximum && allowanceSelectedToken.lt(maximum)) {
-          const error = {} as IValidationError;
-          error.code = ERROR_CODES.INSUFFICIENT_ALLOWANCE
-          //console.log('accumu3', error)
-          if (!errorAccumulator) {
-            errorAccumulator = error
-          }
-        }
-      } */
-      
       return {
         inputValue: requiredValueInSelectedToken,
         maximumInputValue: maximum,
@@ -302,82 +168,33 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
     },
     [
       myBalanceETH,
-     // myBalanceOWN,
       reserveETH,
-      reserveToken,
-/*       reserveSelectedTokenETH,
-      reserveSelectedTokenToken, */
-      selectedTokenSymbol
+      reserveToken
     ]
   )
 
   async function buy(maximumInputValue, outputValue) {
-    console.log('start buy', maximumInputValue.toString(), outputValue.toString())
     const deadline = Math.ceil(Date.now() / 1000) + DEADLINE_FROM_NOW
 
     const estimatedGasPrice = await library
       .getGasPrice()
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
-    if (selectedTokenSymbol === TOKEN_SYMBOLS.ETH) {
+    //const oneToken = ethers.utils.bigNumberify(10).pow(17);
+    const weth = GetAddress(AddressTypes.WETH);
+    const own = GetAddress(AddressTypes.OWN);
+    const routerPath = [weth, own];
+    //const amountsIn = await routerContract.getAmountsIn(oneToken, routerPath) as BigNumber;
+    const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(outputValue, routerPath, account, deadline, {value: maximumInputValue }) as BigNumber;
 
-      console.log('eth');
+    const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, account, deadline, {
+      value: maximumInputValue,
+      gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
+      gasPrice: estimatedGasPrice
+    }) as BigNumber;
 
-      const oneToken = ethers.utils.bigNumberify(10).pow(17);
-      console.log('one token' , oneToken.toString())
-      const weth = GetAddress(AddressTypes.WETH);
-      const own = GetAddress(AddressTypes.OWN);
-      const routerPath = [weth, own];
-
-      const aa = await routerContract.getAmountsIn(oneToken, routerPath) as BigNumber;
-    //  const maximumInputValue = aa[1];
-      console.log('aaa', aa[0].toString(), aa[1].toString());
-      console.log('max input', maximumInputValue.toString(), "output", outputValue.toString());
-
-      const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(1, routerPath, account, 9999999999, {value: aa[0]}) as BigNumber;
-      console.log('res', estimatedGasLimit.toString());
-
-      const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, account, deadline, {
-        value: maximumInputValue,
-        gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-        gasPrice: estimatedGasPrice
-      }) as BigNumber;
-console.log('trx', trx)
-return trx;
-
-
-      /*const estimatedGasLimit = await exchangeContractSOCKS.estimate.ethToTokenSwapOutput(outputValue, deadline, {
-        value: maximumInputValue
-      })
-
-
-      return exchangeContractSOCKS.ethToTokenSwapOutput(outputValue, deadline, {
-        value: maximumInputValue,
-        gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-        gasPrice: estimatedGasPrice
-      }) */
-/*     } else {
-      const estimatedGasLimit = await routerContract.estimate.tokenToTokenSwapOutput(
-        outputValue,
-        maximumInputValue,
-        ethers.constants.MaxUint256,
-        deadline,
-        TOKEN_ADDRESSES.OWN
-      )
-      return routerContract.tokenToTokenSwapOutput(
-        outputValue,
-        maximumInputValue,
-        ethers.constants.MaxUint256,
-        deadline,
-        TOKEN_ADDRESSES.OWN,
-        {
-          gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
-          gasPrice: estimatedGasPrice
-        }
-      ) */
-    }
+    return trx;
   }
-
 
   async function burn(amount) {
     const parsedAmount = ethers.utils.parseUnits(amount.toString(), 18)
@@ -388,25 +205,11 @@ return trx;
 
     const estimatedGasLimit = await tokenContractSOCKS.estimate.burn(parsedAmount)
 
-     return tokenContractSOCKS.burn(parsedAmount, {
+    return tokenContractSOCKS.burn(parsedAmount, {
       gasLimit: calculateGasMargin(estimatedGasLimit, GAS_MARGIN),
       gasPrice: estimatedGasPrice
     }) 
   }
-
-/*   const check = async () => {
-    const myTokenBalance = await a();
-  } */
-  useEffect(() => {
-    if (myBalanceOWN) {
-      //console.log('my balance', myBalanceOWN.toString())
-    }
-  }, [myBalanceOWN]);
-  useEffect(() => {
-    if (reserveToken) {
-      //console.log('used res, eth', reserveETH.toString(), 'used tok', reserveToken.toString())
-    }
-  }, [reserveToken, reserveETH]);
 
   if (showStats) {
     return <Stats reserveSOCKSToken={reserveToken} totalSupply={totalSupply} ready={ready} balanceSOCKS={myBalanceOWN} />
@@ -419,10 +222,7 @@ return trx;
   }
   else {
     return <Body
-    selectedTokenSymbol={selectedTokenSymbol}
-    setSelectedTokenSymbol={setSelectedTokenSymbol}
     ready={ready}
-    unlock={unlock}
     validateBuy={validateBuy}
     buy={buy}
     burn={burn}

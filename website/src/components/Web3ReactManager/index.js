@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
 export default function Web3ReactManager({ children }) {
-  const { setConnector, error, active, networkId, connector } = useWeb3Context()
+  const { setConnector, error, active } = useWeb3Context()
   const [networkErrorOpen, setNetworkErrorOpen] = React.useState(false);
 
   const checkCorrectNetwork = async (library) => {

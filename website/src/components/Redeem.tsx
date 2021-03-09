@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
-import { Link } from 'react-router-dom'
-
-import { useAppContext } from '../context'
 import Button from './Button'
 import RedeemForm from './RedeemForm'
 import { amountFormatter, getEtherscanLink, TOKEN_NAME } from '../utils'
-
-import IncrementToken from './IncrementToken'
 import test from './Gallery/test.png'
 import nfc from './Gallery/nfc.png'
 import sent from './Gallery/sent.png'
-
 import close from './Gallery/close.svg'
 import closeDark from './Gallery/close_dark.svg'
-
 import Confetti from 'react-dom-confetti'
 import { ethers } from 'ethers'
 import { BigNumber, bigNumberify } from 'ethers/utils'
@@ -61,28 +54,19 @@ export function Controls({ closeCheckout, theme, type } : ControlsProps) {
 }
 
 interface Props {
-  ready,
   burn,
   balanceOWN : BigNumber,
-  dollarize,
-  setCurrentTransaction,
   setShowConnect,
   closeCheckout : () => void,
-  unlock
 }
 
 export default function Redeem({
-  ready,
   burn,
   balanceOWN,
-  dollarize,
-  setCurrentTransaction,
   setShowConnect,
-  closeCheckout,  
-  unlock,
+  closeCheckout
 } : Props) {
   const { library, account, setConnector } = useWeb3Context()
-/*   const { state } = useAppContext() */
 
   const [numberBurned, setNumberBurned] = useState<ethers.utils.BigNumber>(ethers.utils.bigNumberify(0))
   const [hasPickedAmount, setHasPickedAmount] = useState(false)
@@ -115,8 +99,7 @@ export default function Redeem({
       <SelectItem key={val} value={val}>
         {val}
       </SelectItem>
-    )
-    
+    )    
   }
 
   function renderContent() {
@@ -256,20 +239,10 @@ export default function Redeem({
               </Owned>
             </InfoFrame>
           </TopFrame>
-          {/* <Back
-            onClick={() => {
-              setHasConfirmedAddress(false)
-            }}
-          >
-            back
-          </Back>
-          <Count>2/3</Count>
-          <CheckoutPrompt>BURN THE SOCKS?</CheckoutPrompt> */}
           <ButtonFrame
             className="button"
             disabled={pending}
             pending={pending}
-            // text={pending ? `Waiting for confirmation...` : `Redeem ${numberBurned} SOCKS`}
             text={pending ? `Waiting for confirmation...` : `Place order (Redeem ${numberBurned.toString()} ${TOKEN_NAME}) `}
             type={'cta'}
             onClick={() => {

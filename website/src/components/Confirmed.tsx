@@ -57,27 +57,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
     }
   }, [state.visible, clearLastTransaction])
 
-  if (type === TRADE_TYPES.UNLOCK) {
-    return (
-      <ConfirmedFrame>
-        <TopFrame>
-          <Controls closeCheckout={closeCheckout} />
-          <ImgStyle src={sent} alt="Logo" />
-          <InfoFrame>
-            <Owned>
-              <p> Unlocked Token!</p>
-            </Owned>
-          </InfoFrame>
-        </TopFrame>
-        <CheckoutPrompt>
-          <EtherscanLink href={getEtherscanLink(hash)} target="_blank" rel="noopener noreferrer">
-            Transaction Details ↗
-          </EtherscanLink>
-        </CheckoutPrompt>
-        <Shim />
-      </ConfirmedFrame>
-    )
-  } else if (type === TRADE_TYPES.BUY) {
+ if (type === TRADE_TYPES.BUY) {
     return (
       <ConfirmedFrame>
         <TopFrame>
@@ -94,39 +74,10 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
             Transaction Details ↗
           </EtherscanLink>
         </CheckoutPrompt>
-{/*         <ButtonFrame
-          text={`Redeem your SOCKS now`}
-          type={'cta'}
-          onClick={() => {
-            clearLastTransaction()
-            setState(state => ({ ...state, tradeType: TRADE_TYPES.REDEEM }))
-            // Trigger buy frame here!
-          }}
-        /> */}
-        {/* <Shim /> */}
       </ConfirmedFrame>
     )
-  } else {
-    return (
-      <ConfirmedFrame>
-        <TopFrame>
-          <Controls closeCheckout={closeCheckout} />
-          <ImgStyle src={sent} alt="Logo" />
-          <InfoFrame>
-            <Owned>
-              <p>You sold socks!</p>
-            </Owned>
-          </InfoFrame>
-        </TopFrame>
-        <CheckoutPrompt>
-          <EtherscanLink href={getEtherscanLink(hash)} target="_blank" rel="noopener noreferrer">
-            Transaction Details ↗
-          </EtherscanLink>
-        </CheckoutPrompt>
-        {/* <Shim /> */}
-      </ConfirmedFrame>
-    )
-  }
+  } 
+  return (<></>);
 }
 
 const TopFrame = styled.div`

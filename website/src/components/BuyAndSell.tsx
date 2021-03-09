@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
-
 import Button from './Button'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
@@ -9,7 +8,6 @@ import { ERROR_CODES, amountFormatter, TRADE_TYPES, TOKEN_NAME, TOTAL_NUM_OF_TOK
 import test from './Gallery/test.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
-// import { ethers } from 'ethers'
 
 export function useCount() {
   const { state, setState } = useAppContext()
@@ -42,14 +40,8 @@ function getValidationErrorMessage(validationError) {
       case ERROR_CODES.INVALID_TRADE: {
         return 'Invalid Trade'
       }
-      case ERROR_CODES.INSUFFICIENT_ALLOWANCE: {
-        return 'Set Allowance to Continue'
-      }
       case ERROR_CODES.INSUFFICIENT_ETH_GAS: {
         return 'Not Enough ETH to Pay Gas'
-      }
-      case ERROR_CODES.INSUFFICIENT_SELECTED_TOKEN_BALANCE: {
-        return 'Not Enough of Selected Token'
       }
       default: {
         return 'Unknown Error'
@@ -59,10 +51,7 @@ function getValidationErrorMessage(validationError) {
 }
 
 interface Props {
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy : IValidateTrade,
   buy,
   dollarPrice,
@@ -74,16 +63,10 @@ interface Props {
   setShowConnect
 }
 
-
-
 export default function BuyAndSell({
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy,
   buy,
-  dollarPrice,
   pending,
   reserveOWNToken,
   dollarize,
@@ -94,18 +77,6 @@ export default function BuyAndSell({
   const { state } = useAppContext()
   const { account, setConnector } = useWeb3Context()
 
-  //console.log('is pending in bb', pending);
-
-  // function fake() {
-  //   setCurrentTransaction(
-  //     true
-  //       ? '0x888503cb966a67192afb74c740abaec0b7e8bda370bc8f853fb040eab247c63f'
-  //       : '0x8cd2cc7ebb7d47dd0230bd505fa4b3375faabb1c9f92137f725b85e4de3f61df',
-  //     TRADE_TYPES.SELL,
-  //     ethers.utils.bigNumberify('1000000000000000000')
-  //   )
-  // }
-
   const initialVal = useCallback(() : IValidationTradeResult => {
     return {
       inputValue: ethers.utils.bigNumberify(0),
@@ -115,11 +86,9 @@ export default function BuyAndSell({
   
 
   const [buyValidationState, setBuyValidationState] = useState<IValidationTradeResult>(initialVal) // { maximumInputValue, inputValue, outputValue }
-  const [sellValidationState, setSellValidationState] = useState<IValidationTradeResult>(initialVal) // { inputValue, outputValue, minimumOutputValue }
   const [validationError, setValidationError] = useState<IValidationError>(null)
 
   function getText(account, errorMessage, ready, pending, hash) {
-    //console.log('getting text', account, buying, errorMessage, ready, pending, hash)
     if (account === null) {
       return 'Connect Wallet'
     } else if (ready && !errorMessage) {
@@ -136,10 +105,8 @@ export default function BuyAndSell({
   // buy state validation
   useEffect(() => {
     if (ready) {
-      //console.log('hmm')
       try {
         const { error: validationError, ...validationState } = validateBuy(String(state.count))
-        //console.log('try1 ', validationError)
         setBuyValidationState(validationState)
         setValidationError(validationError || null)
 
@@ -154,21 +121,17 @@ export default function BuyAndSell({
     }
   }, [ready, validateBuy, state.count, initialVal])
 
-  const shouldRenderUnlock = validationError && validationError.code === ERROR_CODES.INSUFFICIENT_ALLOWANCE
-
   const errorMessage = getValidationErrorMessage(validationError)
 
   function renderFormData() {
     let conditionalRender
     if (buyValidationState.inputValue) {
       conditionalRender = (
-        <>
-          <p>
-            ~ ${ready && dollarize(buyValidationState.inputValue).toString()}
-          </p>
-        </>
+        <p>
+          ~ ${ready && dollarize(buyValidationState.inputValue).toString()}
+        </p>
       )
-    }  else {
+    } else {
       conditionalRender = <p>$0.00</p>
     }
 
@@ -183,14 +146,9 @@ export default function BuyAndSell({
     }
   }
 
-  //console.log('so21', validationError !== null || (pending && currentTransactionHash), validationError, pending , currentTransactionHash)
-//console.log('state', buyValidationState.inputValue?.toString(), buyValidationState.outputValue.toString(), 
-//  buyValidationState.minimumOutputValue?.toString(), buyValidationState.maximumInputValue?.toString())
-
   return (
     <>
       <TopFrame>
-        {/* <button onClick={() => fake()}>test</button> */}
         <Unicorn>
           <span role="img" aria-label="unicorn">
             🦄
@@ -200,7 +158,6 @@ export default function BuyAndSell({
         <ImgStyle src={test} alt="Logo" />
         <InfoFrame pending={pending}>
           <CurrentPrice>
-            {/* {dollarPrice && `$${amountFormatter(dollarPrice, 18, 2)} USD`} */}
             <USDPrice>{renderFormData()}</USDPrice>
             <SockCount>{reserveOWNToken && `${amountFormatter(reserveOWNToken, 18, 0)}/${TOTAL_NUM_OF_TOKENS} available`}</SockCount>
           </CurrentPrice>
@@ -225,44 +182,29 @@ export default function BuyAndSell({
           </CheckoutPrompt>          
         </CheckoutControls>
       )}
-      {shouldRenderUnlock ? (
-        <ButtonFrame
-          text={`Unlock ${selectedTokenSymbol}`}
-          type={'cta'}
-          pending={pending}
-          onClick={() => {
-            unlock(true).then(({ hash }) => {
-              console.log('unlocking', hash)
-              setCurrentTransaction(hash, TRADE_TYPES.UNLOCK, undefined)
+      <ButtonFrame
+        className="button"
+        pending={pending}
+        disabled={validationError !== null || (pending && currentTransactionHash)}
+        text={getText(account, errorMessage, ready, pending, currentTransactionHash)}
+        type={'cta'}
+        onClick={() => {
+          if (account === null) {
+            setConnector('Injected', { suppressAndThrowErrors: true }).catch(error => {
+              setShowConnect(true)
             })
-          }}
-        />
-      ) : (
-        <ButtonFrame
-          className="button"
-          pending={pending}
-          disabled={validationError !== null || (pending && currentTransactionHash)}
-          text={getText(account, errorMessage, ready, pending, currentTransactionHash)}
-          type={'cta'}
-          onClick={() => {
-            if (account === null) {
-              setConnector('Injected', { suppressAndThrowErrors: true }).catch(error => {
-                setShowConnect(true)
-              })
-            } else {
-              buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
-              .then(response => {
-                //console.log('in bs then', response);
-                setCurrentTransaction(
-                  response.hash,
-                  TRADE_TYPES.BUY,
-                  buyValidationState.outputValue
-                )
-              })
-            }
-          }}
-        />
-      )}
+          } else {
+            buy(buyValidationState.maximumInputValue, buyValidationState.outputValue)
+            .then(response => {
+              setCurrentTransaction(
+                response.hash,
+                TRADE_TYPES.BUY,
+                buyValidationState.outputValue
+              )
+            })
+          }
+        }}
+      />
     </>
   )
 }

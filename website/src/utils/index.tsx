@@ -64,14 +64,11 @@ export const ERROR_CODES =
 {
   INVALID_AMOUNT: 'INVALID_AMOUNT',
   INVALID_TRADE: 'INVALID_TRADE',
-  INSUFFICIENT_ETH_GAS: 'INSUFFICIENT_ETH_GAS',
-  INSUFFICIENT_SELECTED_TOKEN_BALANCE: 'INSUFFICIENT_SELECTED_TOKEN_BALANCE',
-  INSUFFICIENT_ALLOWANCE: 'INSUFFICIENT_ALLOWANCE'
+  INSUFFICIENT_ETH_GAS: 'INSUFFICIENT_ETH_GAS'
 };
 
 export const TRADE_TYPES = {
   BUY: 'BUY',
-  UNLOCK: 'UNLOCK',
   REDEEM: 'REDEEM'
 };
 
@@ -93,7 +90,6 @@ export function getEtherscanLink(hash) {
 
 // account is optional
 export function getProviderOrSigner(library, account) {
-  //console.log('get provider', account, library);
   return account ? new UncheckedJsonRpcSigner(library.getSigner(account)) : library
 }
 
@@ -102,9 +98,7 @@ export function getContract(address, ABI, library, account) {
   if (!isAddress(address) || address === ethers.constants.AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
-//console.log('getting contract ', address, ABI, getProviderOrSigner(library, account));
   const c = new ethers.Contract(address, ABI, getProviderOrSigner(library, account))
-  //console.log('found contract ', c);
   return c;
 }
 
@@ -140,17 +134,6 @@ export async function getTokenBalance(tokenAddress, address, library) {
   }
 
   return getContract(tokenAddress, ERC20_ABI, library, null).balanceOf(address) as ethers.utils.BigNumber
-}
-
-export async function getTokenAllowance(address, tokenAddress, spenderAddress, library) {
-  if (!isAddress(address) || !isAddress(tokenAddress) || !isAddress(spenderAddress)) {
-    throw Error(
-      "Invalid 'address' or 'tokenAddress' or 'spenderAddress' parameter" +
-        `'${address}' or '${tokenAddress}' or '${spenderAddress}'.`
-    )
-  }
-
-  return getContract(tokenAddress, ERC20_ABI, library, null).allowance(address, spenderAddress) as ethers.utils.BigNumber
 }
 
 export function amountFormatter(amount, baseDecimals = 18, displayDecimals = 3, useLessThan = true) {

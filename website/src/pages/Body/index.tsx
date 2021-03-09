@@ -2,8 +2,7 @@ import React, { useState, useCallback, useContext } from 'react'
 import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
 import { Link } from 'react-router-dom'
-
-import { AppContext, useAppContext } from '../../context'
+import { useAppContext } from '../../context'
 import Card from '../../components/Card'
 import BuyButtons from '../../components/Buttons'
 import RedeemButton, { BuyButtonFrame } from '../../components/RedeemButton'
@@ -37,12 +36,6 @@ export function Header(
   return (
     <HeaderFrame balanceSOCKS={balanceOWN}>
       <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-      {/*   <Unicorn>
-          <span role="img" aria-label="unicorn">
-            🦄
-          </span>{' '}
-          Unisocks
-        </Unicorn> */}
         <UpperLogo src={logo} alt='logo'></UpperLogo>
       </Link>
       <div style={{ display: 'flex', flexDirection: 'row', height: '40px' }}>
@@ -185,10 +178,7 @@ const Status = styled.div`
 `
 
 interface Props {
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy : IValidateTrade,
   buy,
   burn,
@@ -200,10 +190,7 @@ interface Props {
 };
 
 export default function Body({
-  selectedTokenSymbol,
-  setSelectedTokenSymbol,
   ready,
-  unlock,
   validateBuy,
   buy,
   burn,
@@ -213,16 +200,13 @@ export default function Body({
   reserveOWNToken,
   totalSupply
 } : Props) {
-  const { account } = useWeb3Context()
-
-  
 
   const [currentTransaction, _setCurrentTransaction] = useState<ITransaction>({
     amount: 0,
     hash: null,
     type: null
   })
-  //console.log('curr tran', currentTransaction)
+
   const setCurrentTransaction = useCallback((hash, type, amount) => {
     _setCurrentTransaction({ hash, type, amount })
   }, [])
@@ -249,10 +233,7 @@ export default function Body({
         </BuyButtonFrame>
       </Content>
       <Checkout
-        selectedTokenSymbol={selectedTokenSymbol}
-        setSelectedTokenSymbol={setSelectedTokenSymbol}
         ready={ready}
-        unlock={unlock}
         validateBuy={validateBuy}
         buy={buy}
         burn={burn}

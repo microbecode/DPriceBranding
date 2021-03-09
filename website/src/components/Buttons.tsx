@@ -27,11 +27,6 @@ const ButtonFrame = styled(Button)`
   color: ${props => props.theme.textColor};
 `
 
-// const Shim = styled.div`
-//   width: 2rem !important;
-//   height: 2rem;
-// `
-
 export default function BuyButtons(props) {
   const {setState} = useAppContext()
 

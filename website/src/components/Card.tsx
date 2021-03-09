@@ -2,9 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Tilt from 'react-tilt'
-
 import { amountFormatter } from '../utils'
-
 import Gallery from './Gallery'
 import { ethers } from 'ethers'
 
@@ -25,7 +23,6 @@ export default function Card({ totalSupply, reserveOWNToken } : Props) {
         <Gallery />
         <MarketData>
           <span>
-            {/* <CurrentPrice>{dollarPrice ? `$${amountFormatter(dollarPrice, 18, 2)} USD` : '$0.00'}</CurrentPrice> */}
             <SockCount>
               {reserveOWNToken && totalSupply
                 ? `${amountFormatter(reserveOWNToken, 18, 0)}/${totalSupply} available`
@@ -99,7 +96,6 @@ const CurrentPrice = styled.p`
 `
 
 const Info = styled.div`
-  /* margin-bottom: -2px; */
 `
 
 const Dynamic = styled.p`
