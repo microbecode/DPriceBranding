@@ -1,2 +1,2 @@
 # DPriceBranding
-Smart contracts for DpriceBranding project (Ethereum NFTs).
+Smart contracts for DpriceBranding project (Ethereum NFTs)
