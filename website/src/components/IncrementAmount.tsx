@@ -1,8 +1,7 @@
 import { ethers } from 'ethers'
 import { BigNumber } from 'ethers/utils'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useCount } from './Checkout'
 
 const SelectFrame = styled.div`
   display: flex;
@@ -58,7 +57,6 @@ interface Props {
 
 export default function IncrementAmount({ max, count, setCount } : Props) {  //const [count, incrementCount, decrementCount] = useCount(initialValue, max)
   
-
   const decrement = () => {
     if (count.gt(1)) {
       setCount(count.sub(1))
@@ -66,10 +64,10 @@ export default function IncrementAmount({ max, count, setCount } : Props) {  //c
   }
 
   const increment = () => {
-    const newCount = count.add(1)
-      if (!max || newCount.lte(max)) {
-        setCount(newCount);
-      } 
+    const newCount = count.add(1);
+    if (!max || newCount.lte(max)) {
+      setCount(newCount);
+    } 
   }
 
   return (

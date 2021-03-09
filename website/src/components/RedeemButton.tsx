@@ -31,11 +31,6 @@ const ButtonFrame = styled(Button)`
   color: ${props => props.theme.textColor};
 `
 
-const Shim = styled.div`
-  width: 1rem !important;
-  height: 1rem;
-`
-
 export default function RedeemButton({ balanceOWN } : { balanceOWN: BigNumber }) {
   const { setState } = useAppContext()
   const { account } = useWeb3Context()

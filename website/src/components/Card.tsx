@@ -87,14 +87,6 @@ const SockCount = styled.p`
   font-feature-settings: 'tnum' on, 'onum' on;
 `
 
-const CurrentPrice = styled.p`
-  font-weight: 600;
-  font-size: 18px;
-  margin: 0px;
-  margin-bottom: 0.5rem;
-  font-feature-settings: 'tnum' on, 'onum' on;
-`
-
 const Info = styled.div`
 `
 

@@ -180,11 +180,9 @@ export default function Main({showStats, showLearnMore, showFAQ} : Props) {
       .getGasPrice()
       .then(gasPrice => gasPrice.mul(ethers.utils.bigNumberify(150)).div(ethers.utils.bigNumberify(100)))
 
-    //const oneToken = ethers.utils.bigNumberify(10).pow(17);
     const weth = GetAddress(AddressTypes.WETH);
     const own = GetAddress(AddressTypes.OWN);
     const routerPath = [weth, own];
-    //const amountsIn = await routerContract.getAmountsIn(oneToken, routerPath) as BigNumber;
     const estimatedGasLimit = await routerContract.estimate.swapETHForExactTokens(outputValue, routerPath, account, deadline, {value: maximumInputValue }) as BigNumber;
 
     const trx = await routerContract.swapETHForExactTokens(outputValue, routerPath, account, deadline, {

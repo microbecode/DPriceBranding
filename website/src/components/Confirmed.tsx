@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { amountFormatter, getEtherscanLink, TOKEN_NAME, TRADE_TYPES } from '../utils'
-import Button from './Button'
 
 import close from './Gallery/close.svg'
 import sent from './Gallery/sent.png'
@@ -96,9 +95,6 @@ const TopFrame = styled.div`
   padding: 16px;
   box-sizing: border-box;
 `
-const Shim = styled.div`
-  height: 20px;
-`
 
 const Close = styled.img`
   width: 16px;
@@ -111,12 +107,6 @@ const Close = styled.img`
   font-size: 16px;
   padding: 4px;
   cursor: pointer;
-`
-const ButtonFrame = styled(Button)`
-  width: calc(100% - 2rem);
-  margin: 16px;
-  height: 48px;
-  padding: 16px;
 `
 
 const InfoFrame = styled.div`

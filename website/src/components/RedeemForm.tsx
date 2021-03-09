@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import styled from 'styled-components'
 
 import { useWeb3Context } from 'web3-react'
-import ReCAPTCHA from 'react-google-recaptcha'
 
 // variables for the netlify names of each form field
 const bot = 'beep-boop'
@@ -48,7 +47,6 @@ const defaultState = {
   [country]: '',
   [email]: ''
 }
-const recaptchaEnabled = false
 
 interface RedeemFormProps {
   setHasConfirmedAddress, 
@@ -59,8 +57,8 @@ interface RedeemFormProps {
 
 export default function RedeemForm({ setHasConfirmedAddress, setUserAddress, numberBurned: actualNumberBurned, shirtSize } : RedeemFormProps) {
   const { library, account } = useWeb3Context()
-  const [autoAddress, setAutoAddress] = useState([])
-  const [inputY, setInputY] = useState(0)
+  const [autoAddress, ] = useState([])
+  const [, setInputY] = useState(0)
   const suggestEl = useRef<Element>()
 
   const [formState, setFormState] = useState(defaultState)

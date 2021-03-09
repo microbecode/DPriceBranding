@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3Context } from 'web3-react'
 import { Link } from 'react-router-dom'
@@ -275,42 +275,4 @@ const Content = styled.div`
   max-width: 375px;
   margin-top: 72px;
   background-color: black;
-`
-
-const Info = styled.div`
-  color: ${props => props.theme.textColor};
-  font-weight: 500;
-  margin: 0px;
-  font-size: 14px;
-  padding: 20px;
-  padding-top: 32px;
-  border-radius: 0 0 8px 8px;
-  /* border-radius: 8px; */
-  margin-bottom: 12px;
-  margin-top: -12px;
-  /* margin-top: 16px; */
-  background-color: black;
-  a {
-    color: ${props => props.theme.uniswapPink};
-    text-decoration: none;
-    /* padding-top: 8px; */
-    /* font-size: 14px; */
-  }
-  a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`
-
-const OrderStatusLink = styled.p`
-  color: ${props => props.theme.uniswapPink};
-  text-align: center;
-  font-size: 0.6rem;
-`
-
-const Unicorn = styled.p`
-  color: ${props => props.theme.uniswapPink};
-  font-weight: 600;
-  margin: auto 0px;
-  font-size: 16px;
 `
