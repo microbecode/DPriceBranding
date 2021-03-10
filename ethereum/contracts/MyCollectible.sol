@@ -5,7 +5,7 @@ import "./token/ERC721/ERC721.sol";
 contract MyCollectible is ERC721 {
     address private _minter;
 
-    constructor() ERC721("HDKTSHIRT", "HDKTSHIRT") public {
+    constructor() ERC721("HDKTSHIRT", "$HIDDEN") public {
         _minter = msg.sender;
     }
 
