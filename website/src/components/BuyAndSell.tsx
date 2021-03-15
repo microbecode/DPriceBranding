@@ -5,7 +5,7 @@ import Button from './Button'
 import IncrementToken from './IncrementToken'
 import { useAppContext } from '../context'
 import { ERROR_CODES, amountFormatter, TRADE_TYPES, TOKEN_NAME, TOTAL_NUM_OF_TOKENS, getEtherscanLink } from '../utils'
-import test from './Gallery/test.png'
+import tshirt from './Gallery/tshirt.png'
 import { IValidateTrade, IValidationError, IValidationTradeResult } from 'types'
 import { ethers } from 'ethers'
 
@@ -155,7 +155,7 @@ export default function BuyAndSell({
           </span>{' '}
           Pay
         </Unicorn>
-        <ImgStyle src={test} alt="Logo" />
+        <ImgStyle src={tshirt} alt="Logo" />
         <InfoFrame pending={pending}>
           <CurrentPrice>
             <USDPrice>{renderFormData()}</USDPrice>
