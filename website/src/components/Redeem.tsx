@@ -5,8 +5,6 @@ import Button from './Button'
 import RedeemForm from './RedeemForm'
 import { amountFormatter, getEtherscanLink, TOKEN_NAME } from '../utils'
 import tshirt from './Gallery/tshirt.png'
-import nfc from './Gallery/nfc.png'
-import sent from './Gallery/sent.png'
 import close from './Gallery/close.svg'
 import closeDark from './Gallery/close_dark.svg'
 import Confetti from 'react-dom-confetti'
@@ -277,7 +275,7 @@ export default function Redeem({
         <>
           <TopFrame hasPickedAmount={hasPickedAmount}>
             <Controls closeCheckout={closeCheckout} />
-            <ImgStyle src={sent} alt="Logo" hasPickedAmount={hasPickedAmount} hasBurnt={hasBurnt} />
+            <ImgStyle src={tshirt} alt="Logo" hasPickedAmount={hasPickedAmount} hasBurnt={hasBurnt} />
             <InfoFrame>
               <Owned>
                 <p>Stay tuned for your t-shirt!</p>

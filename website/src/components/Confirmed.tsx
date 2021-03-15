@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { amountFormatter, getEtherscanLink, TOKEN_NAME, TRADE_TYPES } from '../utils'
 
 import close from './Gallery/close.svg'
-import sent from './Gallery/sent.png'
+import tshirt from './Gallery/tshirt.png'
 import { useAppContext } from '../context'
 
 const ConfirmedFrame = styled.div`
@@ -61,7 +61,7 @@ export default function Confirmed({ hash, type, amount, clearLastTransaction, cl
       <ConfirmedFrame>
         <TopFrame>
           <Controls closeCheckout={closeCheckout} />
-          <ImgStyle src={sent} alt="Logo" />
+          <ImgStyle src={tshirt} alt="Logo" />
           <InfoFrame>
             <Owned>
               <p> {`You got ${amountFormatter(amount, 18, 0)} ${TOKEN_NAME}!`}</p>
