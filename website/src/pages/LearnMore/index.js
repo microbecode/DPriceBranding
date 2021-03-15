@@ -12,15 +12,15 @@ export default function Body() {
       <Content>
       <p>How it works:</p>
       <p>
-      $HDK is a token that entitles you to 1 real limited-edition T-shirt, shipped anywhere in the world. You can sell the token back at any time. To get a real T-shirt, redeem a $HDK token.
+      $HDK is a token that entitles you to 1 real limited edition T-shirt, shipped anywhere in the world.You can sell the token back at any time. To get a real T-shirt, redeem a $HDK token.
       </p>
       <p>How it's priced:</p>
       <p>
-      $HDK tokens are listed starting at $50. Each buy/sell will move the price. The increase or decrease follows a bonding curve. HIDDENKLASS will eventually find an equilibrium based on market demand.
+      $HDK tokens are starting at $50. Each buy/sell will move the price. The increase or decrease follows a bonding curve. HIDDEN KLASS will eventually find an equilibrium based on market demand.
       </p>
       <p>Uniswap:</p>
       <p>
-      Buying or selling HDK uses the uniswap protocol and accepts ETH as a payment method. The pool of $HDK is a uniswap pool where X $HDK tokens were deposited along with the starting value of ETH.
+      Buying or selling HDK uses the uniswap protocol and accepts ETH as a payment method. The pool of $HDK is a uniswap pool where 30 $HDK tokens were deposited along with the starting value of ETH.
       </p>
       <p>
         <a href="https://docs.uniswap.io/" target="_blank" rel="noopener noreferrer">

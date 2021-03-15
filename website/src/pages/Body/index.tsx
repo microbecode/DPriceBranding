@@ -87,6 +87,8 @@ export function Footer() {
 
 const UpperLogo = styled.img`
   background-color: black;
+  max-height: 40px;
+  border-radius: 6px;
 `
 
 const HeaderFrame = styled.div`
@@ -148,6 +150,9 @@ const FooterBox = styled.div`
   font-weight: 500;
   font-size: 24px;
   color: ${props => props.theme.textColor};
+  font-weight: 500;
+  font-size: 14px;
+  max-height: 40px;
 `
 
 const HideMobile = styled.span`
@@ -275,4 +280,5 @@ const Content = styled.div`
   max-width: 375px;
   margin-top: 72px;
   background-color: black;
+  border-radius: 6px;
 `

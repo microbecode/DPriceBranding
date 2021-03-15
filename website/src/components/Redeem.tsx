@@ -4,7 +4,7 @@ import { useWeb3Context } from 'web3-react'
 import Button from './Button'
 import RedeemForm from './RedeemForm'
 import { amountFormatter, getEtherscanLink, TOKEN_NAME } from '../utils'
-import test from './Gallery/test.png'
+import tshirt from './Gallery/tshirt.png'
 import nfc from './Gallery/nfc.png'
 import sent from './Gallery/sent.png'
 import close from './Gallery/close.svg'
@@ -122,7 +122,7 @@ export default function Redeem({
         <>
           <TopFrame hasPickedAmount={hasPickedAmount}>
             <Controls closeCheckout={closeCheckout} />
-            <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
+            <ImgStyle src={tshirt} alt="Logo" hasPickedAmount={hasPickedAmount} />
             {(balanceOWN ?
               <InfoFrame pending={pending}>              
                 <Owned>
@@ -156,9 +156,9 @@ export default function Redeem({
             <Controls closeCheckout={closeCheckout} type="shipping" />
 
             <InfoFrame hasPickedAmount={hasPickedAmount}>
-              <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
+              <ImgStyle src={tshirt} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
-                <p>{tokenCount.toString()} Unisocks</p>
+                <p>{tokenCount.toString()} T-shirts</p>
                 <SelectFrame>
                   <SizeBox>Size:</SizeBox>
                   <SelectMenu
@@ -178,7 +178,7 @@ export default function Redeem({
             </InfoFrame>
           </TopFrame>
 
-          <CheckoutPrompt>Where should we send them?</CheckoutPrompt>
+          <CheckoutPrompt>Where should we send it?</CheckoutPrompt>
           <RedeemFrame
             burn={burn}
             setHasConfirmedAddress={setHasConfirmedAddress}
@@ -204,14 +204,14 @@ export default function Redeem({
           <TopFrame hasPickedAmount={hasPickedAmount}>
             <Controls closeCheckout={closeCheckout} type="confirm" />
             <InfoFrame hasPickedAmount={hasPickedAmount}>
-              <ImgStyle src={test} alt="Logo" hasPickedAmount={hasPickedAmount} />
+              <ImgStyle src={tshirt} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Owned>
-                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} T-shirt</p>
+                <p style={{ fontSize: '18px' }}>{numberBurned.toString()} HIDDENKLASS T-shirt</p>
                 <p
                   style={{
                     fontSize: '12px',
                     color: '#AEAEAE',
-                    marginTop: '16px',
+                    marginTop: '35px',
                     marginRight: '16px'
                   }}
                 >
@@ -220,7 +220,7 @@ export default function Redeem({
               </Owned>
             </InfoFrame>
             <InfoFrame hasPickedAmount={hasPickedAmount}>
-              <ImgStyle src={nfc} alt="Logo" hasPickedAmount={hasPickedAmount} />
+              <ImgStyle src={tshirt} alt="Logo" hasPickedAmount={hasPickedAmount} />
               <Bonus>Bonus</Bonus>
               <Owned>
                 <p style={{ fontSize: '18px' }}>{numberBurned.toString()} NFT</p>

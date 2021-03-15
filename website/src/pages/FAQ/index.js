@@ -10,16 +10,18 @@ export default function Body() {
     <AppWrapper overlay={state.visible}>
       <Header />
       <Content>
-      <p>HIDENNKLASS:</p>
+      <p>HIDDENKLASS:</p>
       <p>
-      HIDENNKLASS is a decentralized fashion store. Design and manufacturing is owned by the brand, Price is dynamic, determined by an automated market-maker.
+      HIDDENKLASS is a decentralized fashion store. Design and manufacturing is owned by the brand, Price is dynamic, determined by an automated market-maker.
       </p>
       <p>
-      The T-shirt has a non-fungible token(NFT) associated with it. Each T-shirt is unique, and is part of a limited edition series, $HIDDENKLASS is a scarce digital representation of an “ asset “, in this case, the T-shirt. 
+      The T-shirt has a non-fungible token(NFT) associated with it. Each T-shirt is unique, and is part of a limited edition series, $HIDDENKLASS is a scarce digital representation of an “asset“, in this case, the T-shirt. 
       </p>
-      <p>Any attempt to replicate is useless, the T- shirt has a printed Integer ID which simply says that this T-shirt owner has an NFT. Real owner can always prove that he has the NFT with the ID.:</p>
       <p>
-      How to sell $HDK:
+      Any attempt to replicate is useless, the T-shirt has a printed integer ID which simply says that the T-shirt owner has an NFT. The real owner can always prove he holds the NFT with the ID.
+      </p>
+      <p>
+      How to sell the $HDK token?
       </p>
       <p>Token can be swapped through <a href='http://www.uniswap.com'>Uniswap</a> , using the swap function between $HDK and ETH.</p>
       </Content>

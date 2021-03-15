@@ -16,7 +16,7 @@ export default function Body({ totalSupply, reserveSOCKSToken, ready, balanceSOC
         <Description>
           <p>
             <span role="img" aria-label="socks">
-              🧦
+            👕
             </span>
             Initial T-shirts
           </p>
@@ -42,7 +42,7 @@ export default function Body({ totalSupply, reserveSOCKSToken, ready, balanceSOC
         </Description>
         <Shim />
         <Footer>
-          The price of SOCKS changes when tokens are bought and sold.
+          The price of T-SHIRTS changes when tokens are bought and sold.
         </Footer>
       </Content>
     </AppWrapper>

@@ -25,7 +25,7 @@ export const BuyButtonFrame = styled.div`
     /* margin: 1.5rem 2rem 0.5rem 2rem; */
   }
 `
-const ButtonFrame = styled(Button)`
+export const ButtonFrame = styled(Button)`
   width: 100%;
   background-color: black;
   color: ${props => props.theme.textColor};

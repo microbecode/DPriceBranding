@@ -5,6 +5,7 @@ import { Spinner } from '../theme'
 import Circle from './Gallery/circle.svg'
 
 const ButtonFrame = styled.button`
+  margin: 3px;
   padding: 0;
   text-align: center;
   border-radius: 8px;
@@ -30,7 +31,7 @@ const ButtonFrame = styled.button`
       ? props.disabled
         ? // ? 'linear-gradient(97.28deg, rgba(254, 109, 222, 0.2) 2.08%, rgba(255, 157, 234, 0.2) 106.51%)'
           '#f1f2f6'
-        : 'black'/* 'linear-gradient(97.28deg, #fe6dde 2.08%, #ff9dea 106.51%)' */
+        : 'black'
       : props.disabled // ? 'linear-gradient(97.28deg, rgba(254, 109, 222, 0.2) 2.08%, rgba(255, 157, 234, 0.2) 106.51%)'
       ? '#f1f2f6'
       : 'none'};
@@ -42,7 +43,7 @@ const ButtonFrame = styled.button`
         : props.theme.white
       : props.disabled
       ? '#aeaeae'
-      : props.theme.uniswapPink};
+      : props.theme.textColor};
   transform: scale(1);
   transition: transform 0.3s ease;
 
