@@ -19,7 +19,9 @@ Smart contracts for DpriceBranding project (Ethereum NFTs)
 You need to create a file called `.env` in this folder with the following settings:
 
     PROVIDER_URL='https://eth-ropsten.alchemyapi.io/v2/YOURKEY'
+    PROVIDER_URL_PROD='https://eth-ropsten.alchemyapi.io/v2/YOURPRODKEY'
     PRIVATE_KEY='YOUR_WALLET_PRIVATE_KEY'
+    PRIVATE_KEY_PROD='YOUR_WALLET_PRIVATE_KEY_FOR_PROD'
     ETHERSCAN_API_KEY='ETHERSCAN_API_KEY'
 
 
