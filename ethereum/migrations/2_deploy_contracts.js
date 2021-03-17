@@ -7,8 +7,6 @@ const json = require('@uniswap/v2-core/build/UniswapV2Factory.json')
 const contract = require('@truffle/contract');
 const factoryArtifact = contract(json);
 
-const tempDivider = new BN('100'); // use less Eth temporarily, so cheaper to buy
-
 const ten = new BN('10');
 const eighteen = new BN('18');
 const powered = ten.pow(eighteen);
@@ -17,7 +15,7 @@ const powered = ten.pow(eighteen);
 // How many tokens to create and put into pool
 const tokenAmount = (new BN('30')).mul(powered);
 // How much Eth to put into pool
-const ethAmount = (new BN('83')).mul(powered).div(tempDivider);
+const ethAmount = (new BN('83')).mul(powered).div(new BN('100'));
 const tokenName = 'HIDDENKLASST';
 const tokenSymbol = 'HDKT';
 
