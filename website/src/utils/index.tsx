@@ -31,9 +31,9 @@ export const GetAddress = (type : AddressTypes) : string => {
   if (getDesiredChainId() === ChainIds.Ropsten) {
     switch (type) {
       case AddressTypes.OWN:
-        return '0xBB393edDe4A8301b06968955EC13A2ab601239A6';
+        return '0x6bc535218238031455D7F321d9A9Cd4736fc39FF';
       case AddressTypes.PAIR:
-        return '0x4d596212C9734882E0b6D4f148e27fdF33aDd183';
+        return '0x0501535e7C1b95d5BF2152e054e7712C523e0ccc';
       case AddressTypes.ROUTER:
         return '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
       case AddressTypes.WETH:

@@ -17,7 +17,7 @@ const powered = ten.pow(eighteen);
 // How many tokens to create and put into pool
 const tokenAmount = (new BN('30')).mul(powered);
 // How much Eth to put into pool
-const ethAmount = (new BN('4')).mul(powered).div(tempDivider);
+const ethAmount = (new BN('83')).mul(powered).div(tempDivider);
 const tokenName = 'HIDDENKLASST';
 const tokenSymbol = 'HDKT';
 
