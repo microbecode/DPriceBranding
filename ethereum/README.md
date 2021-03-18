@@ -25,11 +25,13 @@ You need to create a file called `.env` in this folder with the following settin
     ETHERSCAN_API_KEY='ETHERSCAN_API_KEY'
 
 
-## Run stuff only locally
-Start local blockchain: `ganache-cli`
-Run unit tests: `truffle test`
+## Run tests locally
+1. Install packages: `yarn`
+1. Start local blockchain: `ganache-cli`
+1. Run unit tests: `truffle test`
 
 ## Run stuff with Ropsten
+1. Install packages: `yarn`
 1. Compile: `truffle compile`
 1. Go to folder `contracts/mocks` and remove file `UniswapV2Router02Mock.sol`. See notes below for reasons why.
 1. Compile: `truffle compile`
