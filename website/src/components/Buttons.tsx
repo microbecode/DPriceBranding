@@ -1,7 +1,3 @@
-import React from 'react'
-import styled from 'styled-components'
-
-import Button from './Button'
 import { useAppContext } from '../context'
 import { TRADE_TYPES } from '../utils'
 import { ButtonFrame, BuyButtonFrame } from './RedeemButton'
