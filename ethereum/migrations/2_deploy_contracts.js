@@ -1,9 +1,9 @@
 const BN = require('bn.js');
 
-const routerArtifact = artifacts.require("UniswapV2Router02");
+const routerArtifact = artifacts.require("../contracts/uniswap/IUniswapV2Router02.sol");
 const token1Artifact = artifacts.require('MyToken');
 
-const json = require('@uniswap/v2-core/build/UniswapV2Factory.json')
+const json = require('../contracts/uniswap/UniswapV2Factory.json')
 const contract = require('@truffle/contract');
 const factoryArtifact = contract(json);
 

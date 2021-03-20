@@ -1,10 +1,9 @@
 pragma solidity ^0.6.6;
 
-import "@uniswap/v2-periphery/contracts/interfaces/IWETH.sol";
 import "./ERC20/ERC20.sol";
 
 // Adjusted from https://yos.io/2019/07/13/smart-contract-extensibility-wrapped-tokens/
-contract WETH is ERC20 {
+contract WETH is ERC20  {
   event Deposit(address indexed sender, uint256 amount);
   event Withdrawal(address indexed recipient, uint256 amount);
 
