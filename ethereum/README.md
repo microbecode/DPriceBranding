@@ -32,7 +32,7 @@ Run unit tests: `truffle test`
 ## Run stuff locally with Ropsten (full functionality)
 1. Run `yarn` to install everything needed
 1. Compile: `truffle compile`
-1. Deploy to Ropsten: `truffle migrate --network Ropsten`
+1. Deploy to Ropsten: `truffle migrate --network Ropsten --reset`
 1. Note the given `pair address`, `token address` and `nft address`
 1. Verify contracts in Etherscan: run `verify.bat` and give the `nft address` as parameter to it. Or if you're not using Windows, just check the file contens and run the commands by hand
 1. Go to website code: `src/utils/index.tsx` and replace the Ropsten addresses in `GetAddress` function. You need to use the `OWN` for your token address and `PAIR` for your pair address
