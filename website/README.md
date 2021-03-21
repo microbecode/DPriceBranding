@@ -14,6 +14,7 @@ This website is created with React + ethers.js.
 
 1. Create a Netlify account
 1. Create a FaunaDb account (can be linked to Netlify)
+    1. Create a collection there called `addresses`
 1. Use an Ethereum node (Alchemy)
 1. Have an Ethereum wallet ready with Ropsten Eth
 
