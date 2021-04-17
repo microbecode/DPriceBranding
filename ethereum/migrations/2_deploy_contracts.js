@@ -18,6 +18,7 @@ const tokenAmount = (new BN('30')).mul(powered);
 const ethAmount = (new BN('83')).mul(powered).div(new BN('100'));
 const tokenName = 'HIDDENKLASST';
 const tokenSymbol = 'HDKT';
+const minimalDeploy = false; // If true, executes more than 1 transaction
 
 module.exports = async function(_deployer, network, accounts) {
   let routerAddr = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
@@ -27,7 +28,7 @@ module.exports = async function(_deployer, network, accounts) {
   const token = await token1Artifact.deployed();
   const nft = await token.nft();
 
-  if (network != 'development') {
+  if (network != 'development' && !minimalDeploy) {
     const router = await routerArtifact.at(routerAddr);
 
     // Add an allowance for the router to withdraw ERC20 tokens from me
