@@ -45,19 +45,21 @@ After you have tested everything in a testnet (Ropsten), you can deploy to mainn
 ## All-in-one
 
 Deploys all needed contracts and executes needed transactions to get:
-# An ERC20 token contract
-# An NFT contract
-# A pool created in Uniswap for these two
-# All ERC20 and some Ethers added as liquidity to the pool
+
+- An ERC20 token contract
+- An NFT contract
+- A pool created in Uniswap for these two
+- All ERC20 and some Ethers added as liquidity to the pool
 
 The good part about this option is that it does everything you need in one script. The bad part is that you have to set gas price high enough, so that the transactions succeed within a reasonable time, since each phase of the script waits for the previous transaction to get processed. "Reasonable time" depends on things, but might be a few minutes.
 
 To execute this, first make sure that:
-# The variable `minimalDeploy` in file `migrations/2_deploy_contract.js` is set to `false`. Remember to save the file
-# The gas price is set correctly in `truffle-config.js` for mainnet
-# The variable `PRIVATE_KEY_PROD` is set in `.env` file
-# The variable `PROVIDER_URL_PROD` is set in `.env` file
-# The variable `ETHERSCAN_API_KEY` is set in `.env` file (same value for all environments)
+
+- The variable `minimalDeploy` in file `migrations/2_deploy_contract.js` is set to `false`. Remember to save the file
+- The gas price is set correctly in `truffle-config.js` for mainnet
+- The variable `PRIVATE_KEY_PROD` is set in `.env` file
+- The variable `PROVIDER_URL_PROD` is set in `.env` file
+- The variable `ETHERSCAN_API_KEY` is set in `.env` file (same value for all environments)
 
 Then execute: `truffle migrate --network mainnet --reset`
 
@@ -71,11 +73,12 @@ Then execute: `truffle migrate --network mainnet --reset`
 Deploys only the ERC20 token contract, with the accompanying NFT contract. Uniswap-related procedures need to be done manually after that: after the ERC20 is deployed, go create the pool manually in Uniswap and add liquidity to it.
 
 To execute this, first make sure that:
-# The variable `minimalDeploy` in file `migrations/2_deploy_contract.js` is set to `true`. Remember to save the file
-# The gas price is set correctly in `truffle-config.js` for mainnet
-# The variable `PRIVATE_KEY_PROD` is set in `.env` file
-# The variable `PROVIDER_URL_PROD` is set in `.env` file
-# The variable `ETHERSCAN_API_KEY` is set in `.env` file (same value for all environments)
+
+- The variable `minimalDeploy` in file `migrations/2_deploy_contract.js` is set to `true`. Remember to save the file
+- The gas price is set correctly in `truffle-config.js` for mainnet
+- The variable `PRIVATE_KEY_PROD` is set in `.env` file
+- The variable `PROVIDER_URL_PROD` is set in `.env` file
+- The variable `ETHERSCAN_API_KEY` is set in `.env` file (same value for all environments)
 
 Then execute: `truffle migrate --network mainnet --reset`
 
